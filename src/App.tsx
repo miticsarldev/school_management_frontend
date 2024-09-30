@@ -11,6 +11,10 @@ import PublicPage from "@/components/PublicPage";
 import MainLayout from "@/components/MainLayout";
 import PublicRoute from "@/components/PublicRoute";
 import Dashboard from "@/components/Dashboard";
+import DashboardAdmin from "./components/DashboardAdmin";
+import DashboardEnseignant from "./components/DashboardEnseignant";
+import DashboardEtudiant from "./components/DashboardEtudiant";
+import CompanyPage from "./components/CompanyPageSass/CompanyPage";
 
 function App() {
   return (
@@ -20,6 +24,7 @@ function App() {
           <Route element={<Layout />}>
             <Route element={<PublicRoute />}>
               <Route path="/" element={<PublicPage />} />
+              <Route path="/sass-example" element={<CompanyPage />} />
               <Route path="/login" element={<LoginPage />} />
             </Route>
             <Route element={<PersistLogin />}>
@@ -36,6 +41,30 @@ function App() {
                   element={
                     <RequireAuth>
                       <Dashboard />
+                    </RequireAuth>
+                  }
+                />
+                <Route
+                  path="/dashboard/admin"
+                  element={
+                    <RequireAuth>
+                      <DashboardAdmin />
+                    </RequireAuth>
+                  }
+                />
+                <Route
+                  path="/dashboard/enseignant"
+                  element={
+                    <RequireAuth>
+                      <DashboardEnseignant />
+                    </RequireAuth>
+                  }
+                />
+                <Route
+                  path="/dashboard/etudiant"
+                  element={
+                    <RequireAuth>
+                      <DashboardEtudiant />
                     </RequireAuth>
                   }
                 />

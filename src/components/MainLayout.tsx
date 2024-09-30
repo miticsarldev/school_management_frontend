@@ -50,11 +50,15 @@ type SidebarItemByRole = {
 
 const sidebarItemsByRole: Record<Role, SidebarItemByRole[]> = {
   administrateur: [
-    { icon: LayoutDashboard, label: "Dashboard", href: "/dashboard" },
+    { icon: LayoutDashboard, label: "Dashboard", href: "/dashboard/admin" },
     { icon: Users2, label: "Utilisateurs", href: "/dashboard/users" },
   ],
-  etudiant: [{ icon: BarChart3, label: "Dashboard", href: "/dashboard" }],
-  enseignant: [{ icon: BarChart3, label: "Dashboard", href: "/dashboard" }],
+  etudiant: [
+    { icon: BarChart3, label: "Dashboard", href: "/dashboard/etudiant" },
+  ],
+  enseignant: [
+    { icon: BarChart3, label: "Dashboard", href: "/dashboard/enseignant" },
+  ],
 };
 
 const MainLayout = () => {
