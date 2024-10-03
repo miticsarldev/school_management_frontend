@@ -1,5 +1,5 @@
 export type Mode = "add" | "modify" | "delete";
-export type Role = "administrateur" | "enseignant" | "etudiant";
+export type Role = "administrateur" | "enseignant" | "etudiant" | "parent" | "gardien";
 export type User = {
   _id?: string;
   firstname: string;

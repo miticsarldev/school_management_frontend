@@ -56,9 +56,13 @@ const sidebarItemsByRole: Record<Role, SidebarItemByRole[]> = {
   etudiant: [
     { icon: BarChart3, label: "Dashboard", href: "/dashboard/etudiant" },
   ],
+  parent: [
+    { icon: BarChart3, label: "Dashboard", href: "/dashboard/parent" },
+  ],
   enseignant: [
     { icon: BarChart3, label: "Dashboard", href: "/dashboard/enseignant" },
   ],
+  gardien: []
 };
 
 const MainLayout = () => {
@@ -70,7 +74,7 @@ const MainLayout = () => {
   const { user, isAuthenticated } = useAppSelector(selectAuth);
   const [logout, { isLoading: logoutLoading }] = useLogoutMutation();
 
-  const sidebarItems = sidebarItemsByRole[(user?.role as Role) || "etudiant"];
+  const sidebarItems = sidebarItemsByRole[(user?.role as Role) || "etudiant" ];
 
   const handleLogout = async () => {
     try {
