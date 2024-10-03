@@ -1154,6 +1154,7 @@ const DashboardAdmin = () => {
                 </div>
               </div>
               {/* /Total Earnings */}
+              
 
               {/* Top Subjects */}
                <div className="col-xxl-4 col-xl-6 d-flex">
@@ -1343,6 +1344,7 @@ const DashboardAdmin = () => {
                 </div>
               </div>
               {/* Top Subjects */}
+
 
               {/* Fees Collection */}
               <div className="col-xxl-3 col-xl-6 order-2 order-xxl-3 d-flex flex-column">
