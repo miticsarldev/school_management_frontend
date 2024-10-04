@@ -10,14 +10,13 @@ import PublicPage from "@/components/PublicPage";
 import MainLayout from "@/components/MainLayout";
 import PublicRoute from "@/components/PublicRoute";
 import Dashboard from "@/components/Dashboard";
-import DashboardAdmin from "./components/DashboardAdmin";
+import DashboardAdmin from "./components/DashboardAdmin/DashboardAdmin";
 import DashboardEnseignant from "./components/DashboardEnseignant";
 import DashboardEtudiant from "./components/DashboardEtudiant";
 import DashboardParent from "./components/DashboardParent";
 import CompanyPage from "./components/CompanyPageSass/CompanyPage";
-<<<<<<< HEAD
 import "./app/globals.css";
-import 'bootstrap/dist/css/bootstrap.min.css';
+import "bootstrap/dist/css/bootstrap.min.css";
 import "../src/index.scss";
 import "../src/style/css/feather.css";
 import "../src/style/icon/boxicons/boxicons/css/boxicons.min.css";
@@ -27,9 +26,7 @@ import "../src/style/icon/fontawesome/css/fontawesome.min.css";
 import "../src/style/icon/fontawesome/css/all.min.css";
 import "../src/style/icon/ionic/ionicons.css";
 import "../src/style/icon/tabler-icons/webfont/tabler-icons.css";
-import 'bootstrap/dist/js/bootstrap.bundle.min.js';
-
-=======
+import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import "../style/css/feather.css";
 import "../index.scss";
 import "../style/icon/boxicons/boxicons/css/boxicons.min.css";
@@ -40,7 +37,18 @@ import "../style/icon/fontawesome/css/all.min.css";
 import "../style/icon/ionic/ionicons.css";
 import "../style/icon/tabler-icons/webfont/tabler-icons.css";
 import "../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js";
->>>>>>> ESM-0018
+import "bootstrap/dist/css/bootstrap.min.css";
+import "../src/style/css/feather.css";
+import "../src/index.scss";
+import "../src/style/icon/boxicons/boxicons/css/boxicons.min.css";
+import "../src/style/icon/weather/weathericons.css";
+import "../src/style/icon/typicons/typicons.css";
+import "../src/style/icon/fontawesome/css/fontawesome.min.css";
+import "../src/style/icon/fontawesome/css/all.min.css";
+import "../src/style/icon/ionic/ionicons.css";
+import "../src/style/icon/tabler-icons/webfont/tabler-icons.min.css";
+import "bootstrap/dist/js/bootstrap.bundle.min.js";
+
 function App() {
   return (
     <Provider store={store}>

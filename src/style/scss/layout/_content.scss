@@ -1,26 +1,26 @@
 .page-wrapper {
     @include transition(all 0.5s ease);
-    margin: 0 0 0 0px ;
-    padding: 0px 0 0;
+    margin: 0 0 0 252px ;
+    padding: 56px 0 0;
     position: relative;
     left: 0;
     @include transition(all 0.2s ease);
     @include respond-below(lg) {
         margin: 0;
-        padding:0px 0 0 ;
+        padding:60px 0 0 ;
     }
     .content {
-        padding:0 15px; 
+        padding: 24px;
         background: $light-200;
         padding-bottom: 0;
         @include respond-below(lg) {
-            padding: 0px;
+            padding: 15px;
             padding-bottom: 0;
         }
         &.content-two {
-            padding-bottom: 0px;
+            padding-bottom: 24px;
             @include respond-below(md) {
-                padding-bottom: 0px;
+                padding-bottom: 15px;
             }
         }
     }
@@ -36,7 +36,7 @@
     -webkit-justify-content: space-between;
     -ms-flex-pack: space-between;
     flex-wrap: wrap;
-    margin-bottom: 0px;
+    margin-bottom: 10px;
     .breadcrumb {
         margin-bottom: 0;
     }

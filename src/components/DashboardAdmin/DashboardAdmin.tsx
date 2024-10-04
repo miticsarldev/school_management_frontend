@@ -1,8 +1,10 @@
 import { useState } from "react";
 import ReactApexChart from "react-apexcharts";
 import { Link } from "react-router-dom";
+import CountUp from "react-countup";
 import { Calendar } from "primereact/calendar";
 import { Nullable } from "primereact/ts-helpers";
+import Slider from "react-slick";
 import "bootstrap-daterangepicker/daterangepicker.css";
 import ImageWithBasePath from "../ImageWithBasePath/ImageWithBasePath";
 import "slick-carousel/slick/slick.css";
@@ -15,8 +17,6 @@ import PerformanceCard from "../PerformanceCard/PerformanceCard";
 import FeesCollectionCard from "../FeesCollectionCard.tsx/FeesCollectionCard";
 import LeaveRequestCard from "../LeaveRequestCard/LeaveRequestCard";
 import StudentGradesChart from "../StudentGradesChart/StudentGradesChart";
-
-
 
 const DashboardAdmin = () => {
   const [date, setDate] = useState<Nullable<Date>>(null);
@@ -182,13 +182,13 @@ const DashboardAdmin = () => {
       },
     ],
   });
-  
+
   const performanceData = {
     top: 45,
     average: 11,
     belowAvg: 2,
   };
-  
+
   const [classDonutChart] = useState<any>({
     chart: {
       height: 218,
@@ -230,173 +230,188 @@ const DashboardAdmin = () => {
   const [feesBar] = useState<any>({
     chart: {
       height: 275,
-      type: 'bar',
+      type: "bar",
       stacked: true,
       toolbar: {
         show: false,
-      }
+      },
     },
     legend: {
       show: true,
-      horizontalAlign: 'left',
-      position: 'top',
-      fontSize: '14px',
+      horizontalAlign: "left",
+      position: "top",
+      fontSize: "14px",
       labels: {
-        colors: '#5D6369',
-      }
+        colors: "#5D6369",
+      },
     },
     plotOptions: {
       bar: {
         horizontal: false,
-        columnWidth: '50%',
-        endingShape: 'rounded'
+        columnWidth: "50%",
+        endingShape: "rounded",
       },
     },
-    colors: ['#3D5EE1', '#E9EDF4'],
+    colors: ["#3D5EE1", "#E9EDF4"],
     dataLabels: {
-      enabled: false
+      enabled: false,
     },
     stroke: {
       show: true,
       width: 2,
-      colors: ['transparent']
+      colors: ["transparent"],
     },
     grid: {
       padding: {
         left: -8,
       },
     },
-    series: [{
-      name: 'Collected Fee',
-      data: [30, 40, 38, 40, 38, 30, 35, 38, 40]
-    }, {
-      name: 'Total Fee',
-      data: [45, 50, 48, 50, 48, 40, 40, 50, 55]
-    }],
+    series: [
+      {
+        name: "Collected Fee",
+        data: [30, 40, 38, 40, 38, 30, 35, 38, 40],
+      },
+      {
+        name: "Total Fee",
+        data: [45, 50, 48, 50, 48, 40, 40, 50, 55],
+      },
+    ],
     xaxis: {
-      categories: ['Q1: 2023', 'Q1: 2023', 'Q1: 2023', 'Q1: 2023', 'Q1: 2023', 'uQ1: 2023l', 'Q1: 2023', 'Q1: 2023', 'Q1: 2023'],
+      categories: [
+        "Q1: 2023",
+        "Q1: 2023",
+        "Q1: 2023",
+        "Q1: 2023",
+        "Q1: 2023",
+        "uQ1: 2023l",
+        "Q1: 2023",
+        "Q1: 2023",
+        "Q1: 2023",
+      ],
     },
     yaxis: {
       tickAmount: 3,
       labels: {
-        offsetX: -15
+        offsetX: -15,
       },
     },
     fill: {
-      opacity: 1
-
+      opacity: 1,
     },
     tooltip: {
       y: {
         formatter: function (val: any) {
-          return "$ " + val + " thousands"
-        }
-      }
-    }
-  })
+          return "$ " + val + " thousands";
+        },
+      },
+    },
+  });
   const [totalEarningArea] = useState<any>({
     chart: {
       height: 90,
-      type: 'area',
+      type: "area",
       toolbar: {
         show: false,
       },
       sparkline: {
-        enabled: true
-      }
+        enabled: true,
+      },
     },
-    colors: ['#3D5EE1'],
+    colors: ["#3D5EE1"],
     dataLabels: {
-      enabled: false
+      enabled: false,
     },
     stroke: {
-      curve: 'straight'
+      curve: "straight",
     },
-    series: [{
-      name: 'Earnings',
-      data: [50, 55, 40, 50, 45, 55, 50]
-    }]
-  })
+    series: [
+      {
+        name: "Earnings",
+        data: [50, 55, 40, 50, 45, 55, 50],
+      },
+    ],
+  });
   const [totalExpenseArea] = useState<any>({
     chart: {
       height: 90,
-      type: 'area',
+      type: "area",
       toolbar: {
         show: false,
       },
       sparkline: {
-        enabled: true
-      }
+        enabled: true,
+      },
     },
-    colors: ['#E82646'],
+    colors: ["#E82646"],
     dataLabels: {
-      enabled: false
+      enabled: false,
     },
     stroke: {
-      curve: 'straight'
+      curve: "straight",
     },
-    series: [{
-      name: 'Expense',
-      data: [40, 30, 60, 55, 50, 55, 40]
-    }]
-  })
+    series: [
+      {
+        name: "Expense",
+        data: [40, 30, 60, 55, 50, 55, 40],
+      },
+    ],
+  });
 
   const routinesData = [
     {
-      teacherName: 'John Doe',
-      month: 'Oct 2024',
-      imageUrl: 'assets/img/teachers/teacher-01.jpg',
+      teacherName: "John Doe",
+      month: "Oct 2024",
+      imageUrl: "assets/img/teachers/teacher-01.jpg",
       progress: 80,
-      progressColor: 'bg-primary',
+      progressColor: "bg-primary",
     },
     {
-      teacherName: 'Jane Smith',
-      month: 'Nov 2024',
-      imageUrl: 'assets/img/teachers/teacher-02.jpg',
+      teacherName: "Jane Smith",
+      month: "Nov 2024",
+      imageUrl: "assets/img/teachers/teacher-02.jpg",
       progress: 75,
-      progressColor: 'bg-warning',
+      progressColor: "bg-warning",
     },
     {
-      teacherName: 'Alex Johnson',
-      month: 'Oct 2024',
-      imageUrl: 'assets/img/teachers/teacher-03.jpg',
+      teacherName: "Alex Johnson",
+      month: "Oct 2024",
+      imageUrl: "assets/img/teachers/teacher-03.jpg",
       progress: 90,
-      progressColor: 'bg-success',
+      progressColor: "bg-success",
     },
   ];
-  
+
   const leaveRequestsData = [
     {
-      id: '1',
-      name: 'James',
-      position: 'Physics Teacher',
-      leaveType: 'Emergency',
-      leaveDates: '12 - 13 May',
-      applyDate: '12 May',
-      avatar: 'assets/img/profiles/avatar-14.jpg',
+      id: "1",
+      name: "James",
+      position: "Physics Teacher",
+      leaveType: "Emergency",
+      leaveDates: "12 - 13 May",
+      applyDate: "12 May",
+      avatar: "assets/img/profiles/avatar-14.jpg",
     },
     {
-      id: '2',
-      name: 'Ramien',
-      position: 'Accountant',
-      leaveType: 'Casual',
-      leaveDates: '12 - 13 May',
-      applyDate: '11 May',
-      avatar: 'assets/img/profiles/avatar-19.jpg',
+      id: "2",
+      name: "Ramien",
+      position: "Accountant",
+      leaveType: "Casual",
+      leaveDates: "12 - 13 May",
+      applyDate: "11 May",
+      avatar: "assets/img/profiles/avatar-19.jpg",
     },
     // Ajoutez d'autres demandes de congés si nécessaire
   ];
 
   const gradesData = {
-    categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep'],
+    categories: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep"],
     series: [
-        {
-            name: 'Notes des Étudiants',
-            data: [10, 41, 35, 51, 49, 62, 69, 91, 148], // Remplacez par les données réelles
-        },
+      {
+        name: "Notes des Étudiants",
+        data: [10, 41, 35, 51, 49, 62, 69, 91, 148], // Remplacez par les données réelles
+      },
     ],
-};
-
+  };
 
   return (
     <>
@@ -411,12 +426,9 @@ const DashboardAdmin = () => {
                 <nav>
                   <ol className="breadcrumb mb-0">
                     <li className="breadcrumb-item">
-                      <Link to='{routes.adminDashboard}'>Dashboard</Link>
+                      <Link to="{routes.adminDashboard}">Dashboard</Link>
                     </li>
-                    <li
-                      className="breadcrumb-item active"
-                      aria-current="page"
-                    >
+                    <li className="breadcrumb-item active" aria-current="page">
                       Admin Dashboard
                     </li>
                   </ol>
@@ -425,7 +437,7 @@ const DashboardAdmin = () => {
               <div className="d-flex my-xl-auto right-content align-items-center flex-wrap">
                 <div className="mb-2">
                   <Link
-                    to='{routes.addStudent}'
+                    to="{routes.addStudent}"
                     className="btn btn-primary d-flex align-items-center me-3"
                   >
                     <i className="ti ti-square-rounded-plus me-2" />
@@ -434,7 +446,7 @@ const DashboardAdmin = () => {
                 </div>
                 <div className="mb-2">
                   <Link
-                    to='{routes.collectFees}'
+                    to="{routes.collectFees}"
                     className="btn btn-light d-flex align-items-center"
                   >
                     Détails des frais
@@ -504,7 +516,7 @@ const DashboardAdmin = () => {
                       <div className="mb-3 mb-xl-0">
                         <div className="d-flex align-items-center flex-wrap mb-2">
                           <h1 className="text-white me-2">
-                          Bienvenue à vous, Mr Herald
+                            Bienvenue à vous, Mr Herald
                           </h1>
                           <Link
                             to="profile"
@@ -513,7 +525,9 @@ const DashboardAdmin = () => {
                             <i className="ti ti-edit text-white" />
                           </Link>
                         </div>
-                        <p className="text-white">Passez une bonne journée au travail</p>
+                        <p className="text-white">
+                          Passez une bonne journée au travail
+                        </p>
                       </div>
                     </div>
                   </div>
@@ -597,7 +611,9 @@ const DashboardAdmin = () => {
                             <i className="ti ti-user-edit text-info fs-20" />
                           </span>
                           <div className="flex-fill">
-                            <h6 className="mb-1">Rencontre parents-professeurs</h6>
+                            <h6 className="mb-1">
+                              Rencontre parents-professeurs
+                            </h6>
                             <p className="d-flex align-items-center">
                               <i className="ti ti-calendar me-1" />
                               15 July 2024
@@ -634,8 +650,89 @@ const DashboardAdmin = () => {
                           </div>
                         </div>
                       </div>
+                      {/* Event Item */}
+                      <div className="border-start border-info border-3 shadow-sm p-3 mb-3">
+                        <div className="d-flex align-items-center mb-3 pb-3 border-bottom">
+                          <span className="avatar p-1 me-2 bg-info-transparent flex-shrink-0">
+                            <i className="ti ti-user-edit fs-20" />
+                          </span>
+                          <div className="flex-fill">
+                            <h6 className="mb-1">Parents, Teacher Meet</h6>
+                            <p className="d-flex align-items-center">
+                              <i className="ti ti-calendar me-1" />
+                              15 July 2024
+                            </p>
+                          </div>
+                        </div>
+                        <div className="d-flex align-items-center justify-content-between">
+                          <p className="mb-0">
+                            <i className="ti ti-clock me-1" />
+                            09:10AM - 10:50PM
+                          </p>
+                          <div className="avatar-list-stacked avatar-group-sm">
+                            <span className="avatar border-0">
+                              <ImageWithBasePath
+                                src="assets/img/parents/parent-05.jpg"
+                                className="rounded-circle"
+                                alt="img"
+                              />
+                            </span>
+                            <span className="avatar border-0">
+                              <ImageWithBasePath
+                                src="assets/img/parents/parent-06.jpg"
+                                className="rounded-circle"
+                                alt="img"
+                              />
+                            </span>
+                            <span className="avatar border-0">
+                              <ImageWithBasePath
+                                src="assets/img/parents/parent-07.jpg"
+                                className="rounded-circle"
+                                alt="img"
+                              />
+                            </span>
+                          </div>
+                        </div>
+                      </div>
                       {/* /Event Item */}
-                      
+                      {/* Event Item */}
+                      <div className="border-start border-danger border-3 shadow-sm p-3 mb-3">
+                        <div className="d-flex align-items-center mb-3 pb-3 border-bottom">
+                          <span className="avatar p-1 me-2 bg-danger-transparent flex-shrink-0">
+                            <i className="ti ti-vacuum-cleaner fs-24" />
+                          </span>
+                          <div className="flex-fill">
+                            <h6 className="mb-1">Vacation Meeting</h6>
+                            <p className="d-flex align-items-center">
+                              <i className="ti ti-calendar me-1" />
+                              07 July 2024 - 07 July 2024
+                            </p>
+                          </div>
+                        </div>
+                        <div className="d-flex align-items-center justify-content-between">
+                          <p className="mb-0">
+                            <i className="ti ti-clock me-1" />
+                            09:10 AM - 10:50 PM
+                          </p>
+                          <div className="avatar-list-stacked avatar-group-sm">
+                            <span className="avatar border-0">
+                              <ImageWithBasePath
+                                src="assets/img/parents/parent-11.jpg"
+                                className="rounded-circle"
+                                alt="img"
+                              />
+                            </span>
+                            <span className="avatar border-0">
+                              <ImageWithBasePath
+                                src="assets/img/parents/parent-13.jpg"
+                                className="rounded-circle"
+                                alt="img"
+                              />
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                      {/* /Event Item */}
                     </div>
                   </div>
                 </div>
@@ -644,7 +741,6 @@ const DashboardAdmin = () => {
 
               {/* Attendance */}
               <div className="col-xxl-4 col-xl-6 col-md-12 d-flex flex-column">
-              
                 <Attendance
                   studentDonutChart={studentDonutChart}
                   teacherDonutChart={teacherDonutChart}
@@ -652,7 +748,10 @@ const DashboardAdmin = () => {
                 />
 
                 {/* student grade */}
-                <StudentGradesChart title="Évolution des Notes des Étudiants" gradesData={gradesData} />
+                <StudentGradesChart
+                  title="Évolution des Notes des Étudiants"
+                  gradesData={gradesData}
+                />
               </div>
               {/* /Attendance */}
               <div className="col-xxl-4 col-md-12 d-flex flex-column">
@@ -741,7 +840,6 @@ const DashboardAdmin = () => {
                       </Slider>
                     </div>
                 </div> */}
-                
                 {/* Class Routine */}
                 {/* <div className="card flex-fill">
                   <div className="card-header d-flex align-items-center justify-content-between">
@@ -825,9 +923,7 @@ const DashboardAdmin = () => {
                     </div>
                   </div>
                 </div> */}
-                <ClassRoutine routines={routinesData} />;
-                {/* /Class Routine */}
-
+                <ClassRoutine routines={routinesData} />;{/* /Class Routine */}
                 {/* Class Wise Performance */}
                 {/* <div className="card flex-fill">
                   <div className="card-header d-flex align-items-center justify-content-between">
@@ -901,23 +997,34 @@ const DashboardAdmin = () => {
                     </div>
                   </div>
                 </div> */}
-                <PerformanceCard className="Class II" performanceData={performanceData} classDonutChart={classDonutChart}/>
+                <PerformanceCard
+                  className="Class II"
+                  performanceData={performanceData}
+                  classDonutChart={classDonutChart}
+                />
                 {/* /Class Wise Performance */}
               </div>
             </div>
             <div className="row">
               {/* Fees Collection */}
-              <FeesCollectionCard title="Recouvrement des frais" feesChartOptions={feesBar.chart} feesChartData={feesBar}/>
+              <FeesCollectionCard
+                title="Recouvrement des frais"
+                feesChartOptions={feesBar.chart}
+                feesChartData={feesBar}
+              />
               {/* /Fees Collection */}
               {/* Leave Requests */}
-              <LeaveRequestCard  title="demande de conger" leaveRequests={leaveRequestsData}/>
+              <LeaveRequestCard
+                title="demande de conger"
+                leaveRequests={leaveRequestsData}
+              />
               {/* /Leave Requests */}
             </div>
             <div className="row">
               {/* Links */}
               <div className="col-xl-3 col-md-6 d-flex">
                 <Link
-                  to='{routes.studentAttendance}'
+                  to="{routes.studentAttendance}"
                   className="card bg-warning-transparent border border-5 border-white animate-card flex-fill"
                 >
                   <div className="card-body">
@@ -943,7 +1050,7 @@ const DashboardAdmin = () => {
               {/* Links */}
               <div className="col-xl-3 col-md-6 d-flex">
                 <Link
-                  to='{routes.events}'
+                  to="{routes.events}"
                   className="card bg-success-transparent border border-5 border-white animate-card flex-fill "
                 >
                   <div className="card-body">
@@ -969,7 +1076,7 @@ const DashboardAdmin = () => {
               {/* Links */}
               <div className="col-xl-3 col-md-6 d-flex">
                 <Link
-                  to='{membershipplan}'
+                  to="{membershipplan}"
                   className="card bg-danger-transparent border border-5 border-white animate-card flex-fill"
                 >
                   <div className="card-body">
@@ -980,7 +1087,7 @@ const DashboardAdmin = () => {
                         </span>
                         <div className="overflow-hidden">
                           <h6 className="fw-semibold text-default">
-                          Formules d'adhésion
+                            Formules d'adhésion
                           </h6>
                         </div>
                       </div>
@@ -995,7 +1102,7 @@ const DashboardAdmin = () => {
               {/* Links */}
               <div className="col-xl-3 col-md-6 d-flex">
                 <Link
-                  to='{routes.studentAttendance}'
+                  to="{routes.studentAttendance}"
                   className="card bg-secondary-transparent border border-5 border-white animate-card flex-fill"
                 >
                   <div className="card-body">
@@ -1006,7 +1113,7 @@ const DashboardAdmin = () => {
                         </span>
                         <div className="overflow-hidden">
                           <h6 className="fw-semibold text-default">
-                              Finances &amp; comptabilité
+                            Finances &amp; comptabilité
                           </h6>
                         </div>
                       </div>
@@ -1066,10 +1173,9 @@ const DashboardAdmin = () => {
                 </div>
               </div>
               {/* /Total Earnings */}
-              
 
               {/* Top Subjects */}
-               <div className="col-xxl-4 col-xl-6 d-flex">
+              <div className="col-xxl-4 col-xl-6 d-flex">
                 <div className="card flex-fill">
                   <div className="card-header  d-flex align-items-center justify-content-between">
                     <h4 className="card-title">Top Matiere</h4>
@@ -1257,7 +1363,6 @@ const DashboardAdmin = () => {
               </div>
               {/* Top Subjects */}
 
-
               {/* Fees Collection */}
               <div className="col-xxl-3 col-xl-6 order-2 order-xxl-3 d-flex flex-column">
                 <div className="card flex-fill mb-2">
@@ -1321,4 +1426,3 @@ const DashboardAdmin = () => {
 };
 
 export default DashboardAdmin;
-
