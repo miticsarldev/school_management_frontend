@@ -5,7 +5,7 @@ const ClassRoutine = ({ routines }: { routines: any[] }) => {
     <div className="card flex-fill">
       {/* En-tête de la carte */}
       <div className="card-header d-flex align-items-center justify-content-between">
-        <h4 className="card-title">Class Routine</h4>
+        <h4 className="card-title">Routine de cours</h4>
         <Link
           to="#"
           className="link-primary fw-medium"
@@ -13,7 +13,7 @@ const ClassRoutine = ({ routines }: { routines: any[] }) => {
           data-bs-target="#add_class_routine"
         >
           <i className="ti ti-square-plus me-1" />
-          Add New
+          Ajouter
         </Link>
       </div>
 

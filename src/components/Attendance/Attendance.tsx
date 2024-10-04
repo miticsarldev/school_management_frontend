@@ -17,7 +17,7 @@ const Attendance: React.FC<AttendanceProps> = ({
   return (
       <div className="card">
         <div className="card-header d-flex align-items-center justify-content-between">
-          <h4 className="card-title">Attendance</h4>
+          <h4 className="card-title">Présence</h4>
           <div className="dropdown">
             <Link
               to="#"
@@ -25,22 +25,22 @@ const Attendance: React.FC<AttendanceProps> = ({
               data-bs-toggle="dropdown"
             >
               <i className="ti ti-calendar-due me-1" />
-              Today
+              Aujourd'hui
             </Link>
             <ul className="dropdown-menu mt-2 p-3">
               <li>
                 <Link to="#" className="dropdown-item rounded-1">
-                  This Week
+                  Cette semaine
                 </Link>
               </li>
               <li>
                 <Link to="#" className="dropdown-item rounded-1">
-                  Last Week
+                  Semaine passer
                 </Link>
               </li>
               <li>
                 <Link to="#" className="dropdown-item rounded-1">
-                  Last Month
+                  mois passer
                 </Link>
               </li>
             </ul>
@@ -56,7 +56,7 @@ const Attendance: React.FC<AttendanceProps> = ({
                   data-bs-toggle="tab"
                   data-bs-target="#students"
                 >
-                  Students
+                  Etudant
                 </Link>
               </li>
               <li>
@@ -65,7 +65,7 @@ const Attendance: React.FC<AttendanceProps> = ({
                   data-bs-toggle="tab"
                   data-bs-target="#teachers"
                 >
-                  Teachers
+                  Professeur
                 </Link>
               </li>
               <li>
@@ -88,7 +88,7 @@ const Attendance: React.FC<AttendanceProps> = ({
                   <div className="card bg-light-300 shadow-none border-0">
                     <div className="card-body p-3 text-center">
                       <h5>28</h5>
-                      <p className="fs-12">Emergency</p>
+                      <p className="fs-12">Urgence</p>
                     </div>
                   </div>
                 </div>
@@ -104,7 +104,7 @@ const Attendance: React.FC<AttendanceProps> = ({
                   <div className="card bg-light-300 shadow-none border-0">
                     <div className="card-body p-3 text-center">
                       <h5>01</h5>
-                      <p className="fs-12">Late</p>
+                      <p className="fs-12">Retard</p>
                     </div>
                   </div>
                 </div>
@@ -132,7 +132,7 @@ const Attendance: React.FC<AttendanceProps> = ({
                   <div className="card bg-light-300 shadow-none border-0">
                     <div className="card-body p-3 text-center">
                       <h5>30</h5>
-                      <p className="fs-12">Emergency</p>
+                      <p className="fs-12">Urgence</p>
                     </div>
                   </div>
                 </div>
@@ -148,7 +148,7 @@ const Attendance: React.FC<AttendanceProps> = ({
                   <div className="card bg-light-300 shadow-none border-0">
                     <div className="card-body p-3 text-center">
                       <h5>03</h5>
-                      <p className="fs-12">Late</p>
+                      <p className="fs-12">Retard</p>
                     </div>
                   </div>
                 </div>
@@ -176,7 +176,7 @@ const Attendance: React.FC<AttendanceProps> = ({
                   <div className="card bg-light-300 shadow-none border-0">
                     <div className="card-body p-3 text-center">
                       <h5>45</h5>
-                      <p className="fs-12">Emergency</p>
+                      <p className="fs-12">Urgence</p>
                     </div>
                   </div>
                 </div>
@@ -192,7 +192,7 @@ const Attendance: React.FC<AttendanceProps> = ({
                   <div className="card bg-light-300 shadow-none border-0">
                     <div className="card-body p-3 text-center">
                       <h5>10</h5>
-                      <p className="fs-12">Late</p>
+                      <p className="fs-12">Retard</p>
                     </div>
                   </div>
                 </div>

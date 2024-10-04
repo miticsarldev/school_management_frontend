@@ -39,21 +39,21 @@ const PerformanceCard = ({ className, performanceData, classDonutChart }: {
             <div className="border border-dashed p-3 rounded d-flex align-items-center justify-content-between mb-1">
               <p className="mb-0 me-2">
                 <i className="ti ti-arrow-badge-down-filled me-2 text-primary" />
-                Top
+                Bon
               </p>
               <h5>{performanceData.top}</h5>
             </div>
             <div className="border border-dashed p-3 rounded d-flex align-items-center justify-content-between mb-1">
               <p className="mb-0 me-2">
                 <i className="ti ti-arrow-badge-down-filled me-2 text-warning" />
-                Average
+                Moyenne
               </p>
               <h5>{performanceData.average}</h5>
             </div>
             <div className="border border-dashed p-3 rounded d-flex align-items-center justify-content-between mb-0">
               <p className="mb-0 me-2">
                 <i className="ti ti-arrow-badge-down-filled me-2 text-danger" />
-                Below Avg
+                En dessous de la moyenne
               </p>
               <h5>{performanceData.belowAvg}</h5>
             </div>

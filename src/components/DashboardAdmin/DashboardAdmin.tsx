@@ -1,10 +1,8 @@
 import { useState } from "react";
 import ReactApexChart from "react-apexcharts";
 import { Link } from "react-router-dom";
-import CountUp from "react-countup";
 import { Calendar } from "primereact/calendar";
 import { Nullable } from "primereact/ts-helpers";
-import Slider from "react-slick";
 import "bootstrap-daterangepicker/daterangepicker.css";
 import ImageWithBasePath from "../ImageWithBasePath/ImageWithBasePath";
 import "slick-carousel/slick/slick.css";
@@ -431,7 +429,7 @@ const DashboardAdmin = () => {
                     className="btn btn-primary d-flex align-items-center me-3"
                   >
                     <i className="ti ti-square-rounded-plus me-2" />
-                    Add New Student
+                    Ajouter Etudiant
                   </Link>
                 </div>
                 <div className="mb-2">
@@ -439,7 +437,7 @@ const DashboardAdmin = () => {
                     to='{routes.collectFees}'
                     className="btn btn-light d-flex align-items-center"
                   >
-                    Fees Details
+                    Détails des frais
                   </Link>
                 </div>
               </div>
@@ -447,7 +445,7 @@ const DashboardAdmin = () => {
             {/* /Page Header */}
             <div className="row">
               <div className="col-md-12">
-                <div className="alert-message">
+                {/* <div className="alert-message">
                   <div
                     className="alert alert-success rounded-pill d-flex align-items-center justify-content-between border-success mb-4"
                     role="alert"
@@ -476,7 +474,7 @@ const DashboardAdmin = () => {
                       </span>
                     </button>
                   </div>
-                </div>
+                </div> */}
                 {/* Dashboard Content */}
                 <div className="card bg-dark">
                   <div className="overlay-img">
@@ -506,7 +504,7 @@ const DashboardAdmin = () => {
                       <div className="mb-3 mb-xl-0">
                         <div className="d-flex align-items-center flex-wrap mb-2">
                           <h1 className="text-white me-2">
-                            Welcome Back, Mr. Herald
+                          Bienvenue à vous, Mr Herald
                           </h1>
                           <Link
                             to="profile"
@@ -515,12 +513,8 @@ const DashboardAdmin = () => {
                             <i className="ti ti-edit text-white" />
                           </Link>
                         </div>
-                        <p className="text-white">Have a Good day at work</p>
+                        <p className="text-white">Passez une bonne journée au travail</p>
                       </div>
-                      <p className="text-white custom-text-white">
-                        <i className="ti ti-refresh me-1" />
-                        Updated Recently on 15 Jun 2024
-                      </p>
                     </div>
                   </div>
                 </div>
@@ -594,7 +588,7 @@ const DashboardAdmin = () => {
                       onChange={(e) => setDate(e.value)}
                       inline
                     />
-                    <h5 className="mb-3">Upcoming Events</h5>
+                    <h5 className="mb-3">Événements à venir</h5>
                     <div className="event-wrapper event-scroll">
                       {/* Event Item */}
                       <div className="border-start border-skyblue border-3 shadow-sm p-3 mb-3">
@@ -603,7 +597,7 @@ const DashboardAdmin = () => {
                             <i className="ti ti-user-edit text-info fs-20" />
                           </span>
                           <div className="flex-fill">
-                            <h6 className="mb-1">Parents, Teacher Meet</h6>
+                            <h6 className="mb-1">Rencontre parents-professeurs</h6>
                             <p className="d-flex align-items-center">
                               <i className="ti ti-calendar me-1" />
                               15 July 2024
@@ -641,89 +635,7 @@ const DashboardAdmin = () => {
                         </div>
                       </div>
                       {/* /Event Item */}
-                      {/* Event Item */}
-                      <div className="border-start border-info border-3 shadow-sm p-3 mb-3">
-                        <div className="d-flex align-items-center mb-3 pb-3 border-bottom">
-                          <span className="avatar p-1 me-2 bg-info-transparent flex-shrink-0">
-                            <i className="ti ti-user-edit fs-20" />
-                          </span>
-                          <div className="flex-fill">
-                            <h6 className="mb-1">Parents, Teacher Meet</h6>
-                            <p className="d-flex align-items-center">
-                              <i className="ti ti-calendar me-1" />
-                              15 July 2024
-                            </p>
-                          </div>
-                        </div>
-                        <div className="d-flex align-items-center justify-content-between">
-                          <p className="mb-0">
-                            <i className="ti ti-clock me-1" />
-                            09:10AM - 10:50PM
-                          </p>
-                          <div className="avatar-list-stacked avatar-group-sm">
-                            <span className="avatar border-0">
-                              <ImageWithBasePath
-                                src="assets/img/parents/parent-05.jpg"
-                                className="rounded-circle"
-                                alt="img"
-                              />
-                            </span>
-                            <span className="avatar border-0">
-                              <ImageWithBasePath
-                                src="assets/img/parents/parent-06.jpg"
-                                className="rounded-circle"
-                                alt="img"
-                              />
-                            </span>
-                            <span className="avatar border-0">
-                              <ImageWithBasePath
-                                src="assets/img/parents/parent-07.jpg"
-                                className="rounded-circle"
-                                alt="img"
-                              />
-                            </span>
-                          </div>
-                        </div>
-                      </div>
-                      {/* /Event Item */}
-                      {/* Event Item */}
-                      <div className="border-start border-danger border-3 shadow-sm p-3 mb-3">
-                        <div className="d-flex align-items-center mb-3 pb-3 border-bottom">
-                          <span className="avatar p-1 me-2 bg-danger-transparent flex-shrink-0">
-                            <i className="ti ti-vacuum-cleaner fs-24" />
-                          </span>
-                          <div className="flex-fill">
-                            <h6 className="mb-1">Vacation Meeting</h6>
-                            <p className="d-flex align-items-center">
-                              <i className="ti ti-calendar me-1" />
-                              07 July 2024 - 07 July 2024
-                            </p>
-                          </div>
-                        </div>
-                        <div className="d-flex align-items-center justify-content-between">
-                          <p className="mb-0">
-                            <i className="ti ti-clock me-1" />
-                            09:10 AM - 10:50 PM
-                          </p>
-                          <div className="avatar-list-stacked avatar-group-sm">
-                            <span className="avatar border-0">
-                              <ImageWithBasePath
-                                src="assets/img/parents/parent-11.jpg"
-                                className="rounded-circle"
-                                alt="img"
-                              />
-                            </span>
-                            <span className="avatar border-0">
-                              <ImageWithBasePath
-                                src="assets/img/parents/parent-13.jpg"
-                                className="rounded-circle"
-                                alt="img"
-                              />
-                            </span>
-                          </div>
-                        </div>
-                      </div>
-                      {/* /Event Item */}
+                      
                     </div>
                   </div>
                 </div>
@@ -1016,7 +928,7 @@ const DashboardAdmin = () => {
                         </span>
                         <div className="overflow-hidden">
                           <h6 className="fw-semibold text-default">
-                            View Attendance
+                            Voir presence
                           </h6>
                         </div>
                       </div>
@@ -1042,7 +954,7 @@ const DashboardAdmin = () => {
                         </span>
                         <div className="overflow-hidden">
                           <h6 className="fw-semibold text-default">
-                            New Events
+                            Nouvel evenement
                           </h6>
                         </div>
                       </div>
@@ -1068,7 +980,7 @@ const DashboardAdmin = () => {
                         </span>
                         <div className="overflow-hidden">
                           <h6 className="fw-semibold text-default">
-                            Membership Plans
+                          Formules d'adhésion
                           </h6>
                         </div>
                       </div>
@@ -1094,7 +1006,7 @@ const DashboardAdmin = () => {
                         </span>
                         <div className="overflow-hidden">
                           <h6 className="fw-semibold text-default">
-                            Finance &amp; Accounts
+                              Finances &amp; comptabilité
                           </h6>
                         </div>
                       </div>
@@ -1114,7 +1026,7 @@ const DashboardAdmin = () => {
                   <div className="card-body">
                     <div className="d-flex align-items-center justify-content-between">
                       <div>
-                        <h6 className="mb-1">Total Earnings</h6>
+                        <h6 className="mb-1">Bénéfice total</h6>
                         <h2>$64,522,24</h2>
                       </div>
                       <span className="avatar avatar-lg bg-primary">
@@ -1135,7 +1047,7 @@ const DashboardAdmin = () => {
                   <div className="card-body">
                     <div className="d-flex align-items-center justify-content-between">
                       <div>
-                        <h6 className="mb-1">Total Expenses</h6>
+                        <h6 className="mb-1">Dépenses totales</h6>
                         <h2>$60,522,24</h2>
                       </div>
                       <span className="avatar avatar-lg bg-danger">
@@ -1160,7 +1072,7 @@ const DashboardAdmin = () => {
                <div className="col-xxl-4 col-xl-6 d-flex">
                 <div className="card flex-fill">
                   <div className="card-header  d-flex align-items-center justify-content-between">
-                    <h4 className="card-title">Top Subjects</h4>
+                    <h4 className="card-title">Top Matiere</h4>
                     <div className="dropdown">
                       <Link
                         to="#"
@@ -1350,7 +1262,7 @@ const DashboardAdmin = () => {
               <div className="col-xxl-3 col-xl-6 order-2 order-xxl-3 d-flex flex-column">
                 <div className="card flex-fill mb-2">
                   <div className="card-body">
-                    <p className="mb-2">Total Fees Collected</p>
+                    <p className="mb-2">Total des frais perçus</p>
                     <div className="d-flex align-items-end justify-content-between">
                       <h4>$25,000,02</h4>
                       <span className="badge badge-soft-success">
@@ -1362,7 +1274,7 @@ const DashboardAdmin = () => {
                 </div>
                 <div className="card flex-fill mb-2">
                   <div className="card-body">
-                    <p className="mb-2">Fine Collected till date</p>
+                    <p className="mb-2">Frais perçue à ce jour</p>
                     <div className="d-flex align-items-end justify-content-between">
                       <h4>$4,56,64</h4>
                       <span className="badge badge-soft-danger">
@@ -1374,7 +1286,7 @@ const DashboardAdmin = () => {
                 </div>
                 <div className="card flex-fill mb-2">
                   <div className="card-body">
-                    <p className="mb-2">Student Not Paid</p>
+                    <p className="mb-2">Étudiant non payé</p>
                     <div className="d-flex align-items-end justify-content-between">
                       <h4>$545</h4>
                       <span className="badge badge-soft-info">
@@ -1386,7 +1298,7 @@ const DashboardAdmin = () => {
                 </div>
                 <div className="card flex-fill mb-4">
                   <div className="card-body">
-                    <p className="mb-2">Total Outstanding</p>
+                    <p className="mb-2">Total des encours</p>
                     <div className="d-flex align-items-end justify-content-between">
                       <h4>$4,56,64</h4>
                       <span className="badge badge-soft-danger">
