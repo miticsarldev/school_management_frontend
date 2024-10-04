@@ -15,7 +15,16 @@ import DashboardAdmin from "./components/DashboardAdmin";
 import DashboardEnseignant from "./components/DashboardEnseignant";
 import DashboardEtudiant from "./components/DashboardEtudiant";
 import CompanyPage from "./components/CompanyPageSass/CompanyPage";
-
+import "../style/css/feather.css";
+import "../index.scss";
+import "../style/icon/boxicons/boxicons/css/boxicons.min.css";
+import "../style/icon/weather/weathericons.css";
+import "../style/icon/typicons/typicons.css";
+import "../style/icon/fontawesome/css/fontawesome.min.css";
+import "../style/icon/fontawesome/css/all.min.css";
+import "../style/icon/ionic/ionicons.css";
+import "../style/icon/tabler-icons/webfont/tabler-icons.css";
+import "../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js";
 function App() {
   return (
     <Provider store={store}>
