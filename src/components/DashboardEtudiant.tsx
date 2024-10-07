@@ -1394,7 +1394,7 @@ const EtudiantDasboard = () => {
             </div>
             {/* /Exam Result */}
            {/* Notice Board */}
-           <div className="col-xxl-4 col-xl-6 d-flex">
+           <div className="col-xxl-4 col-xl-5 d-flex">
               <div className="card flex-fill">
                 <div className="card-header  d-flex align-items-center justify-content-between">
                   <h4 className="card-title">Notice Board</h4>
