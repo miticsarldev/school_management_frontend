@@ -27,6 +27,12 @@ import '../src/style/icon/fontawesome/css/all.min.css';
 import '../src/style/icon/ionic/ionicons.css';
 import '../src/style/icon/tabler-icons/webfont/tabler-icons.min.css';
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
+import CollectFees  from "./components/feesCollection/CollectFees";
+import StudentGrid from "./components/student/studentGrid/StudentGrid";
+import StudentList from "./components/student/StudentList/StudentList";
+import StudentDetails from "./components/student/student-details/studentDetails";
+import StudentPromotion from "./components/student/studentPromotion/StudentPromotion";
+
 
 
 
@@ -79,6 +85,14 @@ function App() {
                   element={
                     <RequireAuth>
                       <DashboardEtudiant />
+                    </RequireAuth>
+                  }
+                />
+                <Route
+                  path="/dashboard/collect-fees"
+                  element={
+                    <RequireAuth>
+                      <CollectFees />
                     </RequireAuth>
                   }
                 />
