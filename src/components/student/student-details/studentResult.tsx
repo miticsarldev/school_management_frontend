@@ -1,17 +1,24 @@
-import React from "react";
+
 import { Link } from "react-router-dom";
-import { all_routes } from "../../../router/all_routes";
-import StudentModals from "../studentModals";
+import StudentModals from "../studentModals/StudentModals";
 import StudentSidebar from "./studentSidebar";
 import StudentBreadcrumb from "./studentBreadcrumb";
+import ProfilNav from "./ProfilNav";
 
 const StudentResult = () => {
-  const routes = all_routes;
+
+  const routes = [
+    { path: '/dashboard/studentDetails', label: 'Student Details', icon: 'ti-school' },
+    { path: '/dashboard/studentTimeTable', label: 'Time Table', icon: 'ti-table-options' },
+    { path: '/dashboard/studentLeaves', label: 'Leave & Attendance', icon: 'ti-calendar-due' },
+    { path: '/dashboard/studentFees', label: 'Fees', icon: 'ti-report-money' },
+    { path: '/dashboard/studentResult', label: 'Exam & Results', icon: 'ti-bookmark-edit' },
+  ];
 
   return (
     <>
       {/* Page Wrapper */}
-      <div className="page-wrapper">
+      <div className="">
         <div className="content">
           <div className="row">
             {/* Page Header */}
@@ -26,47 +33,7 @@ const StudentResult = () => {
               <div className="row">
                 <div className="col-md-12">
                   {/* List */}
-                  <ul className="nav nav-tabs nav-tabs-bottom mb-4">
-                    <li>
-                      <Link to={routes.studentDetail} className="nav-link">
-                        <i className="ti ti-school me-2" />
-                        Student Details
-                      </Link>
-                    </li>
-                    <li>
-                      <Link to={routes.studentTimeTable} className="nav-link">
-                        <i className="ti ti-table-options me-2" />
-                        Time Table
-                      </Link>
-                    </li>
-                    <li>
-                      <Link to={routes.studentLeaves} className="nav-link ">
-                        <i className="ti ti-calendar-due me-2" />
-                        Leave &amp; Attendance
-                      </Link>
-                    </li>
-                    <li>
-                      <Link to={routes.studentFees} className="nav-link ">
-                        <i className="ti ti-report-money me-2" />
-                        Fees
-                      </Link>
-                    </li>
-                    <li>
-                      <Link
-                        to={routes.studentResult}
-                        className="nav-link active"
-                      >
-                        <i className="ti ti-bookmark-edit me-2" />
-                        Exam &amp; Results
-                      </Link>
-                    </li>
-                    <li>
-                      <Link to={routes.studentLibrary} className="nav-link">
-                        <i className="ti ti-books me-2" />
-                        Library
-                      </Link>
-                    </li>
-                  </ul>
+                  <ProfilNav routes={routes} />
                   {/* /List */}
                   <div className="card">
                     <div className="card-header d-flex align-items-center justify-content-between flex-wrap pb-0">

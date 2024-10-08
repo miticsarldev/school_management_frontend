@@ -1,17 +1,227 @@
-import React from "react";
 import { Link } from "react-router-dom";
-import ImageWithBasePath from "../../../../core/common/imageWithBasePath";
-import { all_routes } from "../../../router/all_routes";
-import StudentModals from "../studentModals";
+import StudentModals from "../studentModals/StudentModals";
 import StudentSidebar from "./studentSidebar";
 import StudentBreadcrumb from "./studentBreadcrumb";
-import Table from "../../../../core/common/dataTable/index";
-import { TableData } from "../../../../core/data/interface";
-import { leaveData } from "../../../../core/data/json/leaveData";
-import { Attendance } from "../../../../core/data/json/attendance";
+import Table from "../Datatable/index";
+import { TableData } from "../data/interface/index";
+import ProfilNav from "./ProfilNav";
 
 const StudentLeaves = () => {
-  const routes = all_routes;
+
+  const leaveData = [
+    {
+      key: "1",
+      leaveType: "Medical Leave",
+      leaveDate: "05 May 2024 - 09 May 2024",
+      noOfDays: "5",
+      appliedOn: "05 May 2024",
+      status: "Approved"
+    },
+    {
+      key: "2",
+      leaveType: "Casual Leave",
+      leaveDate: "07 May 2024 - 07 May 2024",
+      noOfDays: "1",
+      appliedOn: "07 May 2024",
+      status: "Approved"
+    },
+    {
+      key: "3",
+      leaveType: "Special Leave",
+      leaveDate: "09 May 2024 - 09 May 2024",
+      noOfDays: "1",
+      appliedOn: "09 May 2024",
+      status: "Pending"
+    },
+    {
+      key: "4",
+      leaveType: "Casual Leave",
+      leaveDate: "08 May 2024 - 08 May 2024",
+      noOfDays: "1",
+      appliedOn: "04 May 2024",
+      status: "Approved"
+    },
+    {
+      key: "5",
+      leaveType: "Medical Leave",
+      leaveDate: "08 May 2024 - 11 May 2024",
+      noOfDays: "4",
+      appliedOn: "08 May 2024",
+      status: "Pending"
+    },
+    {
+      key: "6",
+      leaveType: "Casual Leave",
+      leaveDate: "20 May 2024 - 20 May 2024",
+      noOfDays: "1",
+      appliedOn: "19 May 2024",
+      status: "Pending"
+    }
+  ];
+
+  const Attendance = [
+    {
+      key: "1",
+      date: "01",
+      jan: "1",
+      feb: "1",
+      mar: "1",
+      apr: "1",
+      may: "2",
+      jun: "3",
+      jul: "4",
+      aug: "5",
+      sep: "1",
+      oct: "1",
+      nov: "1",
+      dec: "1",
+
+    },
+    {
+      key: "2",
+      date: "02",
+      jan: "1",
+      feb: "1",
+      mar: "1",
+      apr: "1",
+      may: "1",
+      jun: "2",
+      jul: "3",
+      aug: "5",
+      sep: "5",
+      oct: "1",
+      nov: "3",
+      dec: "1",
+
+    },
+    {
+      key: "3",
+      date: "03",
+      jan: "1",
+      feb: "1",
+      mar: "1",
+      apr: "1",
+      may: "1",
+      jun: "2",
+      jul: "3",
+      aug: "1",
+      sep: "1",
+      oct: "1",
+      nov: "3",
+      dec: "1",
+
+    },
+    {
+      key: "4",
+      date: "04",
+      jan: "1",
+      feb: "1",
+      mar: "1",
+      apr: "1",
+      may: "1",
+      jun: "1",
+      jul: "1",
+      aug: "1",
+      sep: "5",
+      oct: "1",
+      nov: "3",
+      dec: "1",
+
+    },
+    {
+      key: "6",
+      date: "06",
+      jan: "5",
+      feb: "4",
+      mar: "1",
+      apr: "1",
+      may: "1",
+      jun: "1",
+      jul: "1",
+      aug: "1",
+      sep: "1",
+      oct: "1",
+      nov: "3",
+      dec: "1",
+
+    },
+    {
+      key: "7",
+      date: "07",
+      jan: "1",
+      feb: "3",
+      mar: "1",
+      apr: "5",
+      may: "1",
+      jun: "2",
+      jul: "3",
+      aug: "1",
+      sep: "3",
+      oct: "1",
+      nov: "3",
+      dec: "1",
+
+    }, {
+      key: "8",
+      date: "08",
+      jan: "1",
+      feb: "1",
+      mar: "1",
+      apr: "1",
+      may: "2",
+      jun: "3",
+      jul: "4",
+      aug: "5",
+      sep: "1",
+      oct: "1",
+      nov: "1",
+      dec: "1",
+
+    },
+    {
+      key: "9",
+      date: "09",
+      jan: "1",
+      feb: "1",
+      mar: "1",
+      apr: "1",
+      may: "1",
+      jun: "2",
+      jul: "3",
+      aug: "5",
+      sep: "5",
+      oct: "1",
+      nov: "3",
+      dec: "1",
+
+    },
+    {
+      key: "10",
+      date: "10",
+      jan: "1",
+      feb: "1",
+      mar: "1",
+      apr: "1",
+      may: "1",
+      jun: "2",
+      jul: "3",
+      aug: "1",
+      sep: "1",
+      oct: "1",
+      nov: "3",
+      dec: "1",
+
+    },
+  ]
+
+  const routes = [
+    { path: '/dashboard/studentDetails', label: 'Student Details', icon: 'ti-school' },
+    { path: '/dashboard/studentTimeTable', label: 'Time Table', icon: 'ti-table-options' },
+    { path: '/dashboard/studentLeaves', label: 'Leave & Attendance', icon: 'ti-calendar-due' },
+    { path: '/dashboard/studentFees', label: 'Fees', icon: 'ti-report-money' },
+    { path: '/dashboard/studentResult', label: 'Exam & Results', icon: 'ti-bookmark-edit' },
+  ];
+
   const data = leaveData;
   const data2 = Attendance;
   const columns = [
@@ -87,230 +297,230 @@ const StudentLeaves = () => {
       sorter: (a: TableData, b: TableData) => a.jan.length - b.jan.length,
     },
     {
-        title: "feb",
-        dataIndex: "feb",
-        render: (text: string) => (
-          <>
-            {text === "1" ? (
-              <span className="attendance-range bg-success"></span>
-            ) : text === "2" ? (
-              <span className="attendance-range bg-pending"></span>
-            ) : text === "3" ? (
-              <span className="attendance-range bg-dark"></span>
-            ) : text === "4" ? (
-              <span className="attendance-range bg-danger"></span>
-            ) : (
-              <span className="attendance-range bg-info"></span>
-            )}
-          </>
-        ),
-        sorter: (a: TableData, b: TableData) => a.feb.length - b.feb.length,
-      },
-      {
-        title: "mar",
-        dataIndex: "mar",
-        render: (text: string) => (
-          <>
-            {text === "1" ? (
-              <span className="attendance-range bg-success"></span>
-            ) : text === "2" ? (
-              <span className="attendance-range bg-pending"></span>
-            ) : text === "3" ? (
-              <span className="attendance-range bg-dark"></span>
-            ) : text === "4" ? (
-              <span className="attendance-range bg-danger"></span>
-            ) : (
-              <span className="attendance-range bg-info"></span>
-            )}
-          </>
-        ),
-        sorter: (a: TableData, b: TableData) => a.mar.length - b.mar.length,
-      },
-      {
-        title: "apr",
-        dataIndex: "apr",
-        render: (text: string) => (
-          <>
-            {text === "1" ? (
-              <span className="attendance-range bg-success"></span>
-            ) : text === "2" ? (
-              <span className="attendance-range bg-pending"></span>
-            ) : text === "3" ? (
-              <span className="attendance-range bg-dark"></span>
-            ) : text === "4" ? (
-              <span className="attendance-range bg-danger"></span>
-            ) : (
-              <span className="attendance-range bg-info"></span>
-            )}
-          </>
-        ),
-        sorter: (a: TableData, b: TableData) => a.apr.length - b.apr.length,
-      },
-      {
-        title: "may",
-        dataIndex: "may",
-        render: (text: string) => (
-          <>
-            {text === "1" ? (
-              <span className="attendance-range bg-success"></span>
-            ) : text === "2" ? (
-              <span className="attendance-range bg-pending"></span>
-            ) : text === "3" ? (
-              <span className="attendance-range bg-dark"></span>
-            ) : text === "4" ? (
-              <span className="attendance-range bg-danger"></span>
-            ) : (
-              <span className="attendance-range bg-info"></span>
-            )}
-          </>
-        ),
-        sorter: (a: TableData, b: TableData) => a.may.length - b.may.length,
-      },
-      {
-        title: "jun",
-        dataIndex: "jun",
-        render: (text: string) => (
-          <>
-            {text === "1" ? (
-              <span className="attendance-range bg-success"></span>
-            ) : text === "2" ? (
-              <span className="attendance-range bg-pending"></span>
-            ) : text === "3" ? (
-              <span className="attendance-range bg-dark"></span>
-            ) : text === "4" ? (
-              <span className="attendance-range bg-danger"></span>
-            ) : (
-              <span className="attendance-range bg-info"></span>
-            )}
-          </>
-        ),
-        sorter: (a: TableData, b: TableData) => a.jun.length - b.jun.length,
-      },
-      {
-        title: "jul",
-        dataIndex: "jul",
-        render: (text: string) => (
-          <>
-            {text === "1" ? (
-              <span className="attendance-range bg-success"></span>
-            ) : text === "2" ? (
-              <span className="attendance-range bg-pending"></span>
-            ) : text === "3" ? (
-              <span className="attendance-range bg-dark"></span>
-            ) : text === "4" ? (
-              <span className="attendance-range bg-danger"></span>
-            ) : (
-              <span className="attendance-range bg-info"></span>
-            )}
-          </>
-        ),
-        sorter: (a: TableData, b: TableData) => a.jul.length - b.jul.length,
-      },
-      {
-        title: "aug",
-        dataIndex: "aug",
-        render: (text: string) => (
-          <>
-            {text === "1" ? (
-              <span className="attendance-range bg-success"></span>
-            ) : text === "2" ? (
-              <span className="attendance-range bg-pending"></span>
-            ) : text === "3" ? (
-              <span className="attendance-range bg-dark"></span>
-            ) : text === "4" ? (
-              <span className="attendance-range bg-danger"></span>
-            ) : (
-              <span className="attendance-range bg-info"></span>
-            )}
-          </>
-        ),
-        sorter: (a: TableData, b: TableData) => a.aug.length - b.aug.length,
-      },
-      {
-        title: "sep",
-        dataIndex: "sep",
-        render: (text: string) => (
-          <>
-            {text === "1" ? (
-              <span className="attendance-range bg-success"></span>
-            ) : text === "2" ? (
-              <span className="attendance-range bg-pending"></span>
-            ) : text === "3" ? (
-              <span className="attendance-range bg-dark"></span>
-            ) : text === "4" ? (
-              <span className="attendance-range bg-danger"></span>
-            ) : (
-              <span className="attendance-range bg-info"></span>
-            )}
-          </>
-        ),
-        sorter: (a: TableData, b: TableData) => a.sep.length - b.sep.length,
-      },
-      {
-        title: "oct",
-        dataIndex: "oct",
-        render: (text: string) => (
-          <>
-            {text === "1" ? (
-              <span className="attendance-range bg-success"></span>
-            ) : text === "2" ? (
-              <span className="attendance-range bg-pending"></span>
-            ) : text === "3" ? (
-              <span className="attendance-range bg-dark"></span>
-            ) : text === "4" ? (
-              <span className="attendance-range bg-danger"></span>
-            ) : (
-              <span className="attendance-range bg-info"></span>
-            )}
-          </>
-        ),
-        sorter: (a: TableData, b: TableData) => a.oct.length - b.oct.length,
-      },
-      {
-        title: "nov",
-        dataIndex: "nov",
-        render: (text: string) => (
-          <>
-            {text === "1" ? (
-              <span className="attendance-range bg-success"></span>
-            ) : text === "2" ? (
-              <span className="attendance-range bg-pending"></span>
-            ) : text === "3" ? (
-              <span className="attendance-range bg-dark"></span>
-            ) : text === "4" ? (
-              <span className="attendance-range bg-danger"></span>
-            ) : (
-              <span className="attendance-range bg-info"></span>
-            )}
-          </>
-        ),
-        sorter: (a: TableData, b: TableData) => a.nov.length - b.nov.length,
-      },
-      {
-        title: "dec",
-        dataIndex: "dec",
-        render: (text: string) => (
-          <>
-            {text === "1" ? (
-              <span className="attendance-range bg-success"></span>
-            ) : text === "2" ? (
-              <span className="attendance-range bg-pending"></span>
-            ) : text === "3" ? (
-              <span className="attendance-range bg-dark"></span>
-            ) : text === "4" ? (
-              <span className="attendance-range bg-danger"></span>
-            ) : (
-              <span className="attendance-range bg-info"></span>
-            )}
-          </>
-        ),
-        sorter: (a: TableData, b: TableData) => a.dec.length - b.dec.length,
-      },
+      title: "feb",
+      dataIndex: "feb",
+      render: (text: string) => (
+        <>
+          {text === "1" ? (
+            <span className="attendance-range bg-success"></span>
+          ) : text === "2" ? (
+            <span className="attendance-range bg-pending"></span>
+          ) : text === "3" ? (
+            <span className="attendance-range bg-dark"></span>
+          ) : text === "4" ? (
+            <span className="attendance-range bg-danger"></span>
+          ) : (
+            <span className="attendance-range bg-info"></span>
+          )}
+        </>
+      ),
+      sorter: (a: TableData, b: TableData) => a.feb.length - b.feb.length,
+    },
+    {
+      title: "mar",
+      dataIndex: "mar",
+      render: (text: string) => (
+        <>
+          {text === "1" ? (
+            <span className="attendance-range bg-success"></span>
+          ) : text === "2" ? (
+            <span className="attendance-range bg-pending"></span>
+          ) : text === "3" ? (
+            <span className="attendance-range bg-dark"></span>
+          ) : text === "4" ? (
+            <span className="attendance-range bg-danger"></span>
+          ) : (
+            <span className="attendance-range bg-info"></span>
+          )}
+        </>
+      ),
+      sorter: (a: TableData, b: TableData) => a.mar.length - b.mar.length,
+    },
+    {
+      title: "apr",
+      dataIndex: "apr",
+      render: (text: string) => (
+        <>
+          {text === "1" ? (
+            <span className="attendance-range bg-success"></span>
+          ) : text === "2" ? (
+            <span className="attendance-range bg-pending"></span>
+          ) : text === "3" ? (
+            <span className="attendance-range bg-dark"></span>
+          ) : text === "4" ? (
+            <span className="attendance-range bg-danger"></span>
+          ) : (
+            <span className="attendance-range bg-info"></span>
+          )}
+        </>
+      ),
+      sorter: (a: TableData, b: TableData) => a.apr.length - b.apr.length,
+    },
+    {
+      title: "may",
+      dataIndex: "may",
+      render: (text: string) => (
+        <>
+          {text === "1" ? (
+            <span className="attendance-range bg-success"></span>
+          ) : text === "2" ? (
+            <span className="attendance-range bg-pending"></span>
+          ) : text === "3" ? (
+            <span className="attendance-range bg-dark"></span>
+          ) : text === "4" ? (
+            <span className="attendance-range bg-danger"></span>
+          ) : (
+            <span className="attendance-range bg-info"></span>
+          )}
+        </>
+      ),
+      sorter: (a: TableData, b: TableData) => a.may.length - b.may.length,
+    },
+    {
+      title: "jun",
+      dataIndex: "jun",
+      render: (text: string) => (
+        <>
+          {text === "1" ? (
+            <span className="attendance-range bg-success"></span>
+          ) : text === "2" ? (
+            <span className="attendance-range bg-pending"></span>
+          ) : text === "3" ? (
+            <span className="attendance-range bg-dark"></span>
+          ) : text === "4" ? (
+            <span className="attendance-range bg-danger"></span>
+          ) : (
+            <span className="attendance-range bg-info"></span>
+          )}
+        </>
+      ),
+      sorter: (a: TableData, b: TableData) => a.jun.length - b.jun.length,
+    },
+    {
+      title: "jul",
+      dataIndex: "jul",
+      render: (text: string) => (
+        <>
+          {text === "1" ? (
+            <span className="attendance-range bg-success"></span>
+          ) : text === "2" ? (
+            <span className="attendance-range bg-pending"></span>
+          ) : text === "3" ? (
+            <span className="attendance-range bg-dark"></span>
+          ) : text === "4" ? (
+            <span className="attendance-range bg-danger"></span>
+          ) : (
+            <span className="attendance-range bg-info"></span>
+          )}
+        </>
+      ),
+      sorter: (a: TableData, b: TableData) => a.jul.length - b.jul.length,
+    },
+    {
+      title: "aug",
+      dataIndex: "aug",
+      render: (text: string) => (
+        <>
+          {text === "1" ? (
+            <span className="attendance-range bg-success"></span>
+          ) : text === "2" ? (
+            <span className="attendance-range bg-pending"></span>
+          ) : text === "3" ? (
+            <span className="attendance-range bg-dark"></span>
+          ) : text === "4" ? (
+            <span className="attendance-range bg-danger"></span>
+          ) : (
+            <span className="attendance-range bg-info"></span>
+          )}
+        </>
+      ),
+      sorter: (a: TableData, b: TableData) => a.aug.length - b.aug.length,
+    },
+    {
+      title: "sep",
+      dataIndex: "sep",
+      render: (text: string) => (
+        <>
+          {text === "1" ? (
+            <span className="attendance-range bg-success"></span>
+          ) : text === "2" ? (
+            <span className="attendance-range bg-pending"></span>
+          ) : text === "3" ? (
+            <span className="attendance-range bg-dark"></span>
+          ) : text === "4" ? (
+            <span className="attendance-range bg-danger"></span>
+          ) : (
+            <span className="attendance-range bg-info"></span>
+          )}
+        </>
+      ),
+      sorter: (a: TableData, b: TableData) => a.sep.length - b.sep.length,
+    },
+    {
+      title: "oct",
+      dataIndex: "oct",
+      render: (text: string) => (
+        <>
+          {text === "1" ? (
+            <span className="attendance-range bg-success"></span>
+          ) : text === "2" ? (
+            <span className="attendance-range bg-pending"></span>
+          ) : text === "3" ? (
+            <span className="attendance-range bg-dark"></span>
+          ) : text === "4" ? (
+            <span className="attendance-range bg-danger"></span>
+          ) : (
+            <span className="attendance-range bg-info"></span>
+          )}
+        </>
+      ),
+      sorter: (a: TableData, b: TableData) => a.oct.length - b.oct.length,
+    },
+    {
+      title: "nov",
+      dataIndex: "nov",
+      render: (text: string) => (
+        <>
+          {text === "1" ? (
+            <span className="attendance-range bg-success"></span>
+          ) : text === "2" ? (
+            <span className="attendance-range bg-pending"></span>
+          ) : text === "3" ? (
+            <span className="attendance-range bg-dark"></span>
+          ) : text === "4" ? (
+            <span className="attendance-range bg-danger"></span>
+          ) : (
+            <span className="attendance-range bg-info"></span>
+          )}
+        </>
+      ),
+      sorter: (a: TableData, b: TableData) => a.nov.length - b.nov.length,
+    },
+    {
+      title: "dec",
+      dataIndex: "dec",
+      render: (text: string) => (
+        <>
+          {text === "1" ? (
+            <span className="attendance-range bg-success"></span>
+          ) : text === "2" ? (
+            <span className="attendance-range bg-pending"></span>
+          ) : text === "3" ? (
+            <span className="attendance-range bg-dark"></span>
+          ) : text === "4" ? (
+            <span className="attendance-range bg-danger"></span>
+          ) : (
+            <span className="attendance-range bg-info"></span>
+          )}
+        </>
+      ),
+      sorter: (a: TableData, b: TableData) => a.dec.length - b.dec.length,
+    },
   ];
   return (
     <>
       {/* Page Wrapper */}
-      <div className="page-wrapper">
+      <div className="">
         <div className="content">
           <div className="row">
             {/* Page Header */}
@@ -325,22 +535,22 @@ const StudentLeaves = () => {
               <div className="row">
                 <div className="col-md-12">
                   {/* List */}
-                  <ul className="nav nav-tabs nav-tabs-bottom mb-4">
+                  {/* <ul className="nav nav-tabs nav-tabs-bottom mb-4">
                     <li>
-                      <Link to={routes.studentDetail} className="nav-link">
+                      <Link to='{routes.studentDetail}' className="nav-link">
                         <i className="ti ti-school me-2" />
                         Student Details
                       </Link>
                     </li>
                     <li>
-                      <Link to={routes.studentTimeTable} className="nav-link">
+                      <Link to='{routes.studentTimeTable}' className="nav-link">
                         <i className="ti ti-table-options me-2" />
                         Time Table
                       </Link>
                     </li>
                     <li>
                       <Link
-                        to={routes.studentLeaves}
+                        to='{routes.studentLeaves}'
                         className="nav-link active"
                       >
                         <i className="ti ti-calendar-due me-2" />
@@ -348,24 +558,25 @@ const StudentLeaves = () => {
                       </Link>
                     </li>
                     <li>
-                      <Link to={routes.studentFees} className="nav-link">
+                      <Link to='{routes.studentFees}' className="nav-link">
                         <i className="ti ti-report-money me-2" />
                         Fees
                       </Link>
                     </li>
                     <li>
-                      <Link to={routes.studentResult} className="nav-link">
+                      <Link to='{routes.studentResult}' className="nav-link">
                         <i className="ti ti-bookmark-edit me-2" />
                         Exam &amp; Results
                       </Link>
                     </li>
                     <li>
-                      <Link to={routes.studentLibrary} className="nav-link">
+                      <Link to='{routes.studentLibrary}' className="nav-link">
                         <i className="ti ti-books me-2" />
                         Library
                       </Link>
                     </li>
-                  </ul>
+                  </ul> */}
+                  <ProfilNav routes={routes} />
                   {/* /List */}
                   {/* Leave Nav*/}
                   <div className="card">
@@ -698,7 +909,7 @@ const StudentLeaves = () => {
                             </div>
                           </div>
                           {/* Attendance List */}
-                         
+
                           <Table
                             dataSource={data2}
                             columns={columns2}

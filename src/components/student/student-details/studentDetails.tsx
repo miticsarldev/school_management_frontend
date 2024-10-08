@@ -3,8 +3,17 @@ import ImageWithBasePath from '@/components/ImageWithBasePath/ImageWithBasePath'
 import StudentModals from '../studentModals/StudentModals'
 import StudentSidebar from './studentSidebar'
 import StudentBreadcrumb from './studentBreadcrumb'
+import ProfilNav from './ProfilNav'
 
 const StudentDetails = () => {
+  const routes = [
+    { path: '/dashboard/studentDetails', label: 'Student Details', icon: 'ti-school' },
+    { path: '/dashboard/studentTimeTable', label: 'Time Table', icon: 'ti-table-options' },
+    { path: '/dashboard/studentLeaves', label: 'Leave & Attendance', icon: 'ti-calendar-due' },
+    { path: '/dashboard/studentFees', label: 'Fees', icon: 'ti-report-money' },
+    { path: '/dashboard/studentResult', label: 'Exam & Results', icon: 'ti-bookmark-edit' },
+  ];
+
   return (
     <>
   {/* Page Wrapper */}
@@ -23,7 +32,7 @@ const StudentDetails = () => {
           <div className="row">
             <div className="col-md-12">
               {/* List */}
-              <ul className="nav nav-tabs nav-tabs-bottom mb-4">
+              {/* <ul className="nav nav-tabs nav-tabs-bottom mb-4">
                 <li>
                   <Link to='{routes.studentDetail}' className="nav-link active">
                     <i className="ti ti-school me-2" />
@@ -31,13 +40,13 @@ const StudentDetails = () => {
                   </Link>
                 </li>
                 <li>
-                  <Link to='{routes.studentTimeTable}' className="nav-link">
+                  <Link to={'/dashboard/studentTimeTable'} className="nav-link">
                     <i className="ti ti-table-options me-2" />
                     Time Table
                   </Link>
                 </li>
                 <li>
-                  <Link to='{routes.studentLeaves}' className="nav-link">
+                  <Link to={'/dashboard/studentLeaves'} className="nav-link">
                     <i className="ti ti-calendar-due me-2" />
                     Leave &amp; Attendance
                   </Link>
@@ -60,7 +69,8 @@ const StudentDetails = () => {
                     Library
                   </Link>
                 </li>
-              </ul>
+              </ul> */}
+              <ProfilNav routes={routes} />
               {/* /List */}
               {/* Parents Information */}
               <div className="card">
