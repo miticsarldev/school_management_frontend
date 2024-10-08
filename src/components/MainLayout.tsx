@@ -57,6 +57,7 @@ const sidebarItemsByRole: Record<Role, SidebarItemByRole[]> = {
     { icon: Users2, label: "Classes", href: "/dashboard/classes"},
     { icon: Users2, label: "Programmes de classe", href: "/dashboard/schedule"},
     { icon: Users2, label: "Salle de Classe", href: "/dashboard/classroom"},
+    { icon: Users2, label: "Routine de Classe", href: "/dashboard/classroutine"},
   ],
   etudiant: [
     { icon: BarChart3, label: "Dashboard", href: "/dashboard/etudiant" },

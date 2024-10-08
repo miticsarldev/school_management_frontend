@@ -32,6 +32,7 @@ import "../src/style/icon/fontawesome/css/all.min.css";
 import "../src/style/icon/ionic/ionicons.css";
 import "../src/style/icon/tabler-icons/webfont/tabler-icons.css";
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
+import ClassRoutine from "./components/ClassRoutine";
 
 function App() {
   return (
@@ -139,6 +140,14 @@ function App() {
                   element={
                     <RequireAuth>
                       <ClassRoom />
+                    </RequireAuth>
+                  }
+                />
+                <Route
+                  path="/dashboard/classroutine"
+                  element={
+                    <RequireAuth>
+                      <ClassRoutine/>
                     </RequireAuth>
                   }
                 />
