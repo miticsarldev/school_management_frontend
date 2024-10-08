@@ -15,6 +15,7 @@ import DashboardEnseignant from "./components/DashboardEnseignant";
 import DashboardEtudiant from "./components/DashboardEtudiant";
 import DashboardParent from "./components/DashboardParent";
 import CompanyPage from "./components/CompanyPageSass/CompanyPage";
+<<<<<<< HEAD
 import "./app/globals.css";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import "../src/index.scss";
@@ -28,6 +29,18 @@ import "../src/style/icon/ionic/ionicons.css";
 import "../src/style/icon/tabler-icons/webfont/tabler-icons.css";
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 
+=======
+import "../style/css/feather.css";
+import "../index.scss";
+import "../style/icon/boxicons/boxicons/css/boxicons.min.css";
+import "../style/icon/weather/weathericons.css";
+import "../style/icon/typicons/typicons.css";
+import "../style/icon/fontawesome/css/fontawesome.min.css";
+import "../style/icon/fontawesome/css/all.min.css";
+import "../style/icon/ionic/ionicons.css";
+import "../style/icon/tabler-icons/webfont/tabler-icons.css";
+import "../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js";
+>>>>>>> ESM-0018
 function App() {
   return (
     <Provider store={store}>
