@@ -1,6 +1,5 @@
 import { Route, BrowserRouter, Routes } from "react-router-dom";
 import { Provider } from "react-redux";
-import "./app/globals.css";
 import { store } from "@/redux/store";
 import Layout from "@/components/Layout";
 import LoginPage from "@/components/LoginPage";
@@ -14,7 +13,20 @@ import Dashboard from "@/components/Dashboard";
 import DashboardAdmin from "./components/DashboardAdmin";
 import DashboardEnseignant from "./components/DashboardEnseignant";
 import DashboardEtudiant from "./components/DashboardEtudiant";
+import DashboardParent from "./components/DashboardParent";
 import CompanyPage from "./components/CompanyPageSass/CompanyPage";
+import "./app/globals.css";
+import 'bootstrap/dist/css/bootstrap.min.css';
+import "../src/index.scss";
+import "../src/style/css/feather.css";
+import "../src/style/icon/boxicons/boxicons/css/boxicons.min.css";
+import "../src/style/icon/weather/weathericons.css";
+import "../src/style/icon/typicons/typicons.css";
+import "../src/style/icon/fontawesome/css/fontawesome.min.css";
+import "../src/style/icon/fontawesome/css/all.min.css";
+import "../src/style/icon/ionic/ionicons.css";
+import "../src/style/icon/tabler-icons/webfont/tabler-icons.css";
+import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 
 function App() {
   return (
@@ -65,6 +77,14 @@ function App() {
                   element={
                     <RequireAuth>
                       <DashboardEtudiant />
+                    </RequireAuth>
+                  }
+                />
+                <Route
+                  path="/dashboard/parent"
+                  element={
+                    <RequireAuth>
+                      <DashboardParent />
                     </RequireAuth>
                   }
                 />

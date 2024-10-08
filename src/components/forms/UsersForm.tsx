@@ -266,8 +266,10 @@ const UsersForm: React.FC<UsersFormProps> = ({ mode, user, onClose }) => {
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="administrateur">Administrateur</SelectItem>
-            <SelectItem value="réceptionniste">Réceptionniste</SelectItem>
-            <SelectItem value="médecin">Médecin</SelectItem>
+            <SelectItem value="enseingnant">Enseingnant</SelectItem>
+            <SelectItem value="etudiant">Etudiant</SelectItem>
+            <SelectItem value="parent">Parent</SelectItem>
+            <SelectItem value="gardien">Gardien</SelectItem>
           </SelectContent>
         </Select>
       </div>
