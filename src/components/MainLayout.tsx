@@ -200,7 +200,7 @@ const MainLayout = () => {
             </SheetTrigger>
             <SheetContent side="left" className="w-64 p-0">
               <div className="flex items-center justify-center h-20 border-b">
-                <span className="text-2xl font-semibold">EchoSanté</span>
+                <span className="text-2xl font-semibold">MiticSchool</span>
               </div>
               <nav className="flex-grow">
                 {sidebarItems.map((item) => (

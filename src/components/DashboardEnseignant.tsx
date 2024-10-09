@@ -1,17 +1,15 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import ImageWithBasePath from "./DashboardEnseignant/imageWithBasePath";
-//import AdminDashboardModal from "../adminDashboard/adminDashboardModal";
 import ReactApexChart from "react-apexcharts";
 import { Calendar } from "primereact/calendar";
 import { Nullable } from "primereact/ts-helpers";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import dayjs from "dayjs";
-import { DatePicker} from "antd";
+import { DatePicker } from "antd";
 import Slider from "react-slick";
-import 'bootstrap/dist/css/bootstrap.min.css';
-
+import "bootstrap/dist/css/bootstrap.min.css";
 
 const DashboardEnseigant = () => {
   const [date, setDate] = useState<Nullable<Date>>(null);
@@ -44,19 +42,13 @@ const DashboardEnseigant = () => {
     dots: false,
     autoplay: false,
     slidesToShow: 4,
-    margin: 24,
+    margin: 10,
     speed: 500,
     nextArrow: <SampleNextArrow />,
     prevArrow: <SamplePrevArrow />,
     responsive: [
       {
-        breakpoint: 1500,
-        settings: {
-          slidesToShow: 4,
-        },
-      },
-      {
-        breakpoint: 1400,
+        breakpoint: 1024,
         settings: {
           slidesToShow: 4,
         },
@@ -87,7 +79,7 @@ const DashboardEnseigant = () => {
       },
     ],
   };
-  
+
   const [studentDonutChart] = useState<any>({
     chart: {
       height: 90,
@@ -182,9 +174,7 @@ const DashboardEnseigant = () => {
   return (
     <>
       {/* Page Wrapper */}
-      <div
-       className="col-md-10"
-      >
+      <div className="col-md-10 w-full">
         <div className="content">
           {/* Page Header */}
           <div className="d-md-flex d-block align-items-center justify-content-between mb-3">
@@ -193,7 +183,7 @@ const DashboardEnseigant = () => {
               <nav>
                 <ol className="breadcrumb mb-0">
                   <li className="breadcrumb-item">
-                  <Link to="/dashboard/admin">Admin Dashboard</Link>
+                    <Link to="/dashboard/admin">Admin Dashboard</Link>
                   </li>
                   <li className="breadcrumb-item">Dashboard</li>
                   <li className="breadcrumb-item active" aria-current="page">
@@ -263,14 +253,8 @@ const DashboardEnseigant = () => {
                           src="/bg/circle-shape.png"
                           alt="Bg"
                         />
-                        <ImageWithBasePath
-                          src="/bg/shape-02.png"
-                          alt="Bg"
-                        />
-                        <ImageWithBasePath
-                          src="/bg/shape-04.png"
-                          alt="Bg"
-                        />
+                        <ImageWithBasePath src="/bg/shape-02.png" alt="Bg" />
+                        <ImageWithBasePath src="/bg/shape-04.png" alt="Bg" />
                         <ImageWithBasePath
                           src="/bg/blue-polygon.png"
                           alt="Bg"
@@ -327,11 +311,6 @@ const DashboardEnseigant = () => {
                     <span className="icon">
                       <i className="ti ti-chevron-left" />
                     </span>
-                    {/* <input
-                      type="text"
-                      className="form-control datetimepicker border-0"
-                      placeholder="16 May 2024"
-                    /> */}
                     <DatePicker
                       className="form-control datetimepicker border-0"
                       format={{
@@ -347,9 +326,9 @@ const DashboardEnseigant = () => {
                   </div>
                 </div>
                 <div className="card-body">
-                  <Slider
+                  {/* <Slider
                     {...settings}
-                    className="owl-carousel owl-theme task-slider"
+                    className="owl-carousel owl-theme task-slider flex justify-around max-w-full"
                   >
                     <div className="item">
                       <div className="bg-light-400 rounded p-3">
@@ -396,7 +375,7 @@ const DashboardEnseigant = () => {
                         <p className="text-dark">Class V, B</p>
                       </div>
                     </div>
-                  </Slider>
+                  </Slider> */}
                 </div>
               </div>
               {/* /Today's Class */}
@@ -968,7 +947,7 @@ const DashboardEnseigant = () => {
             {/* /Schedules */}
           </div>
           {/* Teacher-profile */}
-          
+
           <div className="row">
             {/* Student Marks */}
             <div className="col-xxl-8 col-xl-7 d-flex">
@@ -1082,7 +1061,7 @@ const DashboardEnseigant = () => {
                             <div className="d-flex align-items-center">
                               <Link
                                 //to={routes.studentDetail}
-                                to={'#'}
+                                to={"#"}
                                 className="avatar avatar-md"
                               >
                                 <ImageWithBasePath
@@ -1094,7 +1073,6 @@ const DashboardEnseigant = () => {
                               <div className="ms-2">
                                 <p className="text-dark mb-0">
                                   {/* <Link to={routes.studentDetail}>Joann</Link> */}
-                                  
                                 </p>
                               </div>
                             </div>
@@ -1113,7 +1091,7 @@ const DashboardEnseigant = () => {
                             <div className="d-flex align-items-center">
                               <Link
                                 // to={routes.studentDetail}
-                                to={'#'}
+                                to={"#"}
                                 className="avatar avatar-md"
                               >
                                 <ImageWithBasePath
@@ -1145,7 +1123,7 @@ const DashboardEnseigant = () => {
                             <div className="d-flex align-items-center">
                               <Link
                                 //to={routes.studentDetail}
-                                to={'#'}
+                                to={"#"}
                                 className="avatar avatar-md"
                               >
                                 <ImageWithBasePath
