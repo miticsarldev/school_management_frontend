@@ -56,6 +56,7 @@ import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import ClassRoutine from "./components/ClassRoutine";
 import ClassSubject from "./components/ClassSubject";
+import ClassTimetable from "./components/ClassTimetable";
 
 function App() {
   return (
@@ -179,6 +180,14 @@ function App() {
                   element={
                     <RequireAuth>
                       <ClassSubject/>
+                    </RequireAuth>
+                  }
+                />
+                <Route
+                  path="/dashboard/classtimetable"
+                  element={
+                    <RequireAuth>
+                      <ClassTimetable/>
                     </RequireAuth>
                   }
                 />
