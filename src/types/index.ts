@@ -36,3 +36,15 @@ export type CustomError = {
     error: string;
   };
 };
+
+// types.ts
+export interface Student {
+  id: number;
+  firstName: string;
+  lastName: string;
+  className: string;
+  status: 'actif' | 'inactif';
+  admissionDate: string; // Utilise un format de date ISO
+  birthDate: string; // Utilise un format de date ISO
+  photo?: string; // Optionnel
+}

@@ -16,7 +16,7 @@ import ClassRoutine from "../ClassRoutine/ClassRoutine";
 import PerformanceCard from "../PerformanceCard/PerformanceCard";
 import FeesCollectionCard from "../FeesCollectionCard.tsx/FeesCollectionCard";
 import LeaveRequestCard from "../LeaveRequestCard/LeaveRequestCard";
-import StudentGradesChart from "../StudentGradesChart/StudentGradesChart";
+import StudentGradesChart from "../student/StudentGradesChart/StudentGradesChart";
 
 const DashboardAdmin = () => {
   const [date, setDate] = useState<Nullable<Date>>(null);
