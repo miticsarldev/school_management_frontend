@@ -14,6 +14,7 @@ import DashboardAdmin from "./components/DashboardAdmin/DashboardAdmin";
 import DashboardEnseignant from "./components/DashboardEnseignant";
 import DashboardEtudiant from "./components/DashboardEtudiant";
 import Classes from "./components/Classes";
+import ClassRoom from "./components/Classroom";
 import Schedule from "./components/Schedule";
 import ParentGrid from "./components/parent/parent-grid";
 import ParentList from "./components/parent/parent-list";
@@ -151,6 +152,14 @@ function App() {
                   element={
                     <RequireAuth>
                       <Schedule />
+                    </RequireAuth>
+                  }
+                />
+                <Route
+                  path="/dashboard/classroom"
+                  element={
+                    <RequireAuth>
+                      <ClassRoom />
                     </RequireAuth>
                   }
                 />
