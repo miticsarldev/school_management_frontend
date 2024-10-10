@@ -1,10 +1,9 @@
-
 import ImageWithBasePath from "./imageWithBasePath";
-import { Link } from "react-router-dom";
 // import { leaveType } from "../../../core/common/selectoption/selectoption";
+import { Link } from "react-router-dom";
 import { DatePicker } from "antd";
 import dayjs from "dayjs";
-// import CommonSelect from "../../../core/common/commonSelect";
+// import CommonSelect from "./commonSelect";
 
 const TeacherModal = () => {
   const today = new Date();
@@ -160,14 +159,14 @@ const TeacherModal = () => {
                         </span>
                       </div>
                     </div>
-                    {/* <div className="mb-3">
+                    <div className="mb-3">
                       <label className="form-label">Leave Type</label>
-                      <CommonSelect
+                      {/* <CommonSelect
                         className="select"
                         options={leaveType}
                         defaultValue={leaveType[0]}
-                      />
-                    </div> */}
+                      /> */}
+                    </div>
                     <div className="mb-3">
                       <label className="form-label">Leave From date</label>
                       <div className="date-pic">
