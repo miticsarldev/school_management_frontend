@@ -14,6 +14,7 @@ import DashboardAdmin from "./components/DashboardAdmin/DashboardAdmin";
 import DashboardEnseignant from "./components/DashboardEnseignant";
 import DashboardEtudiant from "./components/DashboardEtudiant";
 import Classes from "./components/Classes";
+import ClassRoom from "./components/Classroom";
 import Schedule from "./components/Schedule";
 import ParentGrid from "./components/parent/parent-grid";
 import ParentList from "./components/parent/parent-list";
@@ -52,6 +53,8 @@ import "../src/style/icon/fontawesome/css/all.min.css";
 import "../src/style/icon/ionic/ionicons.css";
 import "../src/style/icon/tabler-icons/webfont/tabler-icons.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
+import "bootstrap/dist/js/bootstrap.bundle.min.js";
+import ClassRoutine from "./components/ClassRoutine";
 
 function App() {
   return (
@@ -118,7 +121,7 @@ function App() {
                   path="/dashboard/users"
                   element={
                     <RequireAuth>
-                      <UsersManagement/>
+                      <UsersManagement />
                     </RequireAuth>
                   }
                 />
@@ -151,6 +154,22 @@ function App() {
                   element={
                     <RequireAuth>
                       <Schedule />
+                    </RequireAuth>
+                  }
+                />
+                <Route
+                  path="/dashboard/classroom"
+                  element={
+                    <RequireAuth>
+                      <ClassRoom />
+                    </RequireAuth>
+                  }
+                />
+                <Route
+                  path="/dashboard/classroutine"
+                  element={
+                    <RequireAuth>
+                      <ClassRoutine />
                     </RequireAuth>
                   }
                 />
