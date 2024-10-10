@@ -55,6 +55,7 @@ import "../src/style/icon/tabler-icons/webfont/tabler-icons.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import ClassRoutine from "./components/ClassRoutine";
+import ClassSubject from "./components/ClassSubject";
 
 function App() {
   return (
@@ -170,6 +171,14 @@ function App() {
                   element={
                     <RequireAuth>
                       <ClassRoutine />
+                    </RequireAuth>
+                  }
+                />
+                <Route
+                  path="/dashboard/classsubject"
+                  element={
+                    <RequireAuth>
+                      <ClassSubject/>
                     </RequireAuth>
                   }
                 />
