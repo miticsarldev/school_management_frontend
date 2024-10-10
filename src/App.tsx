@@ -13,6 +13,8 @@ import Dashboard from "@/components/Dashboard";
 import DashboardAdmin from "./components/DashboardAdmin/DashboardAdmin";
 import DashboardEnseignant from "./components/DashboardEnseignant";
 import DashboardEtudiant from "./components/DashboardEtudiant";
+import ParentGrid from "./components/parent/parent-grid";
+import ParentList from "./components/parent/parent-list";
 import DashboardParent from "./components/DashboardParent";
 import CompanyPage from "./components/CompanyPageSass/CompanyPage";
 import "./app/globals.css";
@@ -114,7 +116,23 @@ function App() {
                   path="/dashboard/users"
                   element={
                     <RequireAuth>
-                      <UsersManagement />
+                      <UsersManagement/>
+                    </RequireAuth>
+                  }
+                />
+                <Route
+                  path="/dashboard/parentgrid"
+                  element={
+                    <RequireAuth>
+                      <ParentGrid />
+                    </RequireAuth>
+                  }
+                />
+                <Route
+                  path="/dashboard/parentlist"
+                  element={
+                    <RequireAuth>
+                      <ParentList />
                     </RequireAuth>
                   }
                 />

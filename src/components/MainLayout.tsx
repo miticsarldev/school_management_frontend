@@ -53,6 +53,7 @@ const sidebarItemsByRole: Record<Role, SidebarItemByRole[]> = {
   administrateur: [
     { icon: LayoutDashboard, label: "Dashboard", href: "/dashboard/admin" },
     { icon: Users2, label: "Utilisateurs", href: "/dashboard/users" },
+    { icon: Users2, label: "Parents", href: "/dashboard/parentgrid" }
   ],
   etudiant: [
     { icon: BarChart3, label: "Dashboard", href: "/dashboard/etudiant" },
