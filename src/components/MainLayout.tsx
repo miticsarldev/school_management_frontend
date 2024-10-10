@@ -27,6 +27,7 @@ import {
   CornerUpRightIcon,
   LayoutDashboard,
   Users2,
+  
 } from "lucide-react";
 import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { Label } from "./ui/label";
@@ -53,7 +54,9 @@ const sidebarItemsByRole: Record<Role, SidebarItemByRole[]> = {
   administrateur: [
     { icon: LayoutDashboard, label: "Dashboard", href: "/dashboard/admin" },
     { icon: Users2, label: "Utilisateurs", href: "/dashboard/users" },
-    { icon: Users2, label: "Parents", href: "/dashboard/parentgrid" }
+    { icon: Users2, label: "Parents", href: "/dashboard/parentgrid" },
+    { icon: Users2, label: "Classes", href: "/dashboard/classes"},
+    { icon: Users2, label: "Programmes de classe", href: "/dashboard/schedule"},
   ],
   etudiant: [
     { icon: BarChart3, label: "Dashboard", href: "/dashboard/etudiant" },
@@ -216,6 +219,7 @@ const MainLayout = () => {
                     <item.icon className="w-5 h-5 mr-3" />
                     {item.label}
                   </Link>
+                  
                 ))}
               </nav>
             </SheetContent>

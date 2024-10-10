@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { DateRangePicker } from 'react-bootstrap-daterangepicker';
-import moment from 'moment';
+import moment from 'moment'
 import 'bootstrap-daterangepicker/daterangepicker.css';
 
 const PredefinedDateRanges: React.FC = () => {
