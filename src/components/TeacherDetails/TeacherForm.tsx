@@ -6,17 +6,12 @@ import dayjs from "dayjs";
 import {
  
   Contract,
-  Hostel,
   Marital,
-  PickupPoint,
   Shift,
-  VehicleNumber,
   allClass,
   allSubject,
   bloodGroup,
   gender,
-  roomNO,
-  route,
   status,
 } from "../DashboardEnseignant/selectoption";
 import { TagsInput } from "react-tag-input-component";
@@ -670,8 +665,7 @@ const TeacherForm = () => {
                   {/* /Bank Details */}
                 </>
 
-                
-                
+     
                 <>
                   
                   {/* Documents */}

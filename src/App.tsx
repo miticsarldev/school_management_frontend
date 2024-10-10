@@ -76,7 +76,7 @@ function App() {
                       <DashboardEtudiant />
                     </RequireAuth>
                   }
-                />
+                />              
                 {/* To be filled out one by one */}
                 <Route
                   path="/dashboard/users"
