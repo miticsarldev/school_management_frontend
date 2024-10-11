@@ -123,8 +123,6 @@ const ClassSubject = () => {
   return (
     <div>
       <>
-        {/* Page Wrapper */}
-        <div className="page-wrapper">
           <div className="content">
             {/* Page Header */}
             <div className="d-md-flex d-block align-items-center justify-content-between mb-3">
@@ -279,8 +277,6 @@ const ClassSubject = () => {
             </div>
             {/* /Guardians List */}
           </div>
-        </div>
-        {/* /Page Wrapper */}
       </>
       <div>
         {/* Add Subject */}

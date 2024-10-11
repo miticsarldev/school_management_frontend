@@ -63,8 +63,6 @@ const ClassTimetable = () => {
   };
   return (
     <div>
-      {/* Page Wrapper */}
-      <div className="page-wrapper">
         <div className="content content-two">
           <div className="d-md-flex d-block align-items-center justify-content-between mb-3">
             <div className="my-auto mb-2">
@@ -1120,8 +1118,6 @@ const ClassTimetable = () => {
             </div>
           </div>
         </div>
-      </div>
-      {/* /Page Wrapper */}
       <>
         {/* Add Class Time Table */}
         <div className="modal fade" id="add_time_table">
