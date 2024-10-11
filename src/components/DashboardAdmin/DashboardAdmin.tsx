@@ -1,10 +1,8 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ReactApexChart from "react-apexcharts";
 import { Link } from "react-router-dom";
-import CountUp from "react-countup";
 import { Calendar } from "primereact/calendar";
 import { Nullable } from "primereact/ts-helpers";
-import Slider from "react-slick";
 import "bootstrap-daterangepicker/daterangepicker.css";
 import ImageWithBasePath from "../ImageWithBasePath/ImageWithBasePath";
 import "slick-carousel/slick/slick.css";
@@ -17,96 +15,13 @@ import PerformanceCard from "../PerformanceCard/PerformanceCard";
 import FeesCollectionCard from "../FeesCollectionCard.tsx/FeesCollectionCard";
 import LeaveRequestCard from "../LeaveRequestCard/LeaveRequestCard";
 import StudentGradesChart from "../student/StudentGradesChart/StudentGradesChart";
+import { useAppSelector } from "@/redux/hooks";
+import { selectAuth, useGetAllUsersQuery } from "@/redux/features/authSlice";
+import EventItem from "./EventItem/EventItem";
+import { useGetAllEventsQuery } from "@/redux/features/eventSlice";
 
 const DashboardAdmin = () => {
-  const [date, setDate] = useState<Nullable<Date>>(null);
-  function SampleNextArrow(props: any) {
-    const { style, onClick } = props;
-    return (
-      <div
-        className="slick-nav slick-nav-next"
-        style={{ ...style, display: "flex", top: "30%", right: "30%" }}
-        onClick={onClick}
-      >
-        <i className="fas fa-chevron-right" style={{ color: "#677788" }}></i>
-      </div>
-    );
-  }
 
-  function SamplePrevArrow(props: any) {
-    const { style, onClick } = props;
-    return (
-      <div
-        className="slick-nav slick-nav-prev"
-        style={{ ...style, display: "flex", top: "30%", left: "30%" }}
-        onClick={onClick}
-      >
-        <i className="fas fa-chevron-left" style={{ color: "#677788" }}></i>
-      </div>
-    );
-  }
-  const settings = {
-    dots: false,
-    autoplay: false,
-    arrows: false,
-    slidesToShow: 2,
-    margin: 24,
-    speed: 500,
-    responsive: [
-      {
-        breakpoint: 1500,
-        settings: {
-          slidesToShow: 2,
-        },
-      },
-      {
-        breakpoint: 1400,
-        settings: {
-          slidesToShow: 2,
-        },
-      },
-      {
-        breakpoint: 992,
-        settings: {
-          slidesToShow: 2,
-        },
-      },
-      {
-        breakpoint: 800,
-        settings: {
-          slidesToShow: 2,
-        },
-      },
-      {
-        breakpoint: 776,
-        settings: {
-          slidesToShow: 2,
-        },
-      },
-      {
-        breakpoint: 567,
-        settings: {
-          slidesToShow: 1,
-        },
-      },
-    ],
-  };
-  const student = {
-    dots: false,
-    autoplay: false,
-    slidesToShow: 1,
-    speed: 500,
-    nextArrow: <SampleNextArrow />,
-    prevArrow: <SamplePrevArrow />,
-  };
-  const teacher = {
-    dots: false,
-    autoplay: false,
-    slidesToShow: 1,
-    speed: 500,
-    nextArrow: <SampleNextArrow />,
-    prevArrow: <SamplePrevArrow />,
-  };
   const [studentDonutChart] = useState<any>({
     chart: {
       height: 218,
@@ -413,6 +328,144 @@ const DashboardAdmin = () => {
     ],
   };
 
+
+
+  //gestion logique 
+  const [date, setDate] = useState(new Date());
+  const { user, isAuthenticated } = useAppSelector(selectAuth);
+  const { data: events } = useGetAllEventsQuery();
+  console.log(events);
+
+  const [filteredEvents, setFilteredEvents] = useState<any[]>([]);
+
+
+  //gestion event 
+
+  const filterEventsByDate = (events: any[], date: Date): any[] => {
+    const targetDate = date.setHours(0, 0, 0, 0); // Normalise la date cible à 00:00:00
+
+    return events.filter(event => {
+      const startDate = new Date(event.start_date);
+      const endDate = new Date(event.end_date);
+
+      // Normaliser les dates pour la comparaison
+      const eventStartDate = startDate.setHours(0, 0, 0, 0); // Normalise la date de début à 00:00:00
+      const eventEndDate = endDate.setHours(0, 0, 0, 0); // Normalise la date de fin à 00:00:00
+
+      console.log(`Event Start Date: ${eventStartDate}, Event End Date: ${eventEndDate}, Target Date: ${targetDate}`);
+
+      // Vérifie si la date cible est entre la date de début et la date de fin
+      return targetDate >= eventStartDate && targetDate <= eventEndDate;
+    });
+  };
+
+
+  // Fonction pour gérer le changement de date
+  const handleDateChange = (newDate: Date) => {
+    if (newDate instanceof Date) {
+      setDate(newDate); // Mise à jour de la date
+    }
+  };
+
+  const formatDate = (dateString: string): string => {
+    const date = new Date(dateString);
+
+    // Formatter la date pour qu'elle affiche: jour mois année
+    return date.toLocaleDateString('fr-FR', {
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric',
+    });
+  };
+
+  const formatTime = (dateString: string): string => {
+    const date = new Date(dateString);
+
+    // Extraire les heures et les minutes
+    const hours = date.getUTCHours().toString().padStart(2, '0'); // Ajouter un zéro si nécessaire
+    const minutes = date.getUTCMinutes().toString().padStart(2, '0'); // Ajouter un zéro si nécessaire
+
+    // Retourner le format "HHhMM"
+    return `${hours}h${minutes}`;
+  };
+
+
+  // Effet pour mettre à jour les événements filtrés lorsque la date ou les événements changent
+  useEffect(() => {
+    if (events && date) {
+      const eventsOnSelectedDate = filterEventsByDate(events, date);
+      setFilteredEvents(eventsOnSelectedDate);
+    }
+  }, [events, date]);
+
+
+
+
+  //gestion User
+
+  // Utilisation du hook pour obtenir les données des utilisateurs
+  const { data: usersData, isLoading: isLoadingUsers } = useGetAllUsersQuery();
+
+  // État local pour stocker les statistiques
+  const [stats, setStats] = useState({
+    totalUsers: 0,
+    administrateurs: { total: 0, actif: 0, inactif: 0 },
+    enseignants: { total: 0, actif: 0, inactif: 0 },
+    etudiants: { total: 0, actif: 0, inactif: 0 },
+  });
+
+  // Fonction pour calculer les statistiques
+  const countUsersByRoleAndStatus = (users: any[] = []) => {
+    const result = {
+      totalUsers: users.length,
+      administrateurs: { total: 0, actif: 0, inactif: 0 },
+      enseignants: { total: 0, actif: 0, inactif: 0 },
+      etudiants: { total: 0, actif: 0, inactif: 0 },
+    };
+
+    users.forEach((user) => {
+      const role = user.role;
+      const status = user.status;
+
+      if (role === "administrateur") {
+        result.administrateurs.total += 1;
+        if (status === "actif") {
+          result.administrateurs.actif += 1;
+        } else {
+          result.administrateurs.inactif += 1;
+        }
+      } else if (role === "enseignant") {
+        result.enseignants.total += 1;
+        if (status === "actif") {
+          result.enseignants.actif += 1;
+        } else {
+          result.enseignants.inactif += 1;
+        }
+      } else if (role === "etudiant") {
+        result.etudiants.total += 1;
+        if (status === "actif") {
+          result.etudiants.actif += 1;
+        } else {
+          result.etudiants.inactif += 1;
+        }
+      }
+    });
+
+    return result;
+  };
+
+  // Mettre à jour les statistiques quand les données des utilisateurs changent
+  useEffect(() => {
+    if (usersData) {
+      const calculatedStats = countUsersByRoleAndStatus(usersData);
+      setStats(calculatedStats); // Met à jour l'état local avec les statistiques
+    }
+  }, [usersData]);
+
+  // Affichage des données dans l'interface
+  if (isLoadingUsers) return <p>Chargement des informations...</p>;
+
+
   return (
     <>
       {/* Page Wrapper */}
@@ -457,56 +510,26 @@ const DashboardAdmin = () => {
             {/* /Page Header */}
             <div className="row">
               <div className="col-md-12">
-                {/* <div className="alert-message">
-                  <div
-                    className="alert alert-success rounded-pill d-flex align-items-center justify-content-between border-success mb-4"
-                    role="alert"
-                  >
-                    <div className="d-flex align-items-center">
-                      <span className="me-1 avatar avatar-sm flex-shrink-0">
-                        <ImageWithBasePath
-                          src="assets/img/profiles/avatar-27.jpg"
-                          alt="Img"
-                          className="img-fluid rounded-circle"
-                        />
-                      </span>
-                      <p>
-                        Fahed III,C has paid Fees for the{" "}
-                        <strong className="mx-1">“Term1”</strong>
-                      </p>
-                    </div>
-                    <button
-                      type="button"
-                      className="btn-close p-0"
-                      data-bs-dismiss="alert"
-                      aria-label="Close"
-                    >
-                      <span>
-                        <i className="ti ti-x" />
-                      </span>
-                    </button>
-                  </div>
-                </div> */}
                 {/* Dashboard Content */}
                 <div className="card bg-dark">
                   <div className="overlay-img">
                     <ImageWithBasePath
-                      src="assets/img/bg/shape-04.png"
+                      src="/assets/img/bg/shape-04.png"
                       alt="img"
                       className="img-fluid shape-01"
                     />
                     <ImageWithBasePath
-                      src="assets/img/bg/shape-01.png"
+                      src="/assets/img/bg/shape-01.png"
                       alt="img"
                       className="img-fluid shape-02"
                     />
                     <ImageWithBasePath
-                      src="assets/img/bg/shape-02.png"
+                      src="/assets/img/bg/shape-02.png"
                       alt="img"
                       className="img-fluid shape-03"
                     />
                     <ImageWithBasePath
-                      src="assets/img/bg/shape-03.png"
+                      src="/assets/img/bg/shape-03.png"
                       alt="img"
                       className="img-fluid shape-04"
                     />
@@ -516,7 +539,7 @@ const DashboardAdmin = () => {
                       <div className="mb-3 mb-xl-0">
                         <div className="d-flex align-items-center flex-wrap mb-2">
                           <h1 className="text-white me-2">
-                            Bienvenue à vous, Mr Herald
+                            Bienvenue à vous, {user?.firstname + " " + user?.lastname}
                           </h1>
                           <Link
                             to="profile"
@@ -538,42 +561,42 @@ const DashboardAdmin = () => {
             <div className="row d-flex">
               {/* Total Students */}
               <UserCard
-                total={3654}
-                active={3643}
-                inactive={11}
+                total={stats.etudiants.total}
+                active={stats.etudiants.actif}
+                inactive={stats.etudiants.inactif}
                 percentageChange={1.2}
-                userType="Students"
-                iconPath="assets/img/icons/student.svg"
+                userType="Etudiant"
+                iconPath="/assets/img/icons/student.svg"
               />
               {/* /Total Students */}
               {/* Total Teachers */}
               <UserCard
-                total={3654}
-                active={3643}
-                inactive={11}
+                total={stats.enseignants.total}
+                active={stats.enseignants.actif}
+                inactive={stats.enseignants.inactif}
                 percentageChange={1.2}
-                userType="Students"
-                iconPath="assets/img/icons/student.svg"
+                userType="Enseignant"
+                iconPath="/assets/img/icons/teacher.svg"
               />
               {/* /Total Teachers */}
               {/* Total Staff */}
               <UserCard
-                total={3654}
-                active={3643}
-                inactive={11}
+                total={stats.administrateurs.total}
+                active={stats.administrateurs.actif}
+                inactive={stats.administrateurs.inactif}
                 percentageChange={1.2}
-                userType="Students"
-                iconPath="assets/img/icons/student.svg"
+                userType="Administrateur"
+                iconPath="/assets/img/icons/staff.svg"
               />
               {/* /Total Staff */}
               {/* Total Subjects */}
               <UserCard
-                total={3654}
-                active={3643}
-                inactive={11}
+                total={stats.administrateurs.total}
+                active={stats.administrateurs.actif}
+                inactive={stats.administrateurs.inactif}
                 percentageChange={1.2}
-                userType="Students"
-                iconPath="assets/img/icons/student.svg"
+                userType="Administrateur"
+                iconPath="/assets/img/icons/staff.svg"
               />
               {/* /Total Subjects */}
             </div>
@@ -583,7 +606,7 @@ const DashboardAdmin = () => {
                 <div className="card flex-fill">
                   <div className="card-header d-flex align-items-center justify-content-between">
                     <div>
-                      <h4 className="card-title">Schedules</h4>
+                      <h4 className="card-title">Evenement</h4>
                     </div>
                     <Link
                       to="#"
@@ -592,147 +615,39 @@ const DashboardAdmin = () => {
                       data-bs-target="#add_event"
                     >
                       <i className="ti ti-square-plus me-1" />
-                      Add New
+                      Ajouter
                     </Link>
                   </div>
                   <div className="card-body ">
                     <Calendar
                       className="datepickers mb-4"
                       value={date}
-                      onChange={(e) => setDate(e.value)}
+                      onChange={(e) => {
+                        const newDate = e.value; // Récupération de la nouvelle date
+                        // Vérification que newDate est une instance de Date
+                        if (newDate instanceof Date) {
+                          handleDateChange(newDate); // Appel de la fonction si la date est valide
+                        }
+                      }}
                       inline
                     />
                     <h5 className="mb-3">Événements à venir</h5>
                     <div className="event-wrapper event-scroll">
-                      {/* Event Item */}
-                      <div className="border-start border-skyblue border-3 shadow-sm p-3 mb-3">
-                        <div className="d-flex align-items-center mb-3 pb-3 border-bottom">
-                          <span className="avatar p-1 me-2 bg-teal-transparent flex-shrink-0">
-                            <i className="ti ti-user-edit text-info fs-20" />
-                          </span>
-                          <div className="flex-fill">
-                            <h6 className="mb-1">
-                              Rencontre parents-professeurs
-                            </h6>
-                            <p className="d-flex align-items-center">
-                              <i className="ti ti-calendar me-1" />
-                              15 July 2024
-                            </p>
-                          </div>
-                        </div>
-                        <div className="d-flex align-items-center justify-content-between">
-                          <p className="mb-0">
-                            <i className="ti ti-clock me-1" />
-                            09:10AM - 10:50PM
-                          </p>
-                          <div className="avatar-list-stacked avatar-group-sm">
-                            <span className="avatar border-0">
-                              <ImageWithBasePath
-                                src="assets/img/parents/parent-01.jpg"
-                                className="rounded-circle"
-                                alt="img"
-                              />
-                            </span>
-                            <span className="avatar border-0">
-                              <ImageWithBasePath
-                                src="assets/img/parents/parent-07.jpg"
-                                className="rounded-circle"
-                                alt="img"
-                              />
-                            </span>
-                            <span className="avatar border-0">
-                              <ImageWithBasePath
-                                src="assets/img/parents/parent-02.jpg"
-                                className="rounded-circle"
-                                alt="img"
-                              />
-                            </span>
-                          </div>
-                        </div>
-                      </div>
-                      {/* Event Item */}
-                      <div className="border-start border-info border-3 shadow-sm p-3 mb-3">
-                        <div className="d-flex align-items-center mb-3 pb-3 border-bottom">
-                          <span className="avatar p-1 me-2 bg-info-transparent flex-shrink-0">
-                            <i className="ti ti-user-edit fs-20" />
-                          </span>
-                          <div className="flex-fill">
-                            <h6 className="mb-1">Parents, Teacher Meet</h6>
-                            <p className="d-flex align-items-center">
-                              <i className="ti ti-calendar me-1" />
-                              15 July 2024
-                            </p>
-                          </div>
-                        </div>
-                        <div className="d-flex align-items-center justify-content-between">
-                          <p className="mb-0">
-                            <i className="ti ti-clock me-1" />
-                            09:10AM - 10:50PM
-                          </p>
-                          <div className="avatar-list-stacked avatar-group-sm">
-                            <span className="avatar border-0">
-                              <ImageWithBasePath
-                                src="assets/img/parents/parent-05.jpg"
-                                className="rounded-circle"
-                                alt="img"
-                              />
-                            </span>
-                            <span className="avatar border-0">
-                              <ImageWithBasePath
-                                src="assets/img/parents/parent-06.jpg"
-                                className="rounded-circle"
-                                alt="img"
-                              />
-                            </span>
-                            <span className="avatar border-0">
-                              <ImageWithBasePath
-                                src="assets/img/parents/parent-07.jpg"
-                                className="rounded-circle"
-                                alt="img"
-                              />
-                            </span>
-                          </div>
-                        </div>
-                      </div>
-                      {/* /Event Item */}
-                      {/* Event Item */}
-                      <div className="border-start border-danger border-3 shadow-sm p-3 mb-3">
-                        <div className="d-flex align-items-center mb-3 pb-3 border-bottom">
-                          <span className="avatar p-1 me-2 bg-danger-transparent flex-shrink-0">
-                            <i className="ti ti-vacuum-cleaner fs-24" />
-                          </span>
-                          <div className="flex-fill">
-                            <h6 className="mb-1">Vacation Meeting</h6>
-                            <p className="d-flex align-items-center">
-                              <i className="ti ti-calendar me-1" />
-                              07 July 2024 - 07 July 2024
-                            </p>
-                          </div>
-                        </div>
-                        <div className="d-flex align-items-center justify-content-between">
-                          <p className="mb-0">
-                            <i className="ti ti-clock me-1" />
-                            09:10 AM - 10:50 PM
-                          </p>
-                          <div className="avatar-list-stacked avatar-group-sm">
-                            <span className="avatar border-0">
-                              <ImageWithBasePath
-                                src="assets/img/parents/parent-11.jpg"
-                                className="rounded-circle"
-                                alt="img"
-                              />
-                            </span>
-                            <span className="avatar border-0">
-                              <ImageWithBasePath
-                                src="assets/img/parents/parent-13.jpg"
-                                className="rounded-circle"
-                                alt="img"
-                              />
-                            </span>
-                          </div>
-                        </div>
-                      </div>
-                      {/* /Event Item */}
+                      {filteredEvents.length > 0 ? (
+                        filteredEvents.map((event, index) => (
+                          <EventItem key={index}
+                            title={event.title}
+                            start_date={formatDate(event.start_date)}
+                            end_date={formatDate(event.end_date)}
+                            start_time={formatTime(event.start_hour)}
+                            end_time={formatTime(event.end_hour)}
+                            icon="ti-calendar"
+                            borderColor="border-primary"
+                          />
+                        ))
+                      ) : (
+                        <p>Aucun événement prévu pour cette date </p>
+                      )}
                     </div>
                   </div>
                 </div>
