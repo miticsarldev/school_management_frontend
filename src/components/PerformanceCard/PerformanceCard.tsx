@@ -1,8 +1,12 @@
-import { Link } from 'react-router-dom';
-import ReactApexChart from 'react-apexcharts';
+import { Link } from "react-router-dom";
+import ReactApexChart from "react-apexcharts";
 
 // Déclaration du composant Performance
-const PerformanceCard = ({ className, performanceData, classDonutChart }: { 
+const PerformanceCard = ({
+  className,
+  performanceData,
+  classDonutChart,
+}: {
   className: string; // Le nom de la classe
   performanceData: { top: number; average: number; belowAvg: number }; // Données de performance
   classDonutChart: any; // Options pour le graphique
@@ -23,14 +27,30 @@ const PerformanceCard = ({ className, performanceData, classDonutChart }: {
           </Link>
           <ul className="dropdown-menu mt-2 p-3">
             {/* Liste déroulante des classes */}
-            <li><Link to="#" className="dropdown-item rounded-1">Class I</Link></li>
-            <li><Link to="#" className="dropdown-item rounded-1">Class II</Link></li>
-            <li><Link to="#" className="dropdown-item rounded-1">Class III</Link></li>
-            <li><Link to="#" className="dropdown-item rounded-1">Class IV</Link></li>
+            <li>
+              <Link to="#" className="dropdown-item rounded-1">
+                Class I
+              </Link>
+            </li>
+            <li>
+              <Link to="#" className="dropdown-item rounded-1">
+                Class II
+              </Link>
+            </li>
+            <li>
+              <Link to="#" className="dropdown-item rounded-1">
+                Class III
+              </Link>
+            </li>
+            <li>
+              <Link to="#" className="dropdown-item rounded-1">
+                Class IV
+              </Link>
+            </li>
           </ul>
         </div>
       </div>
-      
+
       {/* Corps de la carte contenant les performances et le graphique */}
       <div className="card-body">
         <div className="d-md-flex align-items-center justify-content-between">
@@ -39,7 +59,7 @@ const PerformanceCard = ({ className, performanceData, classDonutChart }: {
             <div className="border border-dashed p-3 rounded d-flex align-items-center justify-content-between mb-1">
               <p className="mb-0 me-2">
                 <i className="ti ti-arrow-badge-down-filled me-2 text-primary" />
-                Bon
+                Top
               </p>
               <h5>{performanceData.top}</h5>
             </div>

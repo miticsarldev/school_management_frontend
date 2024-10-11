@@ -27,6 +27,7 @@ import {
   CornerUpRightIcon,
   LayoutDashboard,
   Users2,
+  
 } from "lucide-react";
 import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { Label } from "./ui/label";
@@ -38,6 +39,7 @@ import {
 import { useAppDispatch, useAppSelector } from "@/redux/hooks";
 import toast from "react-hot-toast";
 import { Role } from "@/types";
+import { selectUi, setIsSidebarExpanded } from "@/redux/features/uiSlice";
 
 type SidebarItemByRole = {
   icon: React.ForwardRefExoticComponent<
@@ -52,22 +54,31 @@ const sidebarItemsByRole: Record<Role, SidebarItemByRole[]> = {
   administrateur: [
     { icon: LayoutDashboard, label: "Dashboard", href: "/dashboard/admin" },
     { icon: Users2, label: "Utilisateurs", href: "/dashboard/users" },
+    { icon: Users2, label: "Parents", href: "/dashboard/parentgrid" },
+    { icon: Users2, label: "Classes", href: "/dashboard/classes"},
+    { icon: Users2, label: "Programmes de classe", href: "/dashboard/schedule"},
+    { icon: Users2, label: "Salles de Classe", href: "/dashboard/classroom"},
+    { icon: Users2, label: "Routines de Classe", href: "/dashboard/classroutine"},
+    { icon: Users2, label: "Matieres de Classe", href: "/dashboard/classsubject"},
+    { icon: Users2, label: "Horaires de Classe", href: "/dashboard/classtimetable"},
   ],
   etudiant: [
     { icon: BarChart3, label: "Dashboard", href: "/dashboard/etudiant" },
   ],
+  parent: [{ icon: BarChart3, label: "Dashboard", href: "/dashboard/parent" }],
   enseignant: [
     { icon: BarChart3, label: "Dashboard", href: "/dashboard/enseignant" },
   ],
+  gardien: [],
 };
 
 const MainLayout = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [isSidebarExpanded, setIsSidebarExpanded] = useState(true);
   const pathname = useLocation().pathname;
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const { user, isAuthenticated } = useAppSelector(selectAuth);
+  const { isSidebarExpanded } = useAppSelector(selectUi);
   const [logout, { isLoading: logoutLoading }] = useLogoutMutation();
 
   const sidebarItems = sidebarItemsByRole[(user?.role as Role) || "etudiant"];
@@ -105,12 +116,12 @@ const MainLayout = () => {
       {/* Sidebar for desktop */}
       <aside
         className={`hidden md:flex flex-col bg-white border-r transition-all duration-300 ${
-          isSidebarExpanded ? "w-64" : "w-20"
+          isSidebarExpanded ? "w-64 p-3" : "w-20 p-2"
         }`}
       >
         <div
-          className={`flex items-center justify-between h-14 px-4 ${
-            isSidebarExpanded ? "" : "justify-center"
+          className={`flex items-center justify-between h-14  ${
+            isSidebarExpanded ? "px-4" : "justify-center p-2"
           }`}
         >
           {isSidebarExpanded && (
@@ -123,7 +134,7 @@ const MainLayout = () => {
           <Button
             variant="ghost"
             size="icon"
-            onClick={() => setIsSidebarExpanded(!isSidebarExpanded)}
+            onClick={() => dispatch(setIsSidebarExpanded(!isSidebarExpanded))}
             aria-label={
               isSidebarExpanded ? "Réduire le menu" : "Agrandir le menu"
             }
@@ -131,26 +142,22 @@ const MainLayout = () => {
             {isSidebarExpanded ? (
               <TornadoIcon className="h-6 w-6" />
             ) : (
-              <CornerUpRightIcon className="h-6 w-6" />
+              <CornerUpRightIcon className="h-7 w-7" />
             )}
           </Button>
         </div>
-        <nav
-          className={`flex w-full flex-col space-y-2 mt-2 ${
-            isSidebarExpanded ? "px-6" : ""
-          }`}
-        >
+        <nav className={`flex w-full flex-col space-y-2 mt-2`}>
           {sidebarItems.map((item) => (
             <React.Fragment key={item.href}>
               {isSidebarExpanded ? (
                 <Link
                   key={item.href}
                   to={item.href}
-                  className={`flex items-center justify-start px-1 py-2 text-gray-700 hover:bg-[#683dd022] group transition-all duration-300 ${
+                  className={`flex items-center justify-start rounded text-gray-700 hover:bg-[#683dd022] group transition-all duration-300 p-2 ${
                     pathname === item.href
                       ? "bg-[#683dd022] text-[#683dd0]"
                       : ""
-                  } ${isSidebarExpanded ? "justify-start" : "justify-center"}`}
+                  }`}
                 >
                   <item.icon className="w-5 h-5 text-[#683dd0]" />
                   {isSidebarExpanded && (
@@ -165,7 +172,7 @@ const MainLayout = () => {
                     <TooltipTrigger asChild>
                       <Link
                         to={item.href}
-                        className={`flex items-center px-4 py-3 text-gray-700 hover:bg-[#683dd022] ${
+                        className={`flex items-center p-2 text-gray-700 hover:bg-[#683dd022] ${
                           pathname === item.href ? "bg-[#683dd022]" : ""
                         } ${
                           isSidebarExpanded ? "justify-start" : "justify-center"
@@ -177,8 +184,8 @@ const MainLayout = () => {
                         )}
                       </Link>
                     </TooltipTrigger>
-                    <TooltipContent side="right">
-                      <p>{item.label}</p>
+                    <TooltipContent side="right" className="h-full">
+                      <p className="whitespace-nowrap">{item.label}</p>
                     </TooltipContent>
                   </Tooltip>
                 </TooltipProvider>
@@ -201,7 +208,7 @@ const MainLayout = () => {
             </SheetTrigger>
             <SheetContent side="left" className="w-64 p-0">
               <div className="flex items-center justify-center h-20 border-b">
-                <span className="text-2xl font-semibold">EchoSanté</span>
+                <span className="text-2xl font-semibold">MiticSchool</span>
               </div>
               <nav className="flex-grow">
                 {sidebarItems.map((item) => (
@@ -216,6 +223,7 @@ const MainLayout = () => {
                     <item.icon className="w-5 h-5 mr-3" />
                     {item.label}
                   </Link>
+                  
                 ))}
               </nav>
             </SheetContent>

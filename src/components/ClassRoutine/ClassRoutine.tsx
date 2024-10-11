@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
 
 const ClassRoutine = ({ routines }: { routines: any[] }) => {
   return (
@@ -21,20 +21,19 @@ const ClassRoutine = ({ routines }: { routines: any[] }) => {
       <div className="card-body">
         {/* Boucle à travers chaque routine */}
         {routines.map((routine, index) => (
-          <div className="d-flex align-items-center rounded border p-3 mb-3" key={index}>
+          <div
+            className="d-flex align-items-center rounded border p-3 mb-3"
+            key={index}
+          >
             {/* Affichage de l'image de l'enseignant */}
             <span className="avatar avatar-md flex-shrink-0 border rounded me-2">
-              <img
-                src={routine.imageUrl}
-                className="rounded"
-                alt="Profile"
-              />
+              <img src={routine.imageUrl} className="rounded" alt="Profile" />
             </span>
-            
+
             {/* Informations sur la routine */}
             <div className="w-100">
               <p className="mb-1">{routine.month}</p>
-              
+
               {/* Barre de progression avec des styles dynamiques */}
               <div className="progress progress-xs  flex-grow-1 mb-1">
                 <div

@@ -1,6 +1,5 @@
 import { Route, BrowserRouter, Routes } from "react-router-dom";
 import { Provider } from "react-redux";
-import "./app/globals.css";
 import { store } from "@/redux/store";
 import Layout from "@/components/Layout";
 import LoginPage from "@/components/LoginPage";
@@ -14,21 +13,50 @@ import Dashboard from "@/components/Dashboard";
 import DashboardAdmin from "./components/DashboardAdmin/DashboardAdmin";
 import DashboardEnseignant from "./components/DashboardEnseignant";
 import DashboardEtudiant from "./components/DashboardEtudiant";
+import Classes from "./components/Classes";
+import ClassRoom from "./components/Classroom";
+import Schedule from "./components/Schedule";
+import ParentGrid from "./components/parent/parent-grid";
+import ParentList from "./components/parent/parent-list";
+import DashboardParent from "./components/DashboardParent";
 import CompanyPage from "./components/CompanyPageSass/CompanyPage";
-
-import 'bootstrap/dist/css/bootstrap.min.css';
-import '../src/style/css/feather.css';
-import '../src/index.scss';
-import '../src/style/icon/boxicons/boxicons/css/boxicons.min.css';
-import '../src/style/icon/weather/weathericons.css';
-import '../src/style/icon/typicons/typicons.css';
-import '../src/style/icon/fontawesome/css/fontawesome.min.css';
-import '../src/style/icon/fontawesome/css/all.min.css';
-import '../src/style/icon/ionic/ionicons.css';
-import '../src/style/icon/tabler-icons/webfont/tabler-icons.min.css';
+import "./app/globals.css";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "../src/index.scss";
+import "../src/style/css/feather.css";
+import "../src/style/icon/boxicons/boxicons/css/boxicons.min.css";
+import "../src/style/icon/weather/weathericons.css";
+import "../src/style/icon/typicons/typicons.css";
+import "../src/style/icon/fontawesome/css/fontawesome.min.css";
+import "../src/style/icon/fontawesome/css/all.min.css";
+import "../src/style/icon/ionic/ionicons.css";
+import "../src/style/icon/tabler-icons/webfont/tabler-icons.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
-
-
+import "../style/css/feather.css";
+import "../index.scss";
+import "../style/icon/boxicons/boxicons/css/boxicons.min.css";
+import "../style/icon/weather/weathericons.css";
+import "../style/icon/typicons/typicons.css";
+import "../style/icon/fontawesome/css/fontawesome.min.css";
+import "../style/icon/fontawesome/css/all.min.css";
+import "../style/icon/ionic/ionicons.css";
+import "../style/icon/tabler-icons/webfont/tabler-icons.css";
+import "../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "../src/style/css/feather.css";
+import "../src/index.scss";
+import "../src/style/icon/boxicons/boxicons/css/boxicons.min.css";
+import "../src/style/icon/weather/weathericons.css";
+import "../src/style/icon/typicons/typicons.css";
+import "../src/style/icon/fontawesome/css/fontawesome.min.css";
+import "../src/style/icon/fontawesome/css/all.min.css";
+import "../src/style/icon/ionic/ionicons.css";
+import "../src/style/icon/tabler-icons/webfont/tabler-icons.min.css";
+import "bootstrap/dist/js/bootstrap.bundle.min.js";
+import "bootstrap/dist/js/bootstrap.bundle.min.js";
+import ClassRoutine from "./components/ClassRoutine";
+import ClassSubject from "./components/ClassSubject";
+import ClassTimetable from "./components/ClassTimetable";
 
 function App() {
   return (
@@ -82,12 +110,84 @@ function App() {
                     </RequireAuth>
                   }
                 />
+                <Route
+                  path="/dashboard/parent"
+                  element={
+                    <RequireAuth>
+                      <DashboardParent />
+                    </RequireAuth>
+                  }
+                />
                 {/* To be filled out one by one */}
                 <Route
                   path="/dashboard/users"
                   element={
                     <RequireAuth>
                       <UsersManagement />
+                    </RequireAuth>
+                  }
+                />
+                <Route
+                  path="/dashboard/parentgrid"
+                  element={
+                    <RequireAuth>
+                      <ParentGrid />
+                    </RequireAuth>
+                  }
+                />
+                <Route
+                  path="/dashboard/parentlist"
+                  element={
+                    <RequireAuth>
+                      <ParentList />
+                    </RequireAuth>
+                  }
+                />
+                <Route
+                  path="/dashboard/classes"
+                  element={
+                    <RequireAuth>
+                      <Classes />
+                    </RequireAuth>
+                  }
+                />
+                <Route
+                  path="/dashboard/schedule"
+                  element={
+                    <RequireAuth>
+                      <Schedule />
+                    </RequireAuth>
+                  }
+                />
+                <Route
+                  path="/dashboard/classroom"
+                  element={
+                    <RequireAuth>
+                      <ClassRoom />
+                    </RequireAuth>
+                  }
+                />
+                <Route
+                  path="/dashboard/classroutine"
+                  element={
+                    <RequireAuth>
+                      <ClassRoutine />
+                    </RequireAuth>
+                  }
+                />
+                <Route
+                  path="/dashboard/classsubject"
+                  element={
+                    <RequireAuth>
+                      <ClassSubject/>
+                    </RequireAuth>
+                  }
+                />
+                <Route
+                  path="/dashboard/classtimetable"
+                  element={
+                    <RequireAuth>
+                      <ClassTimetable/>
                     </RequireAuth>
                   }
                 />

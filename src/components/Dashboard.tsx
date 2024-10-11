@@ -12,9 +12,11 @@ const Dashboard = () => {
     navigate("/dashboard/enseignant");
   } else if (user?.role === "etudiant") {
     navigate("/dashboard/etudiant");
+  }else if (user?.role === "parent") {
+    navigate("/dashboard/parent");
   }
 
-  navigate("/dashboard/parent");
+  //navigate("/dashboard/parent");
 
   return null;
 };

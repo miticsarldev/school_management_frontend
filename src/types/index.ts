@@ -1,5 +1,5 @@
 export type Mode = "add" | "modify" | "delete";
-export type Role = "administrateur" | "enseignant" | "etudiant";
+export type Role = "administrateur" | "enseignant" | "etudiant" | "parent" | "gardien";
 export type User = {
   _id?: string;
   firstname: string;
@@ -36,3 +36,15 @@ export type CustomError = {
     error: string;
   };
 };
+
+// types.ts
+export interface Student {
+  id: number;
+  firstName: string;
+  lastName: string;
+  className: string;
+  status: 'actif' | 'inactif';
+  admissionDate: string; // Utilise un format de date ISO
+  birthDate: string; // Utilise un format de date ISO
+  photo?: string; // Optionnel
+}

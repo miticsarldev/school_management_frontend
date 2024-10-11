@@ -2,7 +2,6 @@
 @import "primereact/resources/themes/lara-light-indigo/theme.css";
 @import "primeicons/primeicons.css";
 @import "primereact/resources/primereact.css";
-@import "primereact/resources/themes/lara-light-indigo/theme.css";
 @import "react-time-picker/dist/TimePicker.css";
 @import "react-clock/dist/Clock.css";
 
@@ -112,21 +111,6 @@ div .bg-success {
   background-color: #fff;
 }
 
-// multi-select
-// .css-1xc3v61-indicatorContainer svg {
-//   display: none;
-// }
-
-// .css-15lsz6c-indicatorContainer svg {
-//   display: none;
-// }
-
-// .css-tj5bde-Svg {
-//   background-color: #F6F6F6;
-//   border-color: #F6F6F6;
-//   color: #6F6F6F;
-//   border-radius: 5px;
-// }
 .css-1p3m7a8-multiValue {
   background-color: #f6f6f6;
   border-color: #f6f6f6;
@@ -236,9 +220,6 @@ span.form-icon {
   background-color: #1d1d42;
 }
 
-// .bx-microphone:before {
-//   content: "\eb89";
-// }
 .form-sorts.dropdown .radio-btn-items {
   margin-top: 10px;
 }
@@ -252,9 +233,9 @@ span.form-icon {
   border-color: #3d5ee1 !important;
 }
 
-// .slick-slide {
-//   margin-right: 5px;
-// }
+.slick-slide {
+  margin-right: 5px;
+}
 .p-dropdown-label.p-inputtext .p-d-flex.p-ai-center img,
 .p-dropdown-item-label .p-d-flex.p-ai-center,
 .p-dropdown-label.p-inputtext .p-clearfix img,
@@ -337,9 +318,6 @@ span.ant-picker-suffix {
   color: #fff;
 }
 
-// .chat-footer form {
-//   background-color: #fff;
-// }
 .main-chat-blk .chat .chat-footer form {
   position: static;
 }
@@ -380,9 +358,6 @@ span.ant-picker-suffix {
   color: #a3a6a6;
 }
 
-// a#theme-settings i {
-//   color: #262a2a;
-// }
 td .badge-pill {
   display: inline-flex;
   align-items: center;
