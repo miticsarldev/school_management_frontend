@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import ReactApexChart from "react-apexcharts";
 import { Link } from "react-router-dom";
 import { Calendar } from "primereact/calendar";
-import { Nullable } from "primereact/ts-helpers";
 import "bootstrap-daterangepicker/daterangepicker.css";
 import ImageWithBasePath from "../ImageWithBasePath/ImageWithBasePath";
 import "slick-carousel/slick/slick.css";
@@ -19,84 +18,85 @@ import { useAppSelector } from "@/redux/hooks";
 import { selectAuth, useGetAllUsersQuery } from "@/redux/features/authSlice";
 import EventItem from "./EventItem/EventItem";
 import { useGetAllEventsQuery } from "@/redux/features/eventSlice";
+import axios from 'axios';
 
 const DashboardAdmin = () => {
 
-  const [studentDonutChart] = useState<any>({
-    chart: {
-      height: 218,
-      width: 218,
-      type: "donut",
-      toolbar: {
-        show: false,
-      },
-    },
-    legend: {
-      show: false,
-    },
-    colors: ["#3D5EE1", "#6FCCD8"],
-    series: [3610, 44],
-    responsive: [
-      {
-        breakpoint: 480,
-        options: {
-          chart: {
-            width: 180,
-          },
-        },
-      },
-    ],
-  });
-  const [teacherDonutChart] = useState<any>({
-    chart: {
-      height: 218,
-      width: 218,
-      type: "donut",
-      toolbar: {
-        show: false,
-      },
-    },
-    legend: {
-      show: false,
-    },
-    colors: ["#3D5EE1", "#6FCCD8"],
-    series: [346, 54],
-    responsive: [
-      {
-        breakpoint: 480,
-        options: {
-          chart: {
-            width: 180,
-          },
-        },
-      },
-    ],
-  });
-  const [staffDonutChart] = useState<any>({
-    chart: {
-      height: 218,
-      width: 218,
-      type: "donut",
-      toolbar: {
-        show: false,
-      },
-    },
-    legend: {
-      show: false,
-    },
-    colors: ["#3D5EE1", "#6FCCD8"],
-    series: [620, 80],
-    responsive: [
-      {
-        breakpoint: 480,
-        options: {
-          chart: {
-            width: 180,
-          },
-        },
-      },
-    ],
-  });
+  // const [studentDonutChart] = useState<any>({
+  //   chart: {
+  //     height: 218,
+  //     width: 218,
+  //     type: "donut",
+  //     toolbar: {
+  //       show: false,
+  //     },
+  //   },
+  //   legend: {
+  //     show: false,
+  //   },
+  //   colors: ["#3D5EE1", "#6FCCD8"],
+  //   series: [3610, 44],
+  //   responsive: [
+  //     {
+  //       breakpoint: 480,
+  //       options: {
+  //         chart: {
+  //           width: 180,
+  //         },
+  //       },
+  //     },
+  //   ],
+  // });
+  // const [teacherDonutChart] = useState<any>({
+  //   chart: {
+  //     height: 218,
+  //     width: 218,
+  //     type: "donut",
+  //     toolbar: {
+  //       show: false,
+  //     },
+  //   },
+  //   legend: {
+  //     show: false,
+  //   },
+  //   colors: ["#3D5EE1", "#6FCCD8"],
+  //   series: [346, 54],
+  //   responsive: [
+  //     {
+  //       breakpoint: 480,
+  //       options: {
+  //         chart: {
+  //           width: 180,
+  //         },
+  //       },
+  //     },
+  //   ],
+  // });
+  // const [staffDonutChart] = useState<any>({
+  //   chart: {
+  //     height: 218,
+  //     width: 218,
+  //     type: "donut",
+  //     toolbar: {
+  //       show: false,
+  //     },
+  //   },
+  //   legend: {
+  //     show: false,
+  //   },
+  //   colors: ["#3D5EE1", "#6FCCD8"],
+  //   series: [620, 80],
+  //   responsive: [
+  //     {
+  //       breakpoint: 480,
+  //       options: {
+  //         chart: {
+  //           width: 180,
+  //         },
+  //       },
+  //     },
+  //   ],
+  // });
 
   const performanceData = {
     top: 45,
@@ -318,17 +318,6 @@ const DashboardAdmin = () => {
     // Ajoutez d'autres demandes de congés si nécessaire
   ];
 
-  const gradesData = {
-    categories: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep"],
-    series: [
-      {
-        name: "Notes des Étudiants",
-        data: [10, 41, 35, 51, 49, 62, 69, 91, 148], // Remplacez par les données réelles
-      },
-    ],
-  };
-
-
 
   //gestion logique 
   const [date, setDate] = useState(new Date());
@@ -359,14 +348,13 @@ const DashboardAdmin = () => {
     });
   };
 
-
   // Fonction pour gérer le changement de date
   const handleDateChange = (newDate: Date) => {
     if (newDate instanceof Date) {
       setDate(newDate); // Mise à jour de la date
     }
   };
-
+  //methode pour formater la date 
   const formatDate = (dateString: string): string => {
     const date = new Date(dateString);
 
@@ -377,7 +365,7 @@ const DashboardAdmin = () => {
       year: 'numeric',
     });
   };
-
+  //methode pour formater le temps
   const formatTime = (dateString: string): string => {
     const date = new Date(dateString);
 
@@ -388,7 +376,6 @@ const DashboardAdmin = () => {
     // Retourner le format "HHhMM"
     return `${hours}h${minutes}`;
   };
-
 
   // Effet pour mettre à jour les événements filtrés lorsque la date ou les événements changent
   useEffect(() => {
@@ -461,6 +448,103 @@ const DashboardAdmin = () => {
       setStats(calculatedStats); // Met à jour l'état local avec les statistiques
     }
   }, [usersData]);
+
+  //gestion des grades 
+  const [gradesData, setGradesData] = useState({
+    categories: [] as string[],
+    series: [
+      {
+        name: "Notes des Étudiants",
+        data: [] as number[],
+      },
+    ],
+  });
+
+  useEffect(() => {
+    // Fonction pour récupérer les notes
+    const fetchGrades = async () => {
+      try {
+        const response = await axios.get('http://localhost:4444/api/grades'); // Remplace par ton endpoint API
+        console.log(response.data);
+
+        const grades = response.data; // Si les données sont directement dans 'response'
+
+        // Transformation des données
+        const categories = grades.map((grade: any) => grade.appreciation || "No Appreciation"); // Utiliser l'appréciation comme catégorie
+        const data = grades.map((grade: any) => grade.value); // Les valeurs des notes
+
+        // Mise à jour du state
+        setGradesData({
+          categories,
+          series: [
+            {
+              name: "Notes des Étudiants",
+              data,
+            },
+          ],
+        });
+      } catch (err) {
+        console.log('Erreur lors du chargement des notes');
+      }
+    };
+
+    fetchGrades();
+  }, []);
+
+  //gestion attendance
+  const [studentDonutChart, setStudentDonutChart] = useState<{
+    chart: { height: number; width: number; type: string; toolbar: { show: boolean } };
+    legend: { show: boolean };
+    colors: string[];
+    series: number[];
+    responsive: { breakpoint: number; options: { chart: { width: number } } }[];
+  }>({
+    chart: { height: 218, width: 218, type: "donut", toolbar: { show: false } },
+    legend: { show: false },
+    colors: ["#3D5EE1", "#6FCCD8"],
+    series: [0, 0],
+    responsive: [{ breakpoint: 480, options: { chart: { width: 180 } } }],
+  });
+
+  const [teacherDonutChart, setTeacherDonutChart] = useState<{
+    chart: { height: number; width: number; type: string; toolbar: { show: boolean } };
+    legend: { show: boolean };
+    colors: string[];
+    series: number[];
+    responsive: { breakpoint: number; options: { chart: { width: number } } }[];
+  }>({
+    chart: { height: 218, width: 218, type: "donut", toolbar: { show: false } },
+    legend: { show: false },
+    colors: ["#3D5EE1", "#6FCCD8"],
+    series: [0, 0],
+    responsive: [{ breakpoint: 480, options: { chart: { width: 180 } } }],
+  });
+
+  useEffect(() => {
+    const fetchAttendanceStats = async () => {
+      try {
+        const response = await axios.get('http://localhost:4444/api/attendance/stats');
+        const { studentStats, teacherStats } = response.data;
+
+        setStudentDonutChart(prev => ({
+          ...prev,
+          series: [studentStats.present, studentStats.absent],
+        }));
+
+        setTeacherDonutChart(prev => ({
+          ...prev,
+          series: [teacherStats.present, teacherStats.absent],
+        }));
+      } catch (error) {
+        console.error("Erreur lors de la récupération des statistiques", error);
+      }
+    };
+
+    fetchAttendanceStats();
+  }, []);
+
+
+
 
   // Affichage des données dans l'interface
   if (isLoadingUsers) return <p>Chargement des informations...</p>;
@@ -659,7 +743,6 @@ const DashboardAdmin = () => {
                 <Attendance
                   studentDonutChart={studentDonutChart}
                   teacherDonutChart={teacherDonutChart}
-                  staffDonutChart={staffDonutChart}
                 />
 
                 {/* student grade */}

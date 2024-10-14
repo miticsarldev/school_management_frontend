@@ -6,13 +6,11 @@ import ReactApexChart from "react-apexcharts";
 type AttendanceProps = {
   studentDonutChart: any;
   teacherDonutChart: any;
-  staffDonutChart: any;
 };
 
 const Attendance: React.FC<AttendanceProps> = ({
   studentDonutChart,
   teacherDonutChart,
-  staffDonutChart,
 }) => {
   return (
     <div className="card">
@@ -161,49 +159,6 @@ const Attendance: React.FC<AttendanceProps> = ({
             </div>
           </div>
 
-          {/* Staff Tab */}
-          <div className="tab-pane fade" id="staff">
-            <div className="row gx-3">
-              <div className="col-sm-4">
-                <div className="card bg-light-300 shadow-none border-0">
-                  <div className="card-body p-3 text-center">
-                    <h5>45</h5>
-                    <p className="fs-12">Urgence</p>
-                  </div>
-                </div>
-              </div>
-              <div className="col-sm-4">
-                <div className="card bg-light-300 shadow-none border-0">
-                  <div className="card-body p-3 text-center">
-                    <h5>01</h5>
-                    <p className="fs-12">Absent</p>
-                  </div>
-                </div>
-              </div>
-              <div className="col-sm-4">
-                <div className="card bg-light-300 shadow-none border-0">
-                  <div className="card-body p-3 text-center">
-                    <h5>10</h5>
-                    <p className="fs-12">Retard</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="text-center">
-              <ReactApexChart
-                id="staff-chart"
-                className="mb-4"
-                options={staffDonutChart}
-                series={staffDonutChart.series}
-                type="donut"
-                height={210}
-              />
-              <Link to="staff-attendance" className="btn btn-light">
-                <i className="ti ti-calendar-share me-1" />
-                View All
-              </Link>
-            </div>
-          </div>
         </div>
       </div>
     </div>
