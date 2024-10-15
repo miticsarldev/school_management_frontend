@@ -1,13 +1,11 @@
-import React, { useRef, useState } from 'react'
+import { useRef} from 'react'
 import { Link } from 'react-router-dom'
-import ImageWithBasePath from '../../../core/common/imageWithBasePath'
-import { all_routes } from '../../router/all_routes'
-import { allClass, cast, feeGroup, feesTypes, gender } from '../../../core/common/selectoption/selectoption'
-import CommonSelect from '../../../core/common/commonSelect'
+import ImageWithBasePath from '../DashboardEnseignant/imageWithBasePath'
+import { allClass, cast, feeGroup, feesTypes, gender } from '../DashboardEnseignant/selectoption'
+import CommonSelect from '../DashboardEnseignant/commonSelect'
 import { Modal } from "react-bootstrap";
 
 const AssignModal = ({addModal,setAddModal,editModal,setEditModal}:any) => {
-    const routes = all_routes
     // const [show, setShow] = useState(false);
     const dropdownMenuRef = useRef<HTMLDivElement | null>(null);
     const dropdownMenuRef2 = useRef<HTMLDivElement | null>(null);
@@ -253,7 +251,7 @@ const AssignModal = ({addModal,setAddModal,editModal,setEditModal}:any) => {
                     <td>
                       <div className="d-flex align-items-center">
                         <Link
-                          to={routes.studentDetail}
+                          to={"#"}
                           className="avatar avatar-md"
                         >
                           <ImageWithBasePath
@@ -264,7 +262,7 @@ const AssignModal = ({addModal,setAddModal,editModal,setEditModal}:any) => {
                         </Link>
                         <div className="ms-2">
                           <p className="text-dark mb-0">
-                            <Link to={routes.studentDetail}>Janet</Link>
+                            <Link to={"#"}>Janet</Link>
                           </p>
                         </div>
                       </div>
@@ -289,7 +287,7 @@ const AssignModal = ({addModal,setAddModal,editModal,setEditModal}:any) => {
                     <td>
                       <div className="d-flex align-items-center">
                         <Link
-                          to={routes.studentDetail}
+                          to={"#"}
                           className="avatar avatar-md"
                         >
                           <ImageWithBasePath
@@ -300,7 +298,7 @@ const AssignModal = ({addModal,setAddModal,editModal,setEditModal}:any) => {
                         </Link>
                         <div className="ms-2">
                           <p className="text-dark mb-0">
-                            <Link to={routes.studentDetail}>Ralph</Link>
+                            <Link to={"#"}>Ralph</Link>
                           </p>
                         </div>
                       </div>
@@ -325,7 +323,7 @@ const AssignModal = ({addModal,setAddModal,editModal,setEditModal}:any) => {
                     <td>
                       <div className="d-flex align-items-center">
                         <Link
-                          to={routes.studentDetail}
+                          to={"#"}
                           className="avatar avatar-md"
                         >
                           <ImageWithBasePath
@@ -336,7 +334,7 @@ const AssignModal = ({addModal,setAddModal,editModal,setEditModal}:any) => {
                         </Link>
                         <div className="ms-2">
                           <p className="text-dark mb-0">
-                            <Link to={routes.studentDetail}>Julie</Link>
+                            <Link to={"#"}>Julie</Link>
                           </p>
                         </div>
                       </div>
@@ -361,7 +359,7 @@ const AssignModal = ({addModal,setAddModal,editModal,setEditModal}:any) => {
                     <td>
                       <div className="d-flex align-items-center">
                         <Link
-                          to={routes.studentDetail}
+                          to={"#"}
                           className="avatar avatar-md"
                         >
                           <ImageWithBasePath
@@ -372,7 +370,7 @@ const AssignModal = ({addModal,setAddModal,editModal,setEditModal}:any) => {
                         </Link>
                         <div className="ms-2">
                           <p className="text-dark mb-0">
-                            <Link to={routes.studentDetail}>Ryan</Link>
+                            <Link to={"#"}>Ryan</Link>
                           </p>
                         </div>
                       </div>
@@ -397,7 +395,7 @@ const AssignModal = ({addModal,setAddModal,editModal,setEditModal}:any) => {
                     <td>
                       <div className="d-flex align-items-center">
                         <Link
-                          to={routes.studentDetail}
+                          to={"#"}
                           className="avatar avatar-md"
                         >
                           <ImageWithBasePath
@@ -408,7 +406,7 @@ const AssignModal = ({addModal,setAddModal,editModal,setEditModal}:any) => {
                         </Link>
                         <div className="ms-2">
                           <p className="text-dark mb-0">
-                            <Link to={routes.studentDetail}>Susan</Link>
+                            <Link to={"#"}>Susan</Link>
                           </p>
                         </div>
                       </div>
@@ -433,7 +431,7 @@ const AssignModal = ({addModal,setAddModal,editModal,setEditModal}:any) => {
                     <td>
                       <div className="d-flex align-items-center">
                         <Link
-                          to={routes.studentDetail}
+                          to={"#"}
                           className="avatar avatar-md"
                         >
                           <ImageWithBasePath
@@ -444,7 +442,7 @@ const AssignModal = ({addModal,setAddModal,editModal,setEditModal}:any) => {
                         </Link>
                         <div className="ms-2">
                           <p className="text-dark mb-0">
-                            <Link to={routes.studentDetail}>Richard</Link>
+                            <Link to={"#"}>Richard</Link>
                           </p>
                         </div>
                       </div>
@@ -469,7 +467,7 @@ const AssignModal = ({addModal,setAddModal,editModal,setEditModal}:any) => {
                     <td>
                       <div className="d-flex align-items-center">
                         <Link
-                          to={routes.studentDetail}
+                          to={"#"}
                           className="avatar avatar-md"
                         >
                           <ImageWithBasePath
@@ -480,7 +478,7 @@ const AssignModal = ({addModal,setAddModal,editModal,setEditModal}:any) => {
                         </Link>
                         <div className="ms-2">
                           <p className="text-dark mb-0">
-                            <Link to={routes.studentDetail}>Veronica</Link>
+                            <Link to={"#"}>Veronica</Link>
                           </p>
                         </div>
                       </div>
@@ -505,7 +503,7 @@ const AssignModal = ({addModal,setAddModal,editModal,setEditModal}:any) => {
           <Link to="#" onClick={handleClose} className="btn btn-light me-2" data-bs-dismiss="modal">
             Cancel
           </Link>
-          <Link to={routes.feesAssign} onClick={handleClose} className="btn btn-primary">
+          <Link to={"#"} onClick={handleClose} className="btn btn-primary">
             Add Fees
           </Link>
         </div>
@@ -745,7 +743,7 @@ const AssignModal = ({addModal,setAddModal,editModal,setEditModal}:any) => {
                     <td>
                       <div className="d-flex align-items-center">
                         <Link
-                          to={routes.studentDetail}
+                          to={"#"}
                           className="avatar avatar-md"
                         >
                           <ImageWithBasePath
@@ -756,7 +754,7 @@ const AssignModal = ({addModal,setAddModal,editModal,setEditModal}:any) => {
                         </Link>
                         <div className="ms-2">
                           <p className="text-dark mb-0">
-                            <Link to={routes.studentDetail}>Janet</Link>
+                            <Link to={"#"}>Janet</Link>
                           </p>
                         </div>
                       </div>
@@ -781,7 +779,7 @@ const AssignModal = ({addModal,setAddModal,editModal,setEditModal}:any) => {
                     <td>
                       <div className="d-flex align-items-center">
                         <Link
-                          to={routes.studentDetail}
+                          to={"#"}
                           className="avatar avatar-md"
                         >
                           <ImageWithBasePath
@@ -792,7 +790,7 @@ const AssignModal = ({addModal,setAddModal,editModal,setEditModal}:any) => {
                         </Link>
                         <div className="ms-2">
                           <p className="text-dark mb-0">
-                            <Link to={routes.studentDetail}>Ralph</Link>
+                            <Link to={"#"}>Ralph</Link>
                           </p>
                         </div>
                       </div>
@@ -817,7 +815,7 @@ const AssignModal = ({addModal,setAddModal,editModal,setEditModal}:any) => {
                     <td>
                       <div className="d-flex align-items-center">
                         <Link
-                          to={routes.studentDetail}
+                          to={"#"}
                           className="avatar avatar-md"
                         >
                           <ImageWithBasePath
@@ -828,7 +826,7 @@ const AssignModal = ({addModal,setAddModal,editModal,setEditModal}:any) => {
                         </Link>
                         <div className="ms-2">
                           <p className="text-dark mb-0">
-                            <Link to={routes.studentDetail}>Julie</Link>
+                            <Link to={"#"}>Julie</Link>
                           </p>
                         </div>
                       </div>
@@ -853,7 +851,7 @@ const AssignModal = ({addModal,setAddModal,editModal,setEditModal}:any) => {
                     <td>
                       <div className="d-flex align-items-center">
                         <Link
-                          to={routes.studentDetail}
+                          to={"#"}
                           className="avatar avatar-md"
                         >
                           <ImageWithBasePath
@@ -864,7 +862,7 @@ const AssignModal = ({addModal,setAddModal,editModal,setEditModal}:any) => {
                         </Link>
                         <div className="ms-2">
                           <p className="text-dark mb-0">
-                            <Link to={routes.studentDetail}>Ryan</Link>
+                            <Link to={"#"}>Ryan</Link>
                           </p>
                         </div>
                       </div>
@@ -889,7 +887,7 @@ const AssignModal = ({addModal,setAddModal,editModal,setEditModal}:any) => {
                     <td>
                       <div className="d-flex align-items-center">
                         <Link
-                          to={routes.studentDetail}
+                          to={"#"}
                           className="avatar avatar-md"
                         >
                           <ImageWithBasePath
@@ -900,7 +898,7 @@ const AssignModal = ({addModal,setAddModal,editModal,setEditModal}:any) => {
                         </Link>
                         <div className="ms-2">
                           <p className="text-dark mb-0">
-                            <Link to={routes.studentDetail}>Susan</Link>
+                            <Link to={"#"}>Susan</Link>
                           </p>
                         </div>
                       </div>
@@ -925,7 +923,7 @@ const AssignModal = ({addModal,setAddModal,editModal,setEditModal}:any) => {
                     <td>
                       <div className="d-flex align-items-center">
                         <Link
-                          to={routes.studentDetail}
+                          to={"#"}
                           className="avatar avatar-md"
                         >
                           <ImageWithBasePath
@@ -936,7 +934,7 @@ const AssignModal = ({addModal,setAddModal,editModal,setEditModal}:any) => {
                         </Link>
                         <div className="ms-2">
                           <p className="text-dark mb-0">
-                            <Link to={routes.studentDetail}>Richard</Link>
+                            <Link to={"#"}>Richard</Link>
                           </p>
                         </div>
                       </div>
@@ -961,7 +959,7 @@ const AssignModal = ({addModal,setAddModal,editModal,setEditModal}:any) => {
                     <td>
                       <div className="d-flex align-items-center">
                         <Link
-                          to={routes.studentDetail}
+                          to={"#"}
                           className="avatar avatar-md"
                         >
                           <ImageWithBasePath
@@ -972,7 +970,7 @@ const AssignModal = ({addModal,setAddModal,editModal,setEditModal}:any) => {
                         </Link>
                         <div className="ms-2">
                           <p className="text-dark mb-0">
-                            <Link to={routes.studentDetail}>Veronica</Link>
+                            <Link to={"#"}>Veronica</Link>
                           </p>
                         </div>
                       </div>
@@ -997,7 +995,7 @@ const AssignModal = ({addModal,setAddModal,editModal,setEditModal}:any) => {
           <Link to="#" onClick={handleClose} className="btn btn-light me-2" data-bs-dismiss="modal">
             Cancel
           </Link>
-          <Link to={routes.feesAssign} onClick={handleClose} className="btn btn-primary">
+          <Link to={"#"} onClick={handleClose} className="btn btn-primary">
             Save Changes
           </Link>
         </div>

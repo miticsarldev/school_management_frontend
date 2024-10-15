@@ -14,7 +14,13 @@ import Dashboard from "@/components/Dashboard";
 import DashboardAdmin from "./components/DashboardAdmin";
 import DashboardEnseignant from "./components/DashboardEnseignant";
 import DashboardEtudiant from "./components/DashboardEtudiant";
+import TeachersRoutine from "./components/TeacherDetails/teachersRoutine.js";
 import CompanyPage from "./components/CompanyPageSass/CompanyPage";
+import TeacherForm from "./components/TeacherDetails/TeacherForm.js";
+import TeacherLeave from "./components/TeacherDetails/teacherLeave.js";
+import TeacherSalary from "./components/TeacherDetails/teacherSalary.js";
+import FeesTypes from "./components/Fees/feesTypes.js";
+import Payroll from "./components/payroll/Payroll.js";
 import "../style/css/feather.css";
 import "../index.scss";
 import "../style/icon/boxicons/boxicons/css/boxicons.min.css";
@@ -76,7 +82,8 @@ function App() {
                       <DashboardEtudiant />
                     </RequireAuth>
                   }
-                />              
+                />
+                
                 {/* To be filled out one by one */}
                 <Route
                   path="/dashboard/users"
@@ -86,6 +93,55 @@ function App() {
                     </RequireAuth>
                   }
                 />
+                <Route
+                  path="/dashboard/form"
+                  element={
+                    <RequireAuth>
+                      <TeacherForm />
+                    </RequireAuth>
+                  }
+                />
+                <Route
+                  path="/dashboard/routine"
+                  element={
+                    <RequireAuth>
+                      <TeachersRoutine />
+                    </RequireAuth>
+                  }
+                />
+                <Route
+                  path="/dashboard/leave"
+                  element={
+                    <RequireAuth>
+                      <TeacherLeave />
+                    </RequireAuth>
+                  }
+                />
+                <Route
+                  path="/dashboard/salary"
+                  element={
+                    <RequireAuth>
+                      <TeacherSalary/>
+                    </RequireAuth>
+                  }
+                />
+                <Route
+                  path="/dashboard/fees"
+                  element={
+                    <RequireAuth>
+                      <FeesTypes/>
+                    </RequireAuth>
+                  }
+                />
+                <Route
+                  path="/dashboard/payroll"
+                  element={
+                    <RequireAuth>
+                      <Payroll/>
+                    </RequireAuth>
+                  }
+                />
+                
               </Route>
             </Route>
           </Route>

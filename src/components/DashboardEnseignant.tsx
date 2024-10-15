@@ -9,12 +9,21 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import dayjs from "dayjs";
 import { DatePicker} from "antd";
+import { format } from 'date-fns'
 import Slider from "react-slick";
 import 'bootstrap/dist/css/bootstrap.min.css';
-
-
+import {
+  selectAuth
+} from "@/redux/features/authSlice";
+import { useAppSelector } from "@/redux/hooks";
+import { useGetAllTimetablesQuery } from "../redux/features/timetableSlice";
+import { useGetAllEventsQuery } from "@/redux/features/eventSlice";
+import { useGetAllLeavesQuery } from "../redux/features/leaveSlice";
+import { useGetAllClassroomsQuery } from "@/redux/features/classroomSlice";
 const DashboardEnseigant = () => {
   const [date, setDate] = useState<Nullable<Date>>(null);
+  const { user } = useAppSelector(selectAuth);
+  
   function SampleNextArrow(props: any) {
     const { style, onClick } = props;
     return (
@@ -179,6 +188,39 @@ const DashboardEnseigant = () => {
   const formattedDate = `${month}-${day}-${year}`;
   const defaultValue = dayjs(formattedDate);
 
+  const { data: timetables, error, isLoading } = useGetAllTimetablesQuery();
+  
+// Fonction pour obtenir la couleur de la barre de progression
+const getProgressBarColor = (performance: number) => {
+  if (performance >= 80) {
+    return 'bg-success'; // Vert si la performance est >= 80
+  } else if (performance >= 50) {
+    return 'bg-warning'; // Jaune si la performance est entre 50 et 79
+  } else {
+    return 'bg-danger'; // Rouge si la performance est < 50
+  }
+};
+
+  // Fonction pour vérifier si une classe est passée
+  const isClassPast = (startTime: string): boolean => {
+    const [startHour, startMinute] = startTime.split(":").map(Number);
+    const classDate = new Date();
+    classDate.setHours(startHour, startMinute, 0, 0);
+    return new Date() > classDate;
+  };
+
+  const { data: events } = useGetAllEventsQuery();
+  
+  const { data: leaves} = useGetAllLeavesQuery();
+
+  const { data: classrooms} = useGetAllClassroomsQuery();
+  console.log(classrooms, "pas trouver");
+  const bestPerformers = (classrooms || [])
+  .filter((classroom) => classroom.performance !== undefined) // Vérifie que la performance est définie
+  .sort((a, b) => b.performance - a.performance) // Trie par performance décroissante
+  .slice(0, 3); // Prend les 3 meilleures classes
+  
+  
   return (
     <>
       {/* Page Wrapper */}
@@ -209,7 +251,9 @@ const DashboardEnseigant = () => {
             <div className="col-md-12 d-flex">
               <div className="card flex-fill bg-info bg-03">
                 <div className="card-body">
-                  <h1 className="text-white mb-1"> Good Morning Ms.Teena</h1>
+                <h1 className="text-white mb-1">
+                  Bonjour, {user?.firstname} {user?.lastname}
+                </h1>
                   <p className="text-white mb-3">Have a Good day at work</p>
                   <p className="text-light">
                     Notice : There is a staff meeting at 9AM today, Dont forget
@@ -240,7 +284,7 @@ const DashboardEnseigant = () => {
                               #T594651
                             </span>
                             <h3 className="text-white mb-1 text-truncate">
-                              Henriques Morgan{" "}
+                            {user?.firstname} {user?.lastname}
                             </h3>
                             <div className="d-flex align-items-center flex-wrap text-light row-gap-2">
                               <span className="me-2">Classes : I-A, V-B</span>
@@ -320,18 +364,13 @@ const DashboardEnseigant = () => {
               <div className="card">
                 <div className="card-header d-flex align-items-center justify-content-between">
                   <div className="d-flex align-items-center">
-                    <h4 className="me-2">Today's Class</h4>
+                    <h4 className="me-2">Cours d'aujourd'hui</h4>
                     <div className="owl-nav slide-nav2 text-end nav-control" />
                   </div>
                   <div className="d-inline-flex align-items-center class-datepick">
                     <span className="icon">
                       <i className="ti ti-chevron-left" />
                     </span>
-                    {/* <input
-                      type="text"
-                      className="form-control datetimepicker border-0"
-                      placeholder="16 May 2024"
-                    /> */}
                     <DatePicker
                       className="form-control datetimepicker border-0"
                       format={{
@@ -340,6 +379,7 @@ const DashboardEnseigant = () => {
                       }}
                       defaultValue={defaultValue}
                       placeholder="16 May 2024"
+                      onChange={(date: Date | null) => setDate(date)}
                     />
                     <span className="icon">
                       <i className="ti ti-chevron-right" />
@@ -347,56 +387,29 @@ const DashboardEnseigant = () => {
                   </div>
                 </div>
                 <div className="card-body">
-                  <Slider
-                    {...settings}
-                    className="owl-carousel owl-theme task-slider"
-                  >
-                    <div className="item">
-                      <div className="bg-light-400 rounded p-3">
-                        <span className="text-decoration-line-through badge badge-danger badge-lg mb-2">
-                          <i className="ti ti-clock me-1" />
-                          09:00 - 09:45
-                        </span>
-                        <p className="text-dark">Class V, B</p>
-                      </div>
-                    </div>
-                    <div className="item">
-                      <div className="bg-light-400 rounded p-3">
-                        <span className="text-decoration-line-through badge badge-danger badge-lg mb-2">
-                          <i className="ti ti-clock me-1" />
-                          09:00 - 09:45
-                        </span>
-                        <p className="text-dark">Class IV, C</p>
-                      </div>
-                    </div>
-                    <div className="item">
-                      <div className="bg-light-400 rounded p-3">
-                        <span className="badge badge-primary badge-lg mb-2">
-                          <i className="ti ti-clock me-1" />
-                          11:30 - 12:150
-                        </span>
-                        <p className="text-dark">Class V, B</p>
-                      </div>
-                    </div>
-                    <div className="item">
-                      <div className="bg-light-400 rounded p-3">
-                        <span className="badge badge-primary badge-lg mb-2">
-                          <i className="ti ti-clock me-1" />
-                          01:30 - 02:15
-                        </span>
-                        <p className="text-dark">Class V, B</p>
-                      </div>
-                    </div>
-                    <div className="item">
-                      <div className="bg-light-400 rounded p-3">
-                        <span className="badge badge-primary badge-lg mb-2">
-                          <i className="ti ti-clock me-1" />
-                          02:15 - 03:00
-                        </span>
-                        <p className="text-dark">Class V, B</p>
-                      </div>
-                    </div>
-                  </Slider>
+                  {isLoading ? (
+                    <p>Loading classes...</p>
+                  ) : error ? (
+                    <p>Error loading timetables: {JSON.stringify(error)}</p>
+                  ) : timetables && timetables.length > 0 ? (
+                    <Slider {...settings} className="owl-carousel owl-theme task-slider">
+                      {timetables.map((timetable: Timetable) => (
+                        <div className="item" key={timetable.id}>
+                          <div className="bg-light-400 rounded p-3">
+                            <span className={`badge badge-${isClassPast(timetable.start_time) ? 'danger' : 'primary'} badge-lg mb-2`}>
+                              <i className="ti ti-clock me-1" />
+                              {timetable.start_time} - {timetable.end_time}
+                            </span>
+                            <p className="text-dark">Class:
+                              {timetable.classRoom_id}, {timetable.day}
+                            </p>
+                          </div>
+                        </div>
+                      ))}
+                    </Slider>
+                  ) : (
+                    <p>Aucun emploi du temps disponible.</p>
+                  )}
                 </div>
               </div>
               {/* /Today's Class */}
@@ -508,151 +521,39 @@ const DashboardEnseigant = () => {
                 {/* /Attendance */}
                 {/* Best Performers */}
                 <div className="col-xxl-6 col-xl-6 col-md-6 d-flex flex-column">
-                  <div className="card">
-                    <div className="card-header d-flex align-items-center justify-content-between">
-                      <h4 className="card-title">Best Performers</h4>
-                      {/* <Link
-                        to={routes.studentList}
-                        className="link-primary fw-medium"
-                      >
-                        View All
-                      </Link> */}
-                    </div>
-                    <div className="card-body pb-1">
-                      <div className="d-sm-flex align-items-center mb-1">
-                        <div className="w-50 mb-2">
-                          <h6>Class IV, C</h6>
-                        </div>
-                        <div className="class-progress w-100 ms-sm-3 mb-3">
-                          <div
-                            className="progress justify-content-between"
-                            role="progressbar"
-                            aria-label="Basic example"
-                            aria-valuenow={0}
-                            aria-valuemin={0}
-                            aria-valuemax={100}
-                          >
-                            <div
-                              className="progress-bar bg-primary"
-                              style={{ width: "80%" }}
-                            >
-                              <div className="avatar-list-stacked avatar-group-xs d-flex">
-                                <span className="avatar avatar-rounded">
-                                  <ImageWithBasePath
-                                    className="border border-white"
-                                    src="/students/student-01.jpg"
-                                    alt="img"
-                                  />
-                                </span>
-                                <span className="avatar avatar-rounded">
-                                  <ImageWithBasePath
-                                    className="border border-white"
-                                    src="/students/student-02.jpg"
-                                    alt="img"
-                                  />
-                                </span>
-                                <span className="avatar avatar-rounded">
-                                  <ImageWithBasePath
-                                    src="/students/student-03.jpg"
-                                    alt="img"
-                                  />
-                                </span>
-                              </div>
-                            </div>
-                            <span className="badge">80%</span>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="d-sm-flex align-items-center">
-                        <div className="w-50 mb-2">
-                          <h6>Class III, B</h6>
-                        </div>
-                        <div className="class-progress w-100 ms-sm-3 mb-3">
-                          <div
-                            className="progress justify-content-between"
-                            role="progressbar"
-                            aria-label="Basic example"
-                            aria-valuenow={0}
-                            aria-valuemin={0}
-                            aria-valuemax={100}
-                          >
-                            <div
-                              className="progress-bar bg-warning"
-                              style={{ width: "54%" }}
-                            >
-                              <div className="avatar-list-stacked avatar-group-xs d-flex">
-                                <span className="avatar avatar-rounded">
-                                  <ImageWithBasePath
-                                    className="border border-white"
-                                    src="/profiles/avatar-27.jpg"
-                                    alt="img"
-                                  />
-                                </span>
-                                <span className="avatar avatar-rounded">
-                                  <ImageWithBasePath
-                                    className="border border-white"
-                                    src="/students/student-05.jpg"
-                                    alt="img"
-                                  />
-                                </span>
-                                <span className="avatar avatar-rounded">
-                                  <ImageWithBasePath
-                                    src="/students/student-06.jpg"
-                                    alt="img"
-                                  />
-                                </span>
-                              </div>
-                            </div>
-                            <span className="badge">54%</span>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="d-sm-flex align-items-center mb-1">
-                        <div className="w-50 mb-2">
-                          <h6>Class V, A</h6>
-                        </div>
-                        <div className="class-progress w-100 ms-sm-3 mb-3">
-                          <div
-                            className="progress justify-content-between"
-                            role="progressbar"
-                            aria-label="Basic example"
-                            aria-valuenow={0}
-                            aria-valuemin={0}
-                            aria-valuemax={100}
-                          >
-                            <div
-                              className="progress-bar bg-skyblue"
-                              style={{ width: "76%" }}
-                            >
-                              <div className="avatar-list-stacked avatar-group-xs d-flex">
-                                <span className="avatar avatar-rounded">
-                                  <ImageWithBasePath
-                                    className="border border-white"
-                                    src="/profiles/avatar-27.jpg"
-                                    alt="img"
-                                  />
-                                </span>
-                                <span className="avatar avatar-rounded">
-                                  <ImageWithBasePath
-                                    className="border border-white"
-                                    src="/students/student-05.jpg"
-                                    alt="img"
-                                  />
-                                </span>
-                                <span className="avatar avatar-rounded">
-                                  <ImageWithBasePath
-                                    src="/students/student-06.jpg"
-                                    alt="img"
-                                  />
-                                </span>
-                              </div>
-                            </div>
-                            <span className="badge">7%</span>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
+                <div className="card">
+                  <div className="card-header d-flex align-items-center justify-content-between">
+                    <h4 className="card-title">Best Performers</h4>
                   </div>
+                  <div className="card-body pb-1">
+                    {bestPerformers.map((classroom, index) => (
+                      <div className="d-sm-flex align-items-center mb-1" key={index}>
+                        <div className="w-50 mb-2">
+                          {/* Utilisation de 'name' au lieu de 'classGrade' */}
+                          <h6>{`Class: ${classroom.name || 'N/A'}`}</h6>
+                        </div>
+                        <div className="class-progress w-100 ms-sm-3 mb-3">
+                          <div
+                            className="progress justify-content-between"
+                            role="progressbar"
+                            aria-valuenow={classroom.performance || 0}
+                            aria-valuemin={0}
+                            aria-valuemax={100}
+                          >
+                            <div
+                              className={`progress-bar ${getProgressBarColor(classroom.performance || 0)}`}
+                              style={{ width: `${classroom.performance || 0}%` }}
+                            >
+                              {/* Suppression de la partie des étudiants si non utilisée */}
+                            </div>
+                            <span className="badge">{`${classroom.performance || 0}%`}</span>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
                   <div className="card flex-fill">
                     <div className="card-header d-flex align-items-center justify-content-between">
                       <h4 className="card-title">Best student</h4>
@@ -769,7 +670,7 @@ const DashboardEnseigant = () => {
             <div className="col-xxl-4 col-xl-12 d-flex">
               <div className="card flex-fill">
                 <div className="card-header d-flex align-items-center justify-content-between">
-                  <h4 className="card-title">Schedules</h4>
+                  <h4 className="card-title">Horaires</h4>
                   <Link
                     to="#"
                     className="link-primary fw-medium me-2"
@@ -777,7 +678,7 @@ const DashboardEnseigant = () => {
                     data-bs-target="#add_event"
                   >
                     <i className="ti ti-square-plus me-1" />
-                    Add New
+                    Ajouter un nouveau
                   </Link>
                 </div>
                 <div className="card-body">
@@ -793,174 +694,36 @@ const DashboardEnseigant = () => {
                         onChange={(date:any) => setStartDate(date)}
                         inline
                         /> */}
-                  <h4 className="mb-3">Upcoming Events</h4>
-                  <div className="event-scroll">
-                    {/* Event Item */}
-                    <div className="border-start border-danger border-3 shadow-sm p-3 mb-3">
-                      <div className="d-flex align-items-center mb-3 pb-3 border-bottom">
-                        <span className="avatar p-1 me-2 bg-danger-transparent flex-shrink-0">
-                          <i className="ti ti-vacuum-cleaner fs-24" />
-                        </span>
-                        <div className="flex-fill">
-                          <h6 className="mb-1">Vacation Meeting</h6>
-                          <p className="d-flex align-items-center">
-                            <i className="ti ti-calendar me-1" />
-                            07 July 2024 - 07 July 2024
-                          </p>
-                        </div>
-                      </div>
-                      <div className="d-flex align-items-center justify-content-between">
-                        <p className="mb-0">
-                          <i className="ti ti-clock me-1" />
-                          09:10 AM - 10:50 PM
-                        </p>
-                        <div className="avatar-list-stacked avatar-group-sm">
-                          <span className="avatar border-0">
-                            <ImageWithBasePath
-                              src="/parents/parent-11.jpg"
-                              className="rounded-circle"
-                              alt="img"
-                            />
-                          </span>
-                          <span className="avatar border-0">
-                            <ImageWithBasePath
-                              src="/parents/parent-13.jpg"
-                              className="rounded-circle"
-                              alt="img"
-                            />
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                    {/* /Event Item */}
-                    {/* Event Item */}
-                    <div className="border-start border-skyblue border-3 shadow-sm p-3 mb-3">
-                      <div className="d-flex align-items-center mb-3 pb-3 border-bottom">
-                        <span className="avatar p-1 me-2 bg-teal-transparent flex-shrink-0">
-                          <i className="ti ti-user-edit text-info fs-20" />
-                        </span>
-                        <div className="flex-fill">
-                          <h6 className="mb-1">Parents, Teacher Meet</h6>
-                          <p className="d-flex align-items-center">
-                            <i className="ti ti-calendar me-1" />
-                            15 July 2024
-                          </p>
-                        </div>
-                      </div>
-                      <div className="d-flex align-items-center justify-content-between">
-                        <p className="mb-0">
-                          <i className="ti ti-clock me-1" />
-                          09:10AM - 10:50PM
-                        </p>
-                        <div className="avatar-list-stacked avatar-group-sm">
-                          <span className="avatar border-0">
-                            <ImageWithBasePath
-                              src="/parents/parent-01.jpg"
-                              className="rounded-circle"
-                              alt="img"
-                            />
-                          </span>
-                          <span className="avatar border-0">
-                            <ImageWithBasePath
-                              src="/parents/parent-07.jpg"
-                              className="rounded-circle"
-                              alt="img"
-                            />
-                          </span>
-                          <span className="avatar border-0">
-                            <ImageWithBasePath
-                              src="/parents/parent-02.jpg"
-                              className="rounded-circle"
-                              alt="img"
-                            />
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                    {/* /Event Item */}
-                    {/* Event Item */}
-                    <div className="border-start border-info border-3 shadow-sm p-3 mb-3">
-                      <div className="d-flex align-items-center mb-3 pb-3 border-bottom">
-                        <span className="avatar p-1 me-2 bg-info-transparent flex-shrink-0">
-                          <i className="ti ti-users-group fs-20" />
-                        </span>
-                        <div className="flex-fill">
-                          <h6 className="mb-1">Staff Meeting</h6>
-                          <p className="d-flex align-items-center">
-                            <i className="ti ti-calendar me-1" />
-                            10 July 2024
-                          </p>
-                        </div>
-                      </div>
-                      <div className="d-flex align-items-center justify-content-between">
-                        <p className="mb-0">
-                          <i className="ti ti-clock me-1" />
-                          09:10AM - 10:50PM
-                        </p>
-                        <div className="avatar-list-stacked avatar-group-sm">
-                          <span className="avatar border-0">
-                            <ImageWithBasePath
-                              src="/parents/parent-05.jpg"
-                              className="rounded-circle"
-                              alt="img"
-                            />
-                          </span>
-                          <span className="avatar border-0">
-                            <ImageWithBasePath
-                              src="/parents/parent-06.jpg"
-                              className="rounded-circle"
-                              alt="img"
-                            />
-                          </span>
-                          <span className="avatar border-0">
-                            <ImageWithBasePath
-                              src="/parents/parent-07.jpg"
-                              className="rounded-circle"
-                              alt="img"
-                            />
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                    {/* /Event Item */}
-                    {/* Event Item */}
-                    <div className="border-start border-secondary border-3 shadow-sm p-3 mb-0">
-                      <div className="d-flex align-items-center mb-3 pb-3 border-bottom">
-                        <span className="avatar p-1 me-2 bg-secondary-transparent flex-shrink-0">
-                          <i className="ti ti-campfire fs-24" />
-                        </span>
-                        <div className="flex-fill">
-                          <h6 className="mb-1">Admission Camp</h6>
-                          <p className="d-flex align-items-center">
-                            <i className="ti ti-calendar me-1" />
-                            12 July 2024
-                          </p>
-                        </div>
-                      </div>
-                      <div className="d-flex align-items-center justify-content-between">
-                        <p className="mb-0">
-                          <i className="ti ti-clock me-1" />
-                          09:10 AM - 10:50 PM
-                        </p>
-                        <div className="avatar-list-stacked avatar-group-sm">
-                          <span className="avatar border-0">
-                            <ImageWithBasePath
-                              src="/parents/parent-11.jpg"
-                              className="rounded-circle"
-                              alt="img"
-                            />
-                          </span>
-                          <span className="avatar border-0">
-                            <ImageWithBasePath
-                              src="/parents/parent-13.jpg"
-                              className="rounded-circle"
-                              alt="img"
-                            />
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                    {/* /Event Item */}
+                  <h4 className="mb-3">Evenement à venir</h4>
+      <div className="event-scroll">
+        {events?.map((event, index) => (
+          <div key={index} className="border-start border-danger border-3 shadow-sm p-3 mb-3">
+            <div className="d-flex align-items-center mb-3 pb-3 border-bottom">
+              <span className="avatar p-1 me-2 bg-danger-transparent flex-shrink-0">
+                <i className="ti ti-vacuum-cleaner fs-24" />
+              </span>
+              <div className="flex-fill">
+                <h6 className="mb-1">{event.title}</h6>
+                <p className="d-flex align-items-center">
+                  <i className="ti ti-calendar me-1" />
+                  {format(new Date(event.start_date), 'dd MMMM yyyy')} - {format(new Date(event.end_date), 'dd MMMM yyyy')}
+                </p>
+              </div>
+            </div>
+            <div className="d-flex align-items-center justify-content-between">
+              <p className="mb-0">
+                <i className="ti ti-clock me-1" />
+                {format(new Date(event.start_hour), 'hh:mm a')} - {format(new Date(event.end_hour), 'hh:mm a')}
+              </p>
+              <div className="avatar-list-stacked avatar-group-sm">
+                {/* Vous pouvez ajouter des images ici */}
+              </div>
+            </div>
+          </div>
+        ))}
+                  
+
+
                   </div>
                 </div>
               </div>
@@ -1040,9 +803,7 @@ const DashboardEnseigant = () => {
                           <th>ID</th>
                           <th>Name</th>
                           <th>Class </th>
-                          <th>Section</th>
                           <th>Marks %</th>
-                          <th>CGPA</th>
                           <th>Status</th>
                         </tr>
                       </thead>
@@ -1069,9 +830,7 @@ const DashboardEnseigant = () => {
                             </div>
                           </td>
                           <td>III</td>
-                          <td>A</td>
                           <td>89%</td>
-                          <td>4.2</td>
                           <td>
                             <span className="badge bg-success">Pass</span>
                           </td>
@@ -1100,9 +859,7 @@ const DashboardEnseigant = () => {
                             </div>
                           </td>
                           <td>IV</td>
-                          <td>B</td>
                           <td>88%</td>
-                          <td>3.2</td>
                           <td>
                             <span className="badge bg-success">Pass</span>
                           </td>
@@ -1132,9 +889,7 @@ const DashboardEnseigant = () => {
                             </div>
                           </td>
                           <td>II</td>
-                          <td>A</td>
                           <td>69%</td>
-                          <td>4.5</td>
                           <td>
                             <span className="badge bg-success">Pass</span>
                           </td>
@@ -1162,9 +917,7 @@ const DashboardEnseigant = () => {
                             </div>
                           </td>
                           <td>I</td>
-                          <td>B</td>
                           <td>21%</td>
-                          <td>4.5</td>
                           <td>
                             <span className="badge bg-success">Pass</span>
                           </td>
@@ -1191,9 +944,7 @@ const DashboardEnseigant = () => {
                             </div>
                           </td>
                           <td>II</td>
-                          <td>B</td>
                           <td>31%</td>
-                          <td>3.9</td>
                           <td>
                             <span className="badge bg-danger">Fail</span>
                           </td>
@@ -1207,100 +958,41 @@ const DashboardEnseigant = () => {
             {/* /Student Marks */}
             {/* Leave Status */}
             <div className="col-xxl-4 col-xl-5 d-flex">
-              <div className="card flex-fill">
-                <div className="card-header d-flex align-items-center justify-content-between">
-                  <h4 className="card-title">Leave Status</h4>
-                  <div className="dropdown">
-                    <Link
-                      to="#"
-                      className="bg-white dropdown-toggle"
-                      data-bs-toggle="dropdown"
-                    >
-                      <i className="ti ti-calendar me-2" />
-                      This Month
-                    </Link>
-                    <ul className="dropdown-menu mt-2 p-3">
-                      <li>
-                        <Link to="#" className="dropdown-item rounded-1">
-                          This Month
-                        </Link>
-                      </li>
-                      <li>
-                        <Link to="#" className="dropdown-item rounded-1">
-                          This Year
-                        </Link>
-                      </li>
-                      <li>
-                        <Link to="#" className="dropdown-item rounded-1">
-                          Last Week
-                        </Link>
-                      </li>
-                    </ul>
+      <div className="card flex-fill">
+        <div className="card-header d-flex align-items-center justify-content-between">
+          <h4 className="card-title">Leave Status</h4>
+          <div className="dropdown">
+            <a href="#" className="bg-white dropdown-toggle" data-bs-toggle="dropdown">
+              <i className="ti ti-calendar me-2"></i> This Month
+            </a>
+            <ul className="dropdown-menu mt-2 p-3">
+              <li><a href="#" className="dropdown-item rounded-1">This Month</a></li>
+              <li><a href="#" className="dropdown-item rounded-1">This Year</a></li>
+              <li><a href="#" className="dropdown-item rounded-1">Last Week</a></li>
+            </ul>
+          </div>
+        </div>
+
+        <div className="card-body">
+            {leaves?.map(leave => (
+              <div className="bg-light-300 d-sm-flex align-items-center justify-content-between p-3 mb-3" key={leave.id}>
+                <div className="d-flex align-items-center mb-2 mb-sm-0">
+                  <div className={`avatar avatar-lg bg-${leave.status === 'Pending' ? 'danger' : leave.status === 'Approved' ? 'success' : 'danger'}-transparent flex-shrink-0 me-2`}>
+                    <i className={`ti ti-${leave.type === 'congé' ? 'brand-socket-io' : 'medical-cross'}`} />
+                  </div>
+                  <div>
+                    <h6 className="mb-1">{leave.type}</h6>
+                    <p>Date: {leave.date}</p>
                   </div>
                 </div>
-                <div className="card-body">
-                  <div className="bg-light-300 d-sm-flex align-items-center justify-content-between p-3 mb-3">
-                    <div className="d-flex align-items-center mb-2 mb-sm-0">
-                      <div className="avatar avatar-lg bg-danger-transparent flex-shrink-0 me-2">
-                        <i className="ti ti-brand-socket-io" />
-                      </div>
-                      <div>
-                        <h6 className="mb-1">Emergency Leave</h6>
-                        <p>Date : 15 Jun 2024</p>
-                      </div>
-                    </div>
-                    <span className="badge bg-skyblue d-inline-flex align-items-center">
-                      <i className="ti ti-circle-filled fs-5 me-1" />
-                      Pending
-                    </span>
-                  </div>
-                  <div className="bg-light-300 d-sm-flex align-items-center justify-content-between p-3 mb-3">
-                    <div className="d-flex align-items-center mb-2 mb-sm-0">
-                      <div className="avatar avatar-lg bg-info-transparent flex-shrink-0 me-2">
-                        <i className="ti ti-medical-cross" />
-                      </div>
-                      <div>
-                        <h6 className="mb-1">Medical Leave</h6>
-                        <p>Date : 15 Jun 2024</p>
-                      </div>
-                    </div>
-                    <span className="badge bg-success d-inline-flex align-items-center">
-                      <i className="ti ti-circle-filled fs-5 me-1" />
-                      Approved
-                    </span>
-                  </div>
-                  <div className="bg-light-300 d-sm-flex align-items-center justify-content-between p-3 mb-3">
-                    <div className="d-flex align-items-center mb-2 mb-sm-0">
-                      <div className="avatar avatar-lg bg-info-transparent flex-shrink-0 me-2">
-                        <i className="ti ti-medical-cross" />
-                      </div>
-                      <div>
-                        <h6 className="mb-1">Medical Leave</h6>
-                        <p>Date : 16 Jun 2024</p>
-                      </div>
-                    </div>
-                    <span className="badge bg-danger d-inline-flex align-items-center">
-                      <i className="ti ti-circle-filled fs-5 me-1" />
-                      Declined
-                    </span>
-                  </div>
-                  <div className="bg-light-300 d-sm-flex align-items-center justify-content-between p-3">
-                    <div className="d-flex align-items-center mb-2 mb-sm-0">
-                      <div className="avatar avatar-lg bg-danger-transparent flex-shrink-0 me-2">
-                        <i className="ti ti-brand-socket-io"></i>
-                      </div>
-                      <div>
-                        <h6 className="mb-1">Not Well</h6>
-                        <p>Date : 16 Jun 2024</p>
-                      </div>
-                    </div>
-                    <span className="badge bg-success d-inline-flex align-items-center">
-                      <i className="ti ti-circle-filled fs-5 me-1"></i>Approved
-                    </span>
-                  </div>
-                </div>
+                <span className={`badge bg-${leave.status === 'Pending' ? 'skyblue' : leave.status === 'Approved' ? 'success' : 'danger'} d-inline-flex align-items-center`}>
+                  <i className="ti ti-circle-filled fs-5 me-1" /> {leave.status}
+                </span>
               </div>
-            </div>
+            ))}
+          </div>
+        </div>
+      </div>
             {/* /Leave Status */}
           </div>
         </div>
