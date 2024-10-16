@@ -11,6 +11,8 @@ import { useGetAllLeavesByUserIdQuery } from "@/redux/features/leaveSlice";
 import { useGetAllExam_resultsByUserIdQuery } from "@/redux/features/exam_resultSlice";
 import { useGetAllHomeworksByParentIdQuery } from "@/redux/features/homeworkSlice";
 import { useGetAllTuitionFeesByParentIdQuery } from "@/redux/features/tuitionfeeSlice";
+import { useGetAllAttendancesByParentIdQuery } from "@/redux/features/attendanceSlice";
+import { useEffect } from 'react';
 const ParentDashboard = () => {
   const routes = all_routes;
   const [activeStudent, setActiveStudent] = useState<string>("student-1");
@@ -18,6 +20,7 @@ const ParentDashboard = () => {
   const parentId = user?._id;
   const { data: homeworks } = useGetAllHomeworksByParentIdQuery(parentId || skipToken);
   const { data: tuitionFees } = useGetAllTuitionFeesByParentIdQuery(parentId || skipToken);
+  const { data: attendances } = useGetAllAttendancesByParentIdQuery(parentId || skipToken);
   //Vérifier si parentId est défini avant d'appeler le hook
   const { data: children, isLoading } = useGetAllUsersStudentByParentIdQuery(parentId || skipToken);
 //Recupération des demandes de congé
@@ -26,10 +29,35 @@ const { data: leavesByParent } = useGetAllLeavesByUserIdQuery(parentId || skipTo
 //Recupération des Resultats
 const { data: resultsByParent } = useGetAllExam_resultsByUserIdQuery(parentId || skipToken);
 // Utilisation de vraies données pour la série de résultats d'examens
-//const examScores = resultsByParent ? resultsByParent.map(result => result.grade) : [];
+const examScores = resultsByParent ? resultsByParent.map(result => result.grade) : [];
 
 // Utiliser des données fictives pour l'instant pour la fréquence des présences, que tu pourras remplacer par des vraies données similaires
-const attendanceRates = resultsByParent ? resultsByParent.map(() => Math.floor(Math.random() * 50) + 50) : [];
+// Récupérer les données de présences réelles
+// Supposons que 'attendances' soit un tableau d'objets de type IAttendance
+// Créer un tableau avec 1 pour présent et 0 pour absent
+const attendanceRates = attendances 
+  ? attendances.map(attendance => (attendance.status ? 1 : 0)) // 1 pour présent, 0 pour absent
+  : [];
+
+console.log(attendanceRates);
+
+// Calculer le pourcentage de présence
+const totalAttendance = attendanceRates.length;
+
+// Calculer le nombre total de présents
+const totalPresent = attendanceRates.reduce((acc: number, curr: number) => acc + curr, 0); // Ici, acc est de type number
+
+// Calculer le pourcentage d'assiduité
+const attendancePercentage = totalAttendance > 0 ? (totalPresent / totalAttendance) * 100 : 0;
+
+console.log(`Taux d'assiduité: ${attendancePercentage.toFixed(2)}%`); // Affichage avec deux décimales
+
+
+
+// Assurer la synchronisation des catégories si nécessaire (par exemple, par mois)
+const categories = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
+// Configuration du graphique
 const [statistic_chart] = useState<any>({
   chart: {
     type: "line",
@@ -37,29 +65,16 @@ const [statistic_chart] = useState<any>({
   },
   series: [
     {
-      name: "score moyen aux examens",
-      data: [45,25,5,10,50], // les notes d'examen récupérées
+      name: "Score moyen aux examens",
+      data: examScores,
     },
     {
-      name: "fréquentation moyenne",
-      data: attendanceRates, // Remplacer par des données dynamiques similaires pour les présences
+      name: "Fréquentation moyenne",
+      data: attendanceRates,
     },
   ],
   xaxis: {
-    categories: [
-      "Jan",
-      "Feb",
-      "Mar",
-      "Apr",
-      "May",
-      "Jun",
-      "Jul",
-      "Aug",
-      "Sep",
-      "Oct",
-      "Nov",
-      "Dec",
-    ],
+    categories: categories,
   },
   tooltip: {
     y: {
@@ -100,12 +115,20 @@ const [statistic_chart] = useState<any>({
       size: 7,
     },
   },
-  colors: ["#3D5EE1", "#6FCCD8"], // Color for the lines
+  colors: ["#3D5EE1", "#6FCCD8"],
   legend: {
     position: "top",
     horizontalAlign: "left",
   },
 });
+// Dans votre composant
+useEffect(() => {
+  if (examScores.length > 0 && attendanceRates.length > 0) {
+    // Vous pouvez éventuellement appeler une fonction pour forcer le rafraîchissement
+    // de la bibliothèque ApexCharts ici si nécessaire.
+  }
+}, [examScores, attendanceRates]);
+
 // nombre de congé type "congé"
 let nbConge = 0;
 // nombre de congé type "absence"
@@ -479,7 +502,6 @@ const { data: events } = useGetAllEventsByUserIdQuery(parentId || skipToken);
                     </ul>
                   </div>
                 </div>
-
                 <div className="card-body py-1">
                   <ul className="list-group list-group-flush">
                     {homeworks && homeworks.map((homework) => (
@@ -502,8 +524,10 @@ const { data: events } = useGetAllEventsByUserIdQuery(parentId || skipToken);
                                   <ImageWithBasePath src="/assets/img/teachers/teacher-01.jpg" className="rounded-circle" alt="teacher" />
                                 </Link>
                                 <p className="text-dark">
-                                  {/* Vérifie que course_id et id_user existent avant d'y accéder */}
-                                  Nom du prof: {homework.course_id && homework.course_id.id_user && homework.course_id.id_user.firstname && homework.course_id.id_user.lastname
+                                  Nom du prof: {typeof homework.course_id === "object" &&
+                                  typeof homework.course_id.id_user === "object" && 
+                                  homework.course_id.id_user?.firstname && 
+                                  homework.course_id.id_user?.lastname
                                     ? `${homework.course_id.id_user.firstname} ${homework.course_id.id_user.lastname}`
                                     : "Inconnu"}
                                 </p>
@@ -565,19 +589,6 @@ const { data: events } = useGetAllEventsByUserIdQuery(parentId || skipToken);
                 <div className="card-header d-flex align-items-center justify-content-between flex-wrap pb-0">
                   <h4 className="card-title mb-3">Résultat d'examen</h4>
                   <div className="d-flex align-items-center">
-                    <div className="dropdown me-3 mb-3">
-                      <Link to="#" className="bg-white dropdown-toggle" data-bs-toggle="dropdown">
-                        <i className="ti ti-calendar me-2" />
-                        Toutes les classes
-                      </Link>
-                      <ul className="dropdown-menu mt-2 p-3">
-                        <li>
-                          <Link to="#" className="dropdown-item rounded-1">
-                            nom de la classe
-                          </Link>
-                        </li>
-                      </ul>
-                    </div>
                     <div className="dropdown mb-3">
                       <Link to="#" className="bg-white dropdown-toggle" data-bs-toggle="dropdown">
                         <i className="ti ti-calendar me-2" />
@@ -593,7 +604,6 @@ const { data: events } = useGetAllEventsByUserIdQuery(parentId || skipToken);
                     </div>
                   </div>
                 </div>
-
                 {/* Table displaying exam results */}
                 <div className="card-body px-0">
               <div className="custom-datatable-filter table-responsive">
@@ -633,9 +643,12 @@ const { data: events } = useGetAllEventsByUserIdQuery(parentId || skipToken);
                           <td>{result.grade}</td>
                           <td>{typeof result.exam_id !== 'string' && result.exam_id?.name}</td>
                           <td>
-                            <span className={`badge ${result.status === 'Réussi' ? 'bg-success' : 'bg-danger'}`}>
-                              {result.status}
-                            </span>
+                          <span className={`badge 
+                            ${result.status === 'Réussi' ? 'bg-success' : 
+                            result.status === 'Échoué' ? 'bg-danger' : 
+                            result.status === 'Incomplet' ? 'bg-secondary' : 'bg-warning'}`}>
+                            {result.status}
+                          </span>
                           </td>
                         </tr>
                       ))

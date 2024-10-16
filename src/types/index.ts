@@ -145,3 +145,21 @@ export interface ClassroomEtudiant extends Document {
   classroom_id: string | Classroom;
   student_id: string | User;
 }
+export interface Timetable extends Document {
+  _id: string;
+  cours_id: string;
+  id_users: string;
+  classroom_id: string;
+  day: Date;  
+  start_time: Date;
+  end_time: Date;  
+}
+export interface Attendance extends Document {
+  _id: string;
+  student_id?: User; // Référence à un étudiant (User)
+  teacher_id?: User; // Référence à un professeur (User)
+  timetable_id: Timetable; // Référence à TimeTable pour le cours en question
+  status: boolean; // Présent ou absent
+  desc?: string; // Notes supplémentaires sur la présence
+  date: Date; // Date de la présence
+}
