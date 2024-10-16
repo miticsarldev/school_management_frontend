@@ -84,6 +84,19 @@ export const authApiSlice = api.injectEndpoints({
             ]
           : [{ type: "Users", id: "LIST" }],
     }),
+    getAllUsersStudentByParentId: builder.query<User[], string>({
+      query: (parent) => `/students-by-parent/${parent}`,
+      providesTags: (result) =>
+        result
+          ? [
+              ...(result.map(({ _id }) => ({
+                type: "Users",
+                id: _id,
+              })) as UserTag[]),
+              { type: "Users", id: "LIST" },
+            ]
+          : [{ type: "Users", id: "LIST" }],
+    }),
     updateUser: builder.mutation<
       { message: string },
       {
@@ -151,6 +164,7 @@ export const {
   useGetAllUsersQuery,
   useUpdateUserMutation,
   useDeleteUserMutation,
+  useGetAllUsersStudentByParentIdQuery,
 } = authApiSlice;
 
 export const { setCredentials, setLogout } = slice.actions;
