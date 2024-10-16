@@ -3,7 +3,7 @@ import { baseQueryWithReauth } from "./api";
 
 export const api = createApi({
   baseQuery: baseQueryWithReauth,
-  tagTypes: ["Users", "Events"], 
+  tagTypes: ["Users", "Events", "Grades"], 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   endpoints: (_builder) => ({}),
 });

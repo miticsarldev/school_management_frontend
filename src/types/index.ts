@@ -62,3 +62,10 @@ export interface Event extends Document {
   student_id: number; // Référence à l'étudiant
   timetable_id: number; // Référence à l'emploi du temps
 }
+
+export type Grade = {
+  _id?: string;
+  value: number;         // Valeur de la note, obligatoire
+  appreciation?: string; // Appréciation, optionnelle
+  statuses?: boolean;    // Statut, optionnel, par défaut à true
+};

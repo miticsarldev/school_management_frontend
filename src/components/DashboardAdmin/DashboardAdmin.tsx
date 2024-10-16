@@ -19,155 +19,29 @@ import { selectAuth, useGetAllUsersQuery } from "@/redux/features/authSlice";
 import EventItem from "./EventItem/EventItem";
 import { useGetAllEventsQuery } from "@/redux/features/eventSlice";
 import axios from 'axios';
+import TuitionFeeChart from "./TuitionFeeChart/TuitionFeeChart";
+import TuitionFeesSummary from "./TuitionFeesSummary/TuitionFeesSummary";
+import TopSubjectsCard from "./TopSubjectsCard/TopSubjectsCard";
 
 const DashboardAdmin = () => {
 
-  // const [studentDonutChart] = useState<any>({
-  //   chart: {
-  //     height: 218,
-  //     width: 218,
-  //     type: "donut",
-  //     toolbar: {
-  //       show: false,
-  //     },
-  //   },
-  //   legend: {
-  //     show: false,
-  //   },
-  //   colors: ["#3D5EE1", "#6FCCD8"],
-  //   series: [3610, 44],
-  //   responsive: [
-  //     {
-  //       breakpoint: 480,
-  //       options: {
-  //         chart: {
-  //           width: 180,
-  //         },
-  //       },
-  //     },
-  //   ],
-  // });
-  // const [teacherDonutChart] = useState<any>({
-  //   chart: {
-  //     height: 218,
-  //     width: 218,
-  //     type: "donut",
-  //     toolbar: {
-  //       show: false,
-  //     },
-  //   },
-  //   legend: {
-  //     show: false,
-  //   },
-  //   colors: ["#3D5EE1", "#6FCCD8"],
-  //   series: [346, 54],
-  //   responsive: [
-  //     {
-  //       breakpoint: 480,
-  //       options: {
-  //         chart: {
-  //           width: 180,
-  //         },
-  //       },
-  //     },
-  //   ],
-  // });
-  // const [staffDonutChart] = useState<any>({
-  //   chart: {
-  //     height: 218,
-  //     width: 218,
-  //     type: "donut",
-  //     toolbar: {
-  //       show: false,
-  //     },
-  //   },
-  //   legend: {
-  //     show: false,
-  //   },
-  //   colors: ["#3D5EE1", "#6FCCD8"],
-  //   series: [620, 80],
-  //   responsive: [
-  //     {
-  //       breakpoint: 480,
-  //       options: {
-  //         chart: {
-  //           width: 180,
-  //         },
-  //       },
-  //     },
-  //   ],
-  // });
 
-  const performanceData = {
-    top: 45,
-    average: 11,
-    belowAvg: 2,
-  };
-
-  const [classDonutChart] = useState<any>({
+  const [feesBar, setFeesBar] = useState<any>({
     chart: {
-      height: 218,
-      width: 218,
-      type: "donut",
-      toolbar: {
-        show: false,
-      },
-    },
-    labels: ["Good", "Average", "Below Average"],
-    legend: { show: false },
-    dataLabels: {
-      enabled: false,
-    },
-    yaxis: {
-      tickAmount: 3,
-      labels: {
-        offsetX: -15,
-      },
-    },
-    grid: {
-      padding: {
-        left: -8,
-      },
-    },
-    colors: ["#3D5EE1", "#EAB300", "#E82646"],
-    series: [45, 11, 2],
-    responsive: [
-      {
-        breakpoint: 480,
-        options: {
-          chart: {
-            width: 180,
-          },
-        },
-      },
-    ],
-  });
-  const [feesBar] = useState<any>({
-    chart: {
-      height: 275,
+      height: 350,
       type: "bar",
-      stacked: true,
       toolbar: {
         show: false,
-      },
-    },
-    legend: {
-      show: true,
-      horizontalAlign: "left",
-      position: "top",
-      fontSize: "14px",
-      labels: {
-        colors: "#5D6369",
       },
     },
     plotOptions: {
       bar: {
         horizontal: false,
-        columnWidth: "50%",
+        columnWidth: "55%",
         endingShape: "rounded",
       },
     },
-    colors: ["#3D5EE1", "#E9EDF4"],
+    // colors: ['#888ea8', '#4361ee'],
     dataLabels: {
       enabled: false,
     },
@@ -176,38 +50,33 @@ const DashboardAdmin = () => {
       width: 2,
       colors: ["transparent"],
     },
-    grid: {
-      padding: {
-        left: -8,
-      },
-    },
+
     series: [
       {
-        name: "Collected Fee",
-        data: [30, 40, 38, 40, 38, 30, 35, 38, 40],
+        name: "Net Profit",
+        data: [44, 55, 57, 56, 61, 58, 63, 60, 66],
       },
       {
-        name: "Total Fee",
-        data: [45, 50, 48, 50, 48, 40, 40, 50, 55],
+        name: "Revenue",
+        data: [76, 85, 101, 98, 87, 105, 91, 114, 94],
       },
     ],
     xaxis: {
       categories: [
-        "Q1: 2023",
-        "Q1: 2023",
-        "Q1: 2023",
-        "Q1: 2023",
-        "Q1: 2023",
-        "uQ1: 2023l",
-        "Q1: 2023",
-        "Q1: 2023",
-        "Q1: 2023",
+        "Feb",
+        "Mar",
+        "Apr",
+        "May",
+        "Jun",
+        "Jul",
+        "Aug",
+        "Sep",
+        "Oct",
       ],
     },
     yaxis: {
-      tickAmount: 3,
-      labels: {
-        offsetX: -15,
+      title: {
+        text: "$ (thousands)",
       },
     },
     fill: {
@@ -221,6 +90,7 @@ const DashboardAdmin = () => {
       },
     },
   });
+
   const [totalEarningArea] = useState<any>({
     chart: {
       height: 90,
@@ -326,6 +196,7 @@ const DashboardAdmin = () => {
   console.log(events);
 
   const [filteredEvents, setFilteredEvents] = useState<any[]>([]);
+  const [listAttendance, setListeAttendance] = useState<any[]>([]);
 
 
   //gestion event 
@@ -501,7 +372,7 @@ const DashboardAdmin = () => {
   }>({
     chart: { height: 218, width: 218, type: "donut", toolbar: { show: false } },
     legend: { show: false },
-    colors: ["#3D5EE1", "#6FCCD8"],
+    colors: ["#3D5EE1", "#bc4749"],
     series: [0, 0],
     responsive: [{ breakpoint: 480, options: { chart: { width: 180 } } }],
   });
@@ -515,26 +386,27 @@ const DashboardAdmin = () => {
   }>({
     chart: { height: 218, width: 218, type: "donut", toolbar: { show: false } },
     legend: { show: false },
-    colors: ["#3D5EE1", "#6FCCD8"],
+    colors: ["#3D5EE1", "#bc4749"],
     series: [0, 0],
     responsive: [{ breakpoint: 480, options: { chart: { width: 180 } } }],
+  });
+
+  // État pour stocker les données de présence
+  const [attendanceData, setAttendanceData] = useState({
+    studentPresent: 0,
+    studentAbsent: 0,
+    studentLate: 0,
+    teacherPresent: 0,
+    teacherAbsent: 0,
+    teacherLate: 0,
   });
 
   useEffect(() => {
     const fetchAttendanceStats = async () => {
       try {
-        const response = await axios.get('http://localhost:4444/api/attendance/stats');
-        const { studentStats, teacherStats } = response.data;
+        const response = await axios.get('http://localhost:4444/api/attendances');
+        processAttendanceData(response.data);
 
-        setStudentDonutChart(prev => ({
-          ...prev,
-          series: [studentStats.present, studentStats.absent],
-        }));
-
-        setTeacherDonutChart(prev => ({
-          ...prev,
-          series: [teacherStats.present, teacherStats.absent],
-        }));
       } catch (error) {
         console.error("Erreur lors de la récupération des statistiques", error);
       }
@@ -542,6 +414,167 @@ const DashboardAdmin = () => {
 
     fetchAttendanceStats();
   }, []);
+
+  // Exemple de méthode qui reçoit les données d'attendance  met à jour les charts
+  const processAttendanceData = (liste: any[]) => {
+    // Variables pour stocker les comptes des étudiants et des enseignants
+    let studentPresent = 0;
+    let studentAbsent = 0;
+    let studentLate = 0;
+
+    let teacherPresent = 0;
+    let teacherAbsent = 0;
+    let teacherLate = 0;
+
+    // Parcourir les données de présence
+    liste.forEach((attendance) => {
+      if (attendance.student_id) {
+        // Compter les présences, absences, et retards pour les étudiants
+        if (attendance.status) {
+          studentPresent++;
+        } else {
+          studentAbsent++;
+        }
+        if (attendance.desc.includes("retard")) {
+          studentLate++;
+        }
+      } else if (attendance.teacher_id) {
+        // Compter les présences, absences, et retards pour les enseignants
+        if (attendance.status) {
+          teacherPresent++;
+        } else {
+          teacherAbsent++;
+        }
+        if (attendance.desc.includes("retard")) {
+          teacherLate++;
+        }
+      }
+    });
+
+    // Mise à jour de l'état avec les nouvelles valeurs
+    setAttendanceData({
+      studentPresent,
+      studentAbsent,
+      studentLate,
+      teacherPresent,
+      teacherAbsent,
+      teacherLate,
+    });
+
+    // Mise à jour des charts
+    setStudentDonutChart((prevState) => ({
+      ...prevState,
+      series: [studentPresent, studentAbsent], // Présent et Absent
+    }));
+
+    setTeacherDonutChart((prevState) => ({
+      ...prevState,
+      series: [teacherPresent, teacherAbsent], // Présent et Absent
+    }));
+
+    // Afficher éventuellement les retards ailleurs si besoin
+    console.log(`Étudiants present : ${studentPresent}`);
+    console.log(`Enseignants en retard : ${teacherLate}`);
+  };
+
+
+  //gestion performance des classes
+  interface ClassDonutChart {
+    chart: {
+      height: number;
+      width: number;
+      type: string;
+      toolbar: { show: boolean };
+    };
+    labels: string[];
+    legend: { show: boolean };
+    dataLabels: { enabled: boolean };
+    colors: string[];
+    series: number[]; // Définir le type ici
+  }
+  
+  const [performanceData, setPerformanceData] = useState({ top: 0, average: 0, belowAvg: 0 });
+  const [classDonutChart, setClassDonutChart] = useState<ClassDonutChart>({
+    chart: {
+      height: 218,
+      width: 218,
+      type: 'donut',
+      toolbar: { show: false },
+    },
+    labels: ['Good', 'Average', 'Below Average'],
+    legend: { show: false },
+    dataLabels: { enabled: false },
+    colors: ['#3D5EE1', '#EAB300', '#E82646'],
+    series: [], // Initialiser avec un tableau vide de type number[]
+  });
+  
+  const [classId, setClassId] = useState("6709193442f06b505bee5689")
+
+  type Grade = {
+    _id: string;
+    value: number;
+    appreciation: string;
+    statuses: boolean;
+  };
+
+  type Course = {
+    _id: string;
+    name: string;
+    number_of_hours: number;
+    description?: string;
+    id_user: string;
+    id_grade: string;
+    id_classroom: string;
+    statuses: boolean;
+  };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const coursesResponse = await axios.get<Course[]>(
+          'http://localhost:4444/api/courses'
+        );
+        const gradesResponse = await axios.get<Grade[]>(
+          'http://localhost:4444/api/grades'
+        );
+
+        const grades = gradesResponse.data || [];
+        const courses = coursesResponse.data || [];
+
+        console.log("Les cours : " + JSON.stringify(coursesResponse.data, null, 2));
+        
+
+        // Filtrer les cours pour la classe spécifiée
+        const filteredCourses = courses.filter(
+          (course) => course.id_classroom.toString() === classId
+        );
+
+        // Récupérer les IDs des grades associés à ces cours
+        const filteredGrades = grades.filter((grade) =>
+          filteredCourses.some((course) => course.id_grade.toString() === grade._id)
+        );
+
+        // Calculer les performances
+        const top = filteredGrades.filter((grade) => grade.value >= 15).length;
+        const average = filteredGrades.filter(
+          (grade) => grade.value < 15 && grade.value >= 10
+        ).length;
+        const belowAvg = filteredGrades.filter((grade) => grade.value < 10).length;
+
+        setPerformanceData({ top, average, belowAvg });
+
+        // Mettre à jour le graphique
+        setClassDonutChart((prevState) => ({
+          ...prevState,
+          series: [top, average, belowAvg],
+        }));
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
+    fetchData();
+  }, [classId]);
 
 
 
@@ -743,278 +776,35 @@ const DashboardAdmin = () => {
                 <Attendance
                   studentDonutChart={studentDonutChart}
                   teacherDonutChart={teacherDonutChart}
+                  nbreAbsentStudent={attendanceData.studentAbsent}
+                  nbrePresentStudent={attendanceData.studentPresent}
+                  nbrePresentTeacher={attendanceData.teacherPresent}
+                  nbreAbsentTeacher={attendanceData.teacherAbsent}
                 />
 
                 {/* student grade */}
-                <StudentGradesChart
-                  title="Évolution des Notes des Étudiants"
-                  gradesData={gradesData}
-                />
+                <StudentGradesChart />
               </div>
               {/* /Attendance */}
               <div className="col-xxl-4 col-md-12 d-flex flex-column">
-                {/* Quick Links */}
-                {/* <div className="card flex-fill">
-                  <div className="card-header d-flex align-items-center justify-content-between">
-                    <h4 className="card-title">Quick Links</h4>
-                  </div>
-                  <div className="card-body pb-1">
-                      <Slider
-                        {...settings}
-                        className="owl-carousel link-slider"
-                      >
-                        <div className="item">
-                          <Link
-                            to='{routes.classTimetable}'
-                            className="d-block bg-success-transparent ronded p-2 text-center mb-3 class-hover"
-                          >
-                            <div className="avatar avatar-lg border p-1 border-success rounded-circle mb-2">
-                              <span className="d-inline-flex align-items-center justify-content-center w-100 h-100 bg-success rounded-circle">
-                                <i className="ti ti-calendar" />
-                              </span>
-                            </div>
-                            <p className="text-dark">Calendar</p>
-                          </Link>
-                          <Link
-                            to='{routes.feesGroup}'
-                            className="d-block bg-secondary-transparent ronded p-2 text-center mb-3 class-hover"
-                          >
-                            <div className="avatar avatar-lg border p-1 border-secondary rounded-circle mb-2">
-                              <span className="d-inline-flex align-items-center justify-content-center w-100 h-100 bg-secondary rounded-circle">
-                                <i className="ti ti-license" />
-                              </span>
-                            </div>
-                            <p className="text-dark">Fees</p>
-                          </Link>
-                        </div>
-                        <div className="item">
-                          <Link
-                            to='{routes.examResult}'
-                            className="d-block bg-primary-transparent ronded p-2 text-center mb-3 class-hover"
-                          >
-                            <div className="avatar avatar-lg border p-1 border-primary rounded-circle mb-2">
-                              <span className="d-inline-flex align-items-center justify-content-center w-100 h-100 bg-primary rounded-circle">
-                                <i className="ti ti-hexagonal-prism" />
-                              </span>
-                            </div>
-                            <p className="text-dark">Exam Result</p>
-                          </Link>
-                          <Link
-                            to='{routes.classHomeWork}'
-                            className="d-block bg-danger-transparent ronded p-2 text-center mb-3 class-hover"
-                          >
-                            <div className="avatar avatar-lg border p-1 border-danger rounded-circle mb-2">
-                              <span className="d-inline-flex align-items-center justify-content-center w-100 h-100 bg-danger rounded-circle">
-                                <i className="ti ti-report-money" />
-                              </span>
-                            </div>
-                            <p className="text-dark">Home Works</p>
-                          </Link>
-                        </div>
-                        <div className="item">
-                          <Link
-                            to='{routes.studentAttendance}'
-                            className="d-block bg-warning-transparent ronded p-2 text-center mb-3 class-hover"
-                          >
-                            <div className="avatar avatar-lg border p-1 border-warning rounded-circle mb-2">
-                              <span className="d-inline-flex align-items-center justify-content-center w-100 h-100 bg-warning rounded-circle">
-                                <i className="ti ti-calendar-share" />
-                              </span>
-                            </div>
-                            <p className="text-dark">Attendance</p>
-                          </Link>
-                          <Link
-                            to='{routes.attendanceReport}'
-                            className="d-block bg-skyblue-transparent ronded p-2 text-center mb-3 class-hover"
-                          >
-                            <div className="avatar avatar-lg border p-1 border-skyblue rounded-circle mb-2">
-                              <span className="d-inline-flex align-items-center justify-content-center w-100 h-100 bg-pending rounded-circle">
-                                <i className="ti ti-file-pencil" />
-                              </span>
-                            </div>
-                            <p className="text-dark">Reports</p>
-                          </Link>
-                        </div>
-                      </Slider>
-                    </div>
-                </div> */}
-                {/* Class Routine */}
-                {/* <div className="card flex-fill">
-                  <div className="card-header d-flex align-items-center justify-content-between">
-                    <h4 className="card-title">Class Routine</h4>
-                    <Link
-                      to="#"
-                      className="link-primary fw-medium"
-                      data-bs-toggle="modal"
-                      data-bs-target="#add_class_routine"
-                    >
-                      <i className="ti ti-square-plus me-1" />
-                      Add New
-                    </Link>
-                  </div>
-                  <div className="card-body">
-                    <div className="d-flex align-items-center rounded border p-3 mb-3">
-                      <span className="avatar avatar-md flex-shrink-0 border rounded me-2">
-                        <ImageWithBasePath
-                          src="assets/img/teachers/teacher-01.jpg"
-                          className="rounded"
-                          alt="Profile"
-                        />
-                      </span>
-                      <div className="w-100">
-                        <p className="mb-1">Oct 2024</p>
-                        <div className="progress progress-xs  flex-grow-1 mb-1">
-                          <div
-                            className="progress-bar progress-bar-striped progress-bar-animated bg-primary rounded"
-                            role="progressbar"
-                            style={{ width: "80%" }}
-                            aria-valuenow={80}
-                            aria-valuemin={0}
-                            aria-valuemax={100}
-                          />
-                        </div>
-                      </div>
-                    </div>
-                    <div className="d-flex align-items-center rounded border p-3 mb-3">
-                      <span className="avatar avatar-md flex-shrink-0 border rounded me-2">
-                        <ImageWithBasePath
-                          src="assets/img/teachers/teacher-02.jpg"
-                          className="rounded"
-                          alt="Profile"
-                        />
-                      </span>
-                      <div className="w-100">
-                        <p className="mb-1">Nov 2024</p>
-                        <div className="progress progress-xs  flex-grow-1 mb-1">
-                          <div
-                            className="progress-bar progress-bar-striped progress-bar-animated bg-warning rounded"
-                            role="progressbar"
-                            style={{ width: "80%" }}
-                            aria-valuenow={80}
-                            aria-valuemin={0}
-                            aria-valuemax={100}
-                          />
-                        </div>
-                      </div>
-                    </div>
-                    <div className="d-flex align-items-center rounded border p-3 mb-0">
-                      <span className="avatar avatar-md flex-shrink-0 border rounded me-2">
-                        <ImageWithBasePath
-                          src="assets/img/teachers/teacher-03.jpg"
-                          className="rounded"
-                          alt="Profile"
-                        />
-                      </span>
-                      <div className="w-100">
-                        <p className="mb-1">Oct 2024</p>
-                        <div className="progress progress-xs  flex-grow-1 mb-1">
-                          <div
-                            className="progress-bar progress-bar-striped progress-bar-animated bg-success rounded"
-                            role="progressbar"
-                            style={{ width: "80%" }}
-                            aria-valuenow={80}
-                            aria-valuemin={0}
-                            aria-valuemax={100}
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div> */}
-                <ClassRoutine routines={routinesData} />;{/* /Class Routine */}
-                {/* Class Wise Performance */}
-                {/* <div className="card flex-fill">
-                  <div className="card-header d-flex align-items-center justify-content-between">
-                    <h4 className="card-title">Performance</h4>
-                    <div className="dropdown">
-                      <Link
-                        to="#"
-                        className="bg-white dropdown-toggle"
-                        data-bs-toggle="dropdown"
-                      >
-                        <i className="ti ti-school-bell  me-2" />
-                        Class II
-                      </Link>
-                      <ul className="dropdown-menu mt-2 p-3">
-                        <li>
-                          <Link to="#" className="dropdown-item rounded-1">
-                            Class I
-                          </Link>
-                        </li>
-                        <li>
-                          <Link to="#" className="dropdown-item rounded-1">
-                            Class II
-                          </Link>
-                        </li>
-                        <li>
-                          <Link to="#" className="dropdown-item rounded-1">
-                            Class III
-                          </Link>
-                        </li>
-                        <li>
-                          <Link to="#" className="dropdown-item rounded-1">
-                            Class IV
-                          </Link>
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
-                  <div className="card-body">
-                    <div className="d-md-flex align-items-center justify-content-between">
-                      <div className="me-md-3 mb-3 mb-md-0 w-100">
-                        <div className="border border-dashed p-3 rounded d-flex align-items-center justify-content-between mb-1">
-                          <p className="mb-0 me-2">
-                            <i className="ti ti-arrow-badge-down-filled me-2 text-primary" />
-                            Top
-                          </p>
-                          <h5>45</h5>
-                        </div>
-                        <div className="border border-dashed p-3 rounde d-flex align-items-center justify-content-between mb-1">
-                          <p className="mb-0 me-2">
-                            <i className="ti ti-arrow-badge-down-filled me-2 text-warning" />
-                            Average
-                          </p>
-                          <h5>11</h5>
-                        </div>
-                        <div className="border border-dashed p-3 rounded d-flex align-items-center justify-content-between mb-0">
-                          <p className="mb-0 me-2">
-                            <i className="ti ti-arrow-badge-down-filled me-2 text-danger" />
-                            Below Avg
-                          </p>
-                          <h5>02</h5>
-                        </div>
-                      </div>
-                      <ReactApexChart
-                        id="class-chart"
-                        className="text-center text-md-left"
-                        options={classDonutChart}
-                        series={classDonutChart.series}
-                        type="donut"
 
-                      />
-                    </div>
-                  </div>
-                </div> */}
+                <ClassRoutine routines={routinesData} />
+
+                {/* /Class Wise Performance */}
                 <PerformanceCard
                   className="Class II"
                   performanceData={performanceData}
                   classDonutChart={classDonutChart}
                 />
-                {/* /Class Wise Performance */}
               </div>
             </div>
             <div className="row">
               {/* Fees Collection */}
-              <FeesCollectionCard
-                title="Recouvrement des frais"
-                feesChartOptions={feesBar.chart}
-                feesChartData={feesBar}
-              />
+              <TuitionFeeChart />
               {/* /Fees Collection */}
               {/* Leave Requests */}
               <LeaveRequestCard
                 title="demande de conger"
-                leaveRequests={leaveRequestsData}
               />
               {/* /Leave Requests */}
             </div>
@@ -1173,7 +963,7 @@ const DashboardAdmin = () => {
               {/* /Total Earnings */}
 
               {/* Top Subjects */}
-              <div className="col-xxl-4 col-xl-6 d-flex">
+              {/* <div className="col-xxl-4 col-xl-6 d-flex">
                 <div className="card flex-fill">
                   <div className="card-header  d-flex align-items-center justify-content-between">
                     <h4 className="card-title">Top Matiere</h4>
@@ -1358,60 +1148,12 @@ const DashboardAdmin = () => {
                     </ul>
                   </div>
                 </div>
-              </div>
+              </div> */}
+              <TopSubjectsCard />
               {/* Top Subjects */}
 
               {/* Fees Collection */}
-              <div className="col-xxl-3 col-xl-6 order-2 order-xxl-3 d-flex flex-column">
-                <div className="card flex-fill mb-2">
-                  <div className="card-body">
-                    <p className="mb-2">Total des frais perçus</p>
-                    <div className="d-flex align-items-end justify-content-between">
-                      <h4>$25,000,02</h4>
-                      <span className="badge badge-soft-success">
-                        <i className="ti ti-chart-line me-1" />
-                        1.2%
-                      </span>
-                    </div>
-                  </div>
-                </div>
-                <div className="card flex-fill mb-2">
-                  <div className="card-body">
-                    <p className="mb-2">Frais perçue à ce jour</p>
-                    <div className="d-flex align-items-end justify-content-between">
-                      <h4>$4,56,64</h4>
-                      <span className="badge badge-soft-danger">
-                        <i className="ti ti-chart-line me-1" />
-                        1.2%
-                      </span>
-                    </div>
-                  </div>
-                </div>
-                <div className="card flex-fill mb-2">
-                  <div className="card-body">
-                    <p className="mb-2">Étudiant non payé</p>
-                    <div className="d-flex align-items-end justify-content-between">
-                      <h4>$545</h4>
-                      <span className="badge badge-soft-info">
-                        <i className="ti ti-chart-line me-1" />
-                        1.2%
-                      </span>
-                    </div>
-                  </div>
-                </div>
-                <div className="card flex-fill mb-4">
-                  <div className="card-body">
-                    <p className="mb-2">Total des encours</p>
-                    <div className="d-flex align-items-end justify-content-between">
-                      <h4>$4,56,64</h4>
-                      <span className="badge badge-soft-danger">
-                        <i className="ti ti-chart-line me-1" />
-                        1.2%
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              <TuitionFeesSummary />
               {/* /Fees Collection */}
             </div>
           </>
