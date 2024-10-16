@@ -27,8 +27,6 @@ const ParentGrid = () => {
   };
   return (
     <>
-      {/* Page Wrapper */}
-      <div className="page-wrapper">
         <div className="content content-two">
           {/* Page Header */}
           <div className="d-md-flex d-block align-items-center justify-content-between mb-3">
@@ -1478,8 +1476,6 @@ const ParentGrid = () => {
             </div>
           </div>
         </div>
-      </div>
-      {/* /Page Wrapper */}
       <ParentModal />
 
       <Modal show={show} onHide={handleClose} centered size="lg">
