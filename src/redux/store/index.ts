@@ -5,8 +5,11 @@ import timetableReducer from"../features/timetableSlice"
 import eventReducer from "../features/eventSlice";
 import attendanceReducer from "../features/attedanceSlice";
 import leaveReducer from "../features/leaveSlice";
-import classroomReducer from "../features/classroomSlice"
+import classroomReducer from "../features/classroomSlice";
+import bestStudentReducer from "../features/bestStudent";
+import examResultReducer from "../features/examResult";
 import { api } from "../services/apiConfig";
+
 
 export const store = configureStore({
   reducer: {
@@ -18,6 +21,9 @@ export const store = configureStore({
     attendance: attendanceReducer,
     leave: leaveReducer,
     classroom:classroomReducer,
+    Student: bestStudentReducer,
+    examResult: examResultReducer,
+    
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(api.middleware),

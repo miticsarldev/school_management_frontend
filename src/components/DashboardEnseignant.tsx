@@ -20,6 +20,9 @@ import { useGetAllTimetablesQuery } from "../redux/features/timetableSlice";
 import { useGetAllEventsQuery } from "@/redux/features/eventSlice";
 import { useGetAllLeavesQuery } from "../redux/features/leaveSlice";
 import { useGetAllClassroomsQuery } from "@/redux/features/classroomSlice";
+import { useGetTopStudentsQuery } from "../redux/features/examResult";
+import { useGetAllExam_resultsByUserIdQuery } from "../redux/features/examResult";
+import { teacherId } from "./DashboardEnseignant/selectoption";
 const DashboardEnseigant = () => {
   const [date, setDate] = useState<Nullable<Date>>(null);
   const { user } = useAppSelector(selectAuth);
@@ -187,8 +190,10 @@ const DashboardEnseigant = () => {
   const day = String(today.getDate()).padStart(2, "0");
   const formattedDate = `${month}-${day}-${year}`;
   const defaultValue = dayjs(formattedDate);
-
+  
   const { data: timetables, error, isLoading } = useGetAllTimetablesQuery();
+  
+  const { data: resultsByTeacher } = useGetAllExam_resultsByUserIdQuery(teacherId || skipToken);
   
 // Fonction pour obtenir la couleur de la barre de progression
 const getProgressBarColor = (performance: number) => {
@@ -220,6 +225,8 @@ const getProgressBarColor = (performance: number) => {
   .sort((a, b) => b.performance - a.performance) // Trie par performance décroissante
   .slice(0, 3); // Prend les 3 meilleures classes
   
+  const { data: Students} = useGetTopStudentsQuery();
+  console.log(Students);
   
   return (
     <>
@@ -554,115 +561,38 @@ const getProgressBarColor = (performance: number) => {
                   </div>
                 </div>
 
-                  <div className="card flex-fill">
-                    <div className="card-header d-flex align-items-center justify-content-between">
-                      <h4 className="card-title">Best student</h4>
-                      <div className="dropdown">
-                        <Link
-                          to="#"
-                          className="bg-white dropdown-toggle"
-                          data-bs-toggle="dropdown"
-                        >
-                          <i className="ti ti-calendar me-2" />
-                          This Month
-                        </Link>
-                        <ul className="dropdown-menu mt-2 p-3">
-                          <li>
-                            <Link to="#" className="dropdown-item rounded-1">
-                              This Month
-                            </Link>
-                          </li>
-                          <li>
-                            <Link to="#" className="dropdown-item rounded-1">
-                              This Year
-                            </Link>
-                          </li>
-                          <li>
-                            <Link to="#" className="dropdown-item rounded-1">
-                              Last Week
-                            </Link>
-                          </li>
-                        </ul>
-                      </div>
-                    </div>
-                    <div className="card-body">
-                      <div className="d-flex align-items-center justify-content-between p-3 mb-2 border br-5">
-                        <div className="d-flex align-items-center overflow-hidden me-2">
-                          <Link
-                            to="#"
-                            className="avatar avatar-lg flex-shrink-0 br-6 me-2"
-                          >
-                            <ImageWithBasePath
-                              src="/students/student-09.jpg"
-                              alt="student"
-                            />
-                          </Link>
-                          <div className="overflow-hidden">
-                            <h6 className="mb-1 text-truncate">
-                              <Link to="#">Susan Boswell</Link>
-                            </h6>
-                            <p>III, B</p>
-                          </div>
-                        </div>
-                        <div className="d-flex align-items-center">
-                          <ImageWithBasePath
-                            src="/icons/medal.svg"
-                            alt="icon"
-                          />
-                          <span className="badge badge-success ms-2">98%</span>
-                        </div>
-                      </div>
-                      <div className="d-flex align-items-center justify-content-between p-3 mb-2 border br-5">
-                        <div className="d-flex align-items-center overflow-hidden me-2">
-                          <Link
-                            to="#"
-                            className="avatar avatar-lg flex-shrink-0 br-6 me-2"
-                          >
-                            <ImageWithBasePath
-                              src="/students/student-12.jpg"
-                              alt="student"
-                            />
-                          </Link>
-                          <div className="overflow-hidden">
-                            <h6 className="mb-1 text-truncate">
-                              <Link to="#">Richard Mayes</Link>
-                            </h6>
-                            <p>V, A</p>
-                          </div>
-                        </div>
-                        <div className="d-flex align-items-center">
-                          <ImageWithBasePath
-                            src="/icons/medal-2.svg"
-                            alt="icon"
-                          />
-                          <span className="badge badge-success ms-2">98%</span>
-                        </div>
-                      </div>
-                      <div className="d-flex align-items-center justify-content-between p-3 mb-0 border rounded">
-                        <div className="d-flex align-items-center overflow-hidden me-2">
-                          <Link
-                            to="#"
-                            className="avatar avatar-lg flex-shrink-0 br-6 me-2"
-                          >
-                            <ImageWithBasePath
-                              src="/students/student-11.jpg"
-                              alt="student"
-                            />
-                          </Link>
-                          <div className="overflow-hidden">
-                            <h6 className="mb-1 text-truncate">
-                              <Link to="#">Veronica Randle</Link>
-                            </h6>
-                            <p>V, B</p>
-                          </div>
-                        </div>
-                        <div className="d-flex align-items-center">
-                          <span className="badge bg-info">78%</span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+                <div className="card flex-fill">
+      <div className="card-header d-flex align-items-center justify-content-between">
+        <h4 className="card-title">Best Students</h4>
+      </div>
+
+      <div className="card-body">
+  {Students && Array.isArray(Students) && Students.length > 0 ? (
+    Students.map((student) => (
+      <div className="d-flex align-items-center justify-content-between p-3 mb-2 border br-5" key={student.student_id._id}>
+        <div className="d-flex align-items-center overflow-hidden me-2">
+          <div className="avatar avatar-lg flex-shrink-0 br-6 me-2">
+            <ImageWithBasePath src={student.student_id.image || '/students/default.jpg'} alt={student.student_id.firstname} />
+          </div>
+          <div className="overflow-hidden">
+            <h6 className="mb-1 text-truncate">
+              {`${student.student_id.firstname} ${student.student_id.lastname}`}
+            </h6>
+            <p>{student.course_id.id_classroom_etudiant.classroom_id.name}</p>
+          </div>
+        </div>
+        <div className="d-flex align-items-center">
+          <span className="badge badge-success ms-2">{student.grade}</span>
+        </div>
+      </div>
+    ))
+  ) : (
+    <p>No students available</p> // Message par défaut en cas d'absence de données
+  )}
+</div>
+
+    </div>
+    </div>
                 {/* /Best Performers */}
               </div>
             </div>
@@ -734,228 +664,87 @@ const getProgressBarColor = (performance: number) => {
           
           <div className="row">
             {/* Student Marks */}
+            {/* Exam Result */}
             <div className="col-xxl-8 col-xl-7 d-flex">
               <div className="card flex-fill">
-                <div className="card-header d-flex align-items-center justify-content-between flex-wrap">
-                  <h4 className="card-title ">Student Marks</h4>
+                <div className="card-header d-flex align-items-center justify-content-between flex-wrap pb-0">
+                  <h4 className="card-title mb-3">Résultat d'examen</h4>
                   <div className="d-flex align-items-center">
-                    <div className="dropdown me-2 ">
-                      <Link
-                        to="#"
-                        className="bg-white dropdown-toggle"
-                        data-bs-toggle="dropdown"
-                      >
+                    <div className="dropdown mb-3">
+                      <Link to="#" className="bg-white dropdown-toggle" data-bs-toggle="dropdown">
                         <i className="ti ti-calendar me-2" />
-                        All Classes
+                        Tous les examens
                       </Link>
                       <ul className="dropdown-menu mt-2 p-3">
                         <li>
                           <Link to="#" className="dropdown-item rounded-1">
-                            I
-                          </Link>
-                        </li>
-                        <li>
-                          <Link to="#" className="dropdown-item rounded-1">
-                            II
-                          </Link>
-                        </li>
-                        <li>
-                          <Link to="#" className="dropdown-item rounded-1">
-                            III
-                          </Link>
-                        </li>
-                      </ul>
-                    </div>
-                    <div className="dropdown ">
-                      <Link
-                        to="#"
-                        className="bg-white dropdown-toggle"
-                        data-bs-toggle="dropdown"
-                      >
-                        <i className="ti ti-calendar me-2" />
-                        All Sections
-                      </Link>
-                      <ul className="dropdown-menu mt-2 p-3">
-                        <li>
-                          <Link to="#" className="dropdown-item rounded-1">
-                            A
-                          </Link>
-                        </li>
-                        <li>
-                          <Link to="#" className="dropdown-item rounded-1">
-                            B
-                          </Link>
-                        </li>
-                        <li>
-                          <Link to="#" className="dropdown-item rounded-1">
-                            C
+                            Titre du Type examen
                           </Link>
                         </li>
                       </ul>
                     </div>
                   </div>
                 </div>
+                {/* Table displaying exam results */}
                 <div className="card-body px-0">
-                  <div className="custom-datatable-filter table-responsive">
-                    <table className="table ">
-                      <thead className="thead-light">
-                        <tr>
-                          <th>ID</th>
-                          <th>Name</th>
-                          <th>Class </th>
-                          <th>Marks %</th>
-                          <th>Status</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td>35013</td>
+              <div className="custom-datatable-filter table-responsive">
+                <table className="table">
+                  <thead className="thead-light">
+                    <tr>
+                      <th>ID</th>
+                      <th>Nom</th>
+                      <th>Classes</th>
+                      <th>Notes</th>
+                      <th>Examens</th>
+                      <th>Statut</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {teacher && teacher.length > 0 ? (
+                      teacher.map((result) => (
+                        <tr key={result._id}>
+                          <td>{result._id}</td>
                           <td>
                             <div className="d-flex align-items-center">
-                              {/* <Link
-                                // to={routes.studentDetail}
-                                className="avatar avatar-md"
-                              >
+                              <Link to={"#"} className="avatar avatar-md">
                                 <ImageWithBasePath
-                                  src="/students/student-01.jpg"
-                                  className="img-fluid rounded-circle"
-                                  alt="img"
-                                />
-                              </Link> */}
-                              <div className="ms-2">
-                                <p className="text-dark mb-0">
-                                  {/* <Link to={routes.studentDetail}>Janet</Link> */}
-                                </p>
-                              </div>
-                            </div>
-                          </td>
-                          <td>III</td>
-                          <td>89%</td>
-                          <td>
-                            <span className="badge bg-success">Pass</span>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>35013</td>
-                          <td>
-                            <div className="d-flex align-items-center">
-                              <Link
-                                //to={routes.studentDetail}
-                                to={'#'}
-                                className="avatar avatar-md"
-                              >
-                                <ImageWithBasePath
-                                  src="/students/student-02.jpg"
+                                  src="/assets/img/students/student-01.jpg"
                                   className="img-fluid rounded-circle"
                                   alt="img"
                                 />
                               </Link>
                               <div className="ms-2">
                                 <p className="text-dark mb-0">
-                                  {/* <Link to={routes.studentDetail}>Joann</Link> */}
-                                  
+                                  <Link to={"#"}> {typeof result.student_id !== 'string' && result.student_id?.firstname} {typeof result.student_id !== 'string' && result.student_id?.lastname}</Link>
                                 </p>
                               </div>
                             </div>
                           </td>
-                          <td>IV</td>
-                          <td>88%</td>
+                          <td>{typeof result.course_id !== 'string' && result.course_id?.name}</td>
+                          <td>{result.grade}</td>
+                          <td>{typeof result.exam_id !== 'string' && result.exam_id?.name}</td>
                           <td>
-                            <span className="badge bg-success">Pass</span>
+                          <span className={`badge 
+                            ${result.status === 'Réussi' ? 'bg-success' : 
+                            result.status === 'Échoué' ? 'bg-danger' : 
+                            result.status === 'Incomplet' ? 'bg-secondary' : 'bg-warning'}`}>
+                            {result.status}
+                          </span>
                           </td>
                         </tr>
-                        <tr>
-                          <td>35011</td>
-                          <td>
-                            <div className="d-flex align-items-center">
-                              <Link
-                                // to={routes.studentDetail}
-                                to={'#'}
-                                className="avatar avatar-md"
-                              >
-                                <ImageWithBasePath
-                                  src="/students/student-03.jpg"
-                                  className="img-fluid rounded-circle"
-                                  alt="img"
-                                />
-                              </Link>
-                              <div className="ms-2">
-                                <p className="text-dark mb-0">
-                                  {/* <Link to={routes.studentDetail}>
-                                    Kathleen
-                                  </Link> */}
-                                </p>
-                              </div>
-                            </div>
-                          </td>
-                          <td>II</td>
-                          <td>69%</td>
-                          <td>
-                            <span className="badge bg-success">Pass</span>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>35010</td>
-                          <td>
-                            <div className="d-flex align-items-center">
-                              <Link
-                                //to={routes.studentDetail}
-                                to={'#'}
-                                className="avatar avatar-md"
-                              >
-                                <ImageWithBasePath
-                                  src="/students/student-04.jpg"
-                                  className="img-fluid rounded-circle"
-                                  alt="img"
-                                />
-                              </Link>
-                              <div className="ms-2">
-                                <p className="text-dark mb-0">
-                                  {/* <Link to={routes.studentDetail}>Gifford</Link> */}
-                                </p>
-                              </div>
-                            </div>
-                          </td>
-                          <td>I</td>
-                          <td>21%</td>
-                          <td>
-                            <span className="badge bg-success">Pass</span>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>35009</td>
-                          <td>
-                            <div className="d-flex align-items-center">
-                              {/* <Link
-                                to={routes.studentDetail}
-                                className="avatar avatar-md"
-                              >
-                                <ImageWithBasePath
-                                  src="/students/student-05.jpg"
-                                  className="img-fluid rounded-circle"
-                                  alt="img"
-                                />
-                              </Link> */}
-                              <div className="ms-2">
-                                <p className="text-dark mb-0">
-                                  {/* <Link to={routes.studentDetail}>Lisa</Link> */}
-                                </p>
-                              </div>
-                            </div>
-                          </td>
-                          <td>II</td>
-                          <td>31%</td>
-                          <td>
-                            <span className="badge bg-danger">Fail</span>
-                          </td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
+                      ))
+                    ) : (
+                      <tr>
+                        <td colSpan={6}>Aucun résultat d'examen disponible</td>
+                      </tr>
+                    )}
+                  </tbody>
+                </table>
               </div>
             </div>
-            {/* /Student Marks */}
+            </div>
+            </div>
+            {/* /Exam Result */}
             {/* Leave Status */}
             <div className="col-xxl-4 col-xl-5 d-flex">
       <div className="card flex-fill">
