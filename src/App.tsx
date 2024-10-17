@@ -27,6 +27,10 @@ import '../src/style/icon/fontawesome/css/all.min.css';
 import '../src/style/icon/ionic/ionicons.css';
 import '../src/style/icon/tabler-icons/webfont/tabler-icons.min.css';
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
+import UserCard from "./components/UserCard/UserCard";
+import StudentCard from "./components/student/studentCard/StudentCard";
+import StudentGrid from "./components/student/studentGrid/StudentGrid";
+import StudentList from "./components/student/StudentList/StudentList";
 
 
 
@@ -79,6 +83,23 @@ function App() {
                   element={
                     <RequireAuth>
                       <DashboardEtudiant />
+                    </RequireAuth>
+                  }
+                />
+                
+                <Route
+                  path="/dashboard/studentCard"
+                  element={
+                    <RequireAuth>
+                      <StudentGrid />
+                    </RequireAuth>
+                  }
+                />
+                <Route
+                  path="/dashboard/studentList"
+                  element={
+                    <RequireAuth>
+                      <StudentList />
                     </RequireAuth>
                   }
                 />

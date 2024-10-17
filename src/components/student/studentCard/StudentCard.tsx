@@ -2,7 +2,6 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 interface StudentCardProps {
-    studentId: string;
     studentName: string;
     rollNo: string;
     gender: string;
@@ -18,7 +17,6 @@ interface StudentCardProps {
 }
 
 const StudentCard: React.FC<StudentCardProps> = ({
-    studentId,
     studentName,
     rollNo,
     gender,
@@ -28,15 +26,28 @@ const StudentCard: React.FC<StudentCardProps> = ({
     classInfo,
     routes,
 }) => {
+
+
+
+    // Options pour le formatage de la date
+    const options: Intl.DateTimeFormatOptions = {
+        day: '2-digit' as '2-digit',
+        month: 'long' as 'long',
+        year: 'numeric' as 'numeric',
+    };
+    const date = new Date(joinedDate);
+    // Formater la date
+    const formattedDate = new Intl.DateTimeFormat('fr-FR', options).format(date);
+
+
     return (
         <div className="col-xxl-3 col-xl-4 col-md-6 d-flex">
             <div className="card flex-fill">
                 <div className="card-header d-flex align-items-center justify-content-between">
                     <Link to={routes.studentDetail} className="link-primary">
-                        {studentId}
                     </Link>
                     <div className="d-flex align-items-center">
-                        <span className={`badge badge-soft-${status === 'Active' ? 'success' : 'danger'} d-inline-flex align-items-center me-1`}>
+                        <span className={`badge badge-soft-${status === 'actif' ? 'success' : 'danger'} d-inline-flex align-items-center me-1`}>
                             <i className="ti ti-circle-filled fs-5 me-1" />
                             {status}
                         </span>
@@ -102,17 +113,17 @@ const StudentCard: React.FC<StudentCardProps> = ({
                         </div>
                     </div>
                     <div className="d-flex align-items-center justify-content-between gx-2">
-                        <div>
-                            <p className="mb-0">Roll No</p>
+                        {/* <div>
+                            <p className="mb-0">Roll</p>
                             <p className="text-dark">{rollNo}</p>
-                        </div>
+                        </div> */}
                         <div>
                             <p className="mb-0">Genre</p>
                             <p className="text-dark">{gender}</p>
                         </div>
                         <div>
                             <p className="mb-0">Arriver</p>
-                            <p className="text-dark">{joinedDate}</p>
+                            <p className="text-dark">{formattedDate}</p>
                         </div>
                     </div>
                 </div>

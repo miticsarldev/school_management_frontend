@@ -1,14 +1,14 @@
-import { useRef } from 'react'
+import { useState, useRef } from 'react'
 import { Link } from 'react-router-dom'
-// import PredefinedDateRanges from '../datePicker/DatePicker'
 import StudentModals from '../studentModals/StudentModals'
 import CommonSelect from '../commonSelect/CommonSelect'
 import TooltipOption from '../tooltipOption/TooltipOption'
 import StudentCard from '../studentCard/StudentCard'
+import { useGetAllUsersQuery } from '@/redux/features/authSlice'
 
 const StudentGrid = () => {
-    // const routes = all_routes
     const dropdownMenuRef = useRef<HTMLDivElement | null>(null);
+
 
     const allClass = [
         { value: "I", label: "I" },
@@ -34,11 +34,25 @@ const StudentGrid = () => {
         { value: "Inactive", label: "Inactive" },
     ];
 
+    // States for filter values
+    const [selectedClass, setSelectedClass] = useState(allClass[0].value);
+    const [selectedName, setSelectedName] = useState(names[0].value);
+    const [selectedGender, setSelectedGender] = useState(gender[0].value);
+    const [selectedStatus, setSelectedStatus] = useState(status[0].value);
+
+
+    const { data: usersData, isLoading: isLoadingUsers } = useGetAllUsersQuery();
+
+    const filteredStudents = usersData?.filter(user =>
+        user.role === "etudiant"
+    ) || [];
+
     const handleApplyClick = () => {
         if (dropdownMenuRef.current) {
             dropdownMenuRef.current.classList.remove('show');
         }
     };
+
     return (
         <>
             {/* Page Wrapper */}
@@ -79,9 +93,7 @@ const StudentGrid = () => {
                     <div className="bg-white p-3 border rounded-1 d-flex align-items-center justify-content-between flex-wrap mb-4 pb-0">
                         <h4 className="mb-3">Students Grid</h4>
                         <div className="d-flex align-items-center flex-wrap">
-                            <div className="input-icon-start mb-3 me-2 position-relative">
-                                {/* <PredefinedDateRanges /> */}
-                            </div>
+                            <div className="input-icon-start mb-3 me-2 position-relative"></div>
                             <div className="dropdown mb-3 me-2">
                                 <Link
                                     to="#"
@@ -106,6 +118,7 @@ const StudentGrid = () => {
                                                             className="select"
                                                             options={allClass}
                                                             defaultValue={allClass[0]}
+                                                            // onChange={(e) => setSelectedClass(e.value)}
                                                         />
                                                     </div>
                                                 </div>
@@ -116,6 +129,7 @@ const StudentGrid = () => {
                                                             className="select"
                                                             options={names}
                                                             defaultValue={names[0]}
+                                                            // onChange={(e) => setSelectedName(e.value)}
                                                         />
                                                     </div>
                                                 </div>
@@ -126,6 +140,7 @@ const StudentGrid = () => {
                                                             className="select"
                                                             options={gender}
                                                             defaultValue={gender[0]}
+                                                            // onChange={(e) => setSelectedGender(e.value)}
                                                         />
                                                     </div>
                                                 </div>
@@ -136,6 +151,7 @@ const StudentGrid = () => {
                                                             className="select"
                                                             options={status}
                                                             defaultValue={status[0]}
+                                                            // onChange={(e) => setSelectedStatus(e.value)}
                                                         />
                                                     </div>
                                                 </div>
@@ -145,7 +161,7 @@ const StudentGrid = () => {
                                             <Link to="#" className="btn btn-light me-3">
                                                 Reset
                                             </Link>
-                                            <Link to="{routes.studentGrid}" className="btn btn-primary" onClick={handleApplyClick}>
+                                            <Link to="#" className="btn btn-primary" onClick={handleApplyClick}>
                                                 Appliquer
                                             </Link>
                                         </div>
@@ -154,7 +170,7 @@ const StudentGrid = () => {
                             </div>
                             <div className="d-flex align-items-center bg-white border rounded-2 p-1 mb-3 me-2">
                                 <Link
-                                    to="{routes.studentList}"
+                                    to="/dashboard/studentList"
                                     className="btn btn-icon btn-sm me-1 bg-light primary-hover"
                                 >
                                     <i className="ti ti-list-tree" />
@@ -166,81 +182,37 @@ const StudentGrid = () => {
                                     <i className="ti ti-grid-dots" />
                                 </Link>
                             </div>
-                            
                         </div>
                     </div>
                     {/* /Filter */}
                     <div className="row">
                         {/* Student Grid */}
-
-                        <StudentCard
-                            studentId="AD9892434"
-                            studentName="Janet Daniel"
-                            rollNo="35013"
-                            gender="Female"
-                            joinedDate="10 Jan 2015"
-                            status="Active"
-                            avatar="assets/img/students/student-01.jpg"
-                            classInfo="III, A"
-                            routes={{
-                                studentDetail: '/student/detail/AD9892434',
-                                editStudent: '/student/edit/AD9892434',
-                                studentPromotion: '/student/promotion/AD9892434',
-                            }}
-                        />
-                        <StudentCard
-                            studentId="AD9892434"
-                            studentName="Janet Daniel"
-                            rollNo="35013"
-                            gender="Female"
-                            joinedDate="10 Jan 2015"
-                            status="Active"
-                            avatar="assets/img/students/student-01.jpg"
-                            classInfo="III, A"
-                            routes={{
-                                studentDetail: '/student/detail/AD9892434',
-                                editStudent: '/student/edit/AD9892434',
-                                studentPromotion: '/student/promotion/AD9892434',
-                            }}
-                        />
-                        <StudentCard
-                            studentId="AD9892434"
-                            studentName="Janet Daniel"
-                            rollNo="35013"
-                            gender="Female"
-                            joinedDate="10 Jan 2015"
-                            status="Active"
-                            avatar="assets/img/students/student-01.jpg"
-                            classInfo="III, A"
-                            routes={{
-                                studentDetail: '/student/detail/AD9892434',
-                                editStudent: '/student/edit/AD9892434',
-                                studentPromotion: '/student/promotion/AD9892434',
-                            }}
-                        />
-                        <StudentCard
-                            studentId="AD9892434"
-                            studentName="Janet Daniel"
-                            rollNo="35013"
-                            gender="Female"
-                            joinedDate="10 Jan 2015"
-                            status="Active"
-                            avatar="assets/img/students/student-01.jpg"
-                            classInfo="III, A"
-                            routes={{
-                                studentDetail: '/student/detail/AD9892434',
-                                editStudent: '/student/edit/AD9892434',
-                                studentPromotion: '/student/promotion/AD9892434',
-                            }}
-                        />
-
-                        {/* /Student Grid */}
-
+                        {isLoadingUsers ? (
+                            <p>Loading...</p>
+                        ) : (
+                            filteredStudents.map(student => (
+                                <StudentCard
+                                    key={student._id}
+                                    studentName={student.firstname}
+                                    rollNo={String(student.bio)}
+                                    gender={String(student.gender)}
+                                    joinedDate={String(student.createdAt)}
+                                    status={student.status}
+                                    avatar={String(student.image)}
+                                    classInfo={"Salle A"}
+                                    routes={{
+                                        studentDetail: `/student/detail/${student._id}`,
+                                        editStudent: `/student/edit/${student._id}`,
+                                        studentPromotion: `/student/promotion/${student._id}`,
+                                    }}
+                                />
+                            ))
+                        )}
                         {/* /Student Grid */}
                         <div className="col-md-12 text-center">
                             <Link to="#" className="btn btn-primary">
                                 <i className="ti ti-loader-3 me-2" />
-                               Voir plus
+                                Voir plus
                             </Link>
                         </div>
                     </div>
@@ -249,8 +221,7 @@ const StudentGrid = () => {
             {/* /Page Wrapper */}
             <StudentModals />
         </>
-
-    )
+    );
 }
 
-export default StudentGrid
+export default StudentGrid;
