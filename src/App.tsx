@@ -27,6 +27,8 @@ import '../src/style/icon/fontawesome/css/all.min.css';
 import '../src/style/icon/ionic/ionicons.css';
 import '../src/style/icon/tabler-icons/webfont/tabler-icons.min.css';
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
+import AddStudent from "./components/addStudent/AddStudent";
+import StudentForm from "./components/StudentForm/StudentForm";
 
 
 
@@ -79,6 +81,15 @@ function App() {
                   element={
                     <RequireAuth>
                       <DashboardEtudiant />
+                    </RequireAuth>
+                  }
+                />
+                
+                <Route
+                  path="/dashboard/addStudent"
+                  element={
+                    <RequireAuth>
+                      <StudentForm />
                     </RequireAuth>
                   }
                 />
