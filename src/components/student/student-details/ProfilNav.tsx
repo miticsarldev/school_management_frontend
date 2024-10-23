@@ -16,17 +16,22 @@ const ProfilNav: React.FC<ProfilNavProps> = ({ routes }) => {
 
   return (
     <ul className="nav nav-tabs nav-tabs-bottom mb-4">
-      {routes.map((route, index) => (
-        <li key={index}>
-          <Link
-            to={route.path}
-            className={`nav-link ${location.pathname === route.path ? 'active' : ''}`}
-          >
-            <i className={`ti ${route.icon} me-2`} />
-            {route.label}
-          </Link>
-        </li>
-      ))}
+      {routes.map((route, index) => {
+        // Vérifiez si le chemin actuel correspond à la route
+        const isActive = location.pathname === route.path;
+
+        return (
+          <li key={index}>
+            <Link
+              to={route.path}
+              className={`nav-link ${isActive ? 'active' : ''}`} // Appliquez la classe 'active' si elle correspond
+            >
+              <i className={`ti ${route.icon} me-2`} />
+              {route.label}
+            </Link>
+          </li>
+        );
+      })}
     </ul>
   );
 };

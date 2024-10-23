@@ -1,6 +1,6 @@
-import React, { useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
+import axios from 'axios';
 import { Link } from "react-router-dom";
-import ImageWithBasePath from "@/components/ImageWithBasePath/ImageWithBasePath";
 import StudentModals from "../studentModals/StudentModals";
 import Table from "../Datatable/index";
 import {
@@ -16,9 +16,51 @@ import { useGetAllUsersQuery } from "@/redux/features/authSlice"; // Assuming th
 
 const StudentList = () => {
   const { data: usersData, isLoading } = useGetAllUsersQuery(); // Utilisation de React Query pour la gestion des requêtes
+  const [classroomStudentData, setClassroomStudentData] = useState<any[]>([]); // Utilisation du type any[] pour éviter les erreurs de typage
+  const [selectedUserId, setSelectedUserId] = useState<string | null>(null); // État pour stocker l'ID de l'utilisateur selectionner
+
+  const handleSelectUser = (userId: string) => {
+    setSelectedUserId(userId); // Mettre à jour l'état avec l'ID de l'utilisateur
+  };
+
+  useEffect(() => {
+    // Fonction pour récupérer les données via axios
+    const fetchData = async () => {
+      try {
+        const response = await axios.get('http://localhost:4444/api/classroom_etudiants'); // Remplacez par votre URL API
+
+        setClassroomStudentData(response.data); // Stocker les données dans l'état
+
+      } catch (error: any) {
+        console.log(error.message);
+      }
+    };
+
+    fetchData(); // Appel de la fonction
+  }, []); // Le tableau vide signifie que l'effet s'exécute une seule fois après le montage
+
+// Fonction pour trouver le nom de la classe d'un étudiant
+function getClassroomNameByStudentId(studentId: string | null): string {
+  // Vérifier si studentId est null
+  if (!studentId) {
+    return "aucune classe"; // Retourner "aucune classe" si l'ID est null
+  }
+
+  // Parcourir le tableau pour trouver l'étudiant correspondant
+  const studentClass = classroomStudentData.find(cs => 
+    cs.student_id?._id === studentId && cs.classroom_id?.name !== undefined
+  );
+
+  // Si une classe est trouvée, retourner son nom, sinon retourner "aucune classe"
+  return studentClass ? studentClass.classroom_id.name : "aucune classe";
+}
+
+
 
   // Filtrer uniquement les étudiants
   const students = usersData?.filter((user) => user.role === "etudiant") || [];
+  console.log(students);
+  
 
   const dropdownMenuRef = useRef<HTMLDivElement | null>(null);
 
@@ -26,7 +68,20 @@ const StudentList = () => {
     if (dropdownMenuRef.current) {
       dropdownMenuRef.current.classList.remove("show");
     }
-  };
+};
+
+  // Fonction pour formater la date
+  function formatDate(dateString: string): string {
+    // Convertir la chaîne de caractères en objet Date
+    const date = new Date(dateString);
+
+    // Options pour le formatage
+    const options: Intl.DateTimeFormatOptions = { day: 'numeric', month: 'long', year: 'numeric' };
+
+    // Retourner la date formatée
+    return date.toLocaleDateString('fr-FR', options);
+  }
+
 
   const columns = [
     {
@@ -34,13 +89,13 @@ const StudentList = () => {
       dataIndex: "firstname",
       render: (text: string, record: any) => (
         <div className="d-flex align-items-center">
-          <Link to="#" className="avatar avatar-md">
+          {/* <Link to="#" className="avatar avatar-md">
             <ImageWithBasePath
               src={record.imgSrc}
               className="img-fluid rounded-circle"
               alt="img"
             />
-          </Link>
+          </Link> */}
           <div className="ms-2">
             <p className="text-dark mb-0">
               <Link to="#">{text}</Link>
@@ -52,11 +107,12 @@ const StudentList = () => {
     },
     {
       title: "Classe",
-      render: () => (
+      dataIndex: "_id",
+      render: (text: string) => (
         <div className="d-flex align-items-center">
           <div className="ms-2">
             <p className="text-dark mb-0">
-              <Link to="#">{"Salle A"}</Link>
+              {getClassroomNameByStudentId(text)}
             </p>
           </div>
         </div>
@@ -90,16 +146,35 @@ const StudentList = () => {
     {
       title: "Date arriver",
       dataIndex: "createdAt",
+      render: (text: string, record: any) => (
+        <div className="d-flex align-items-center">
+          <div className="ms-2">
+            <p className="text-dark mb-0">
+              {formatDate(text)}
+            </p>
+          </div>
+        </div>
+      )
       // sorter: (a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime(),
     },
     {
       title: "Date Naissance",
       dataIndex: "birthdate",
+      render: (text: string, record: any) => (
+        <div className="d-flex align-items-center">
+          <div className="ms-2">
+            <p className="text-dark mb-0">
+              {formatDate(text)}
+            </p>
+          </div>
+        </div>
+      )
       // sorter: (a, b) => new Date(a.birthdate).getTime() - new Date(b.birthdate).getTime(),
     },
     {
       title: "Action",
-      render: () => (
+      dataIndex: "_id",
+      render: (text: string) => (
         <div className="d-flex align-items-center">
           <Link
             to="#"
@@ -120,38 +195,21 @@ const StudentList = () => {
             </Link>
             <ul className="dropdown-menu dropdown-menu-right p-3">
               <li>
-                <Link className="dropdown-item rounded-1" to="student-details">
+                <Link className="dropdown-item rounded-1" to={`/dashboard/studentDetail/${text}`}>
                   <i className="ti ti-menu me-2" />
-                  View Student
+                  Voir etudiant
                 </Link>
               </li>
               <li>
                 <Link className="dropdown-item rounded-1" to="{routes.editStudent}">
                   <i className="ti ti-edit-circle me-2" />
-                  Edit
-                </Link>
-              </li>
-              <li>
-                <Link
-                  className="dropdown-item rounded-1"
-                  to="#"
-                  data-bs-toggle="modal"
-                  data-bs-target="#login_detail"
-                >
-                  <i className="ti ti-lock me-2" />
-                  Login Details
-                </Link>
-              </li>
-              <li>
-                <Link className="dropdown-item rounded-1" to="#">
-                  <i className="ti ti-toggle-right me-2" />
-                  Disable
+                  Modifier
                 </Link>
               </li>
               <li>
                 <Link className="dropdown-item rounded-1" to="student-promotion">
                   <i className="ti ti-arrow-ramp-right-2 me-2" />
-                  Promote Student
+                  Promouvoir
                 </Link>
               </li>
               <li>
@@ -160,9 +218,10 @@ const StudentList = () => {
                   to="#"
                   data-bs-toggle="modal"
                   data-bs-target="#delete-modal"
+                  onClick={() => handleSelectUser(text)}
                 >
                   <i className="ti ti-trash-x me-2" />
-                  Delete
+                  Supprimer
                 </Link>
               </li>
             </ul>
@@ -301,7 +360,7 @@ const StudentList = () => {
             </div>
           </div>
         </div>
-        <StudentModals />
+        <StudentModals idStudent={selectedUserId? selectedUserId : ""}/>
       </div>
     </>
   );

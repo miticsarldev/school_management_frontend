@@ -201,7 +201,7 @@ const StudentGrid = () => {
                                     avatar={String(student.image)}
                                     classInfo={"Salle A"}
                                     routes={{
-                                        studentDetail: `/student/detail/${student._id}`,
+                                        studentDetail: `/dashboard/studentDetail/${student._id}`,
                                         editStudent: `/student/edit/${student._id}`,
                                         studentPromotion: `/student/promotion/${student._id}`,
                                     }}

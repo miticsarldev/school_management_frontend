@@ -31,6 +31,11 @@ import UserCard from "./components/UserCard/UserCard";
 import StudentCard from "./components/student/studentCard/StudentCard";
 import StudentGrid from "./components/student/studentGrid/StudentGrid";
 import StudentList from "./components/student/StudentList/StudentList";
+import StudentDetails from "./components/student/student-details/studentDetails";
+import StudentTimeTable from "./components/student/student-details/studentTimeTable";
+import StudentLeaves from "./components/student/student-details/studentLeaves";
+import StudentFees from "./components/student/student-details/studentFees";
+import StudentResult from "./components/student/student-details/studentResult";
 
 
 
@@ -86,7 +91,7 @@ function App() {
                     </RequireAuth>
                   }
                 />
-                
+
                 <Route
                   path="/dashboard/studentCard"
                   element={
@@ -103,6 +108,55 @@ function App() {
                     </RequireAuth>
                   }
                 />
+
+                <Route
+                  path="/dashboard/studentDetail/:studentId"
+                  element={
+                    <RequireAuth>
+                      <StudentDetails />
+                    </RequireAuth>
+                  }
+                />
+                <Route
+                  path="/dashboard/studentTimeTable/:studentId"
+                  element={
+                    <RequireAuth>
+                      <StudentTimeTable />
+                    </RequireAuth>
+                  }
+                />
+                
+
+                <Route
+                  path="/dashboard/studentLeave/:studentId"
+                  element={
+                    <RequireAuth>
+                      <StudentLeaves />
+                    </RequireAuth>
+                  }
+                />
+                
+
+                <Route
+                  path="/dashboard/studentFees/:studentId"
+                  element={
+                    <RequireAuth>
+                      <StudentFees />
+                    </RequireAuth>
+                  }
+                />
+
+                <Route
+                  path="/dashboard/studentExamResult/:id"
+                  element={
+                    <RequireAuth>
+                      <StudentResult />
+                    </RequireAuth>
+                  }
+                />
+                
+
+
                 {/* To be filled out one by one */}
                 <Route
                   path="/dashboard/users"

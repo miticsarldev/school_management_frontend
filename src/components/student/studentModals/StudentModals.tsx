@@ -3,9 +3,16 @@ import { Link } from 'react-router-dom'
 import { DatePicker } from 'antd'
 import dayjs from "dayjs";
 import CommonSelect from '../commonSelect/CommonSelect'
+import React from 'react';
+import axios from 'axios';
 
-const StudentModals = () => {
-//    const routes = all_routes
+type StudentModalsProps = {
+  idStudent : string,
+}
+
+const StudentModals : React.FC<StudentModalsProps> = ({ idStudent }) => {
+
+
    const today = new Date()
    const year = today.getFullYear()
    const month = String(today.getMonth() + 1).padStart(2, '0') // Month is zero-based, so we add 1
@@ -51,6 +58,29 @@ const StudentModals = () => {
     { value: "Paytm", label: "Paytm" },
     { value: "Cash On Delivery", label: "Cash On Delivery" },
   ];
+
+    // Fonction pour gérer la suppression d'un utilisateur
+    const handleDeleteUser = async () => {
+      try {
+        await deleteUserById(idStudent);
+        // Met à jour l'état pour supprimer l'utilisateur de la liste
+      } catch (error) {
+        console.error('Failed to delete user:', error);
+      }
+    };
+  
+  // Fonction pour supprimer un utilisateur par son ID
+  const deleteUserById = async (userId: string): Promise<void> => {
+    try {
+      // Envoyer une requête DELETE à l'API
+      await axios.delete(`http://localhost:4444/api/users/${userId}`);
+      console.log(`User with ID ${userId} deleted successfully.`);
+    } catch (error: any) {
+      // Gérer les erreurs
+      console.error('Error deleting user:', error.response ? error.response.data : error.message);
+      throw error; // Vous pouvez relancer l'erreur si besoin
+    }
+  };
 
 
   return (
@@ -235,10 +265,10 @@ const StudentModals = () => {
             <span className="delete-icon">
               <i className="ti ti-trash-x" />
             </span>
-            <h4>Confirm Deletion</h4>
+            <h4>Suppression</h4>
             <p>
-              You want to delete all the marked items, this cant be undone once
-              you delete.
+            Vous souhaitez supprimer tous les éléments marqués, cette opération ne 
+            peut pas être annulée une fois que vous avez supprimé.
             </p>
             <div className="d-flex justify-content-center">
               <Link
@@ -246,10 +276,10 @@ const StudentModals = () => {
                 className="btn btn-light me-3"
                 data-bs-dismiss="modal"
               >
-                Cancel
+                Annuler
               </Link>
-              <Link to="#"  className="btn btn-danger" data-bs-dismiss="modal">
-                Yes, Delete
+              <Link to="#"  className="btn btn-danger" data-bs-dismiss="modal" onClick={() => {handleDeleteUser()}}>
+                oui, supprimer
               </Link>
             </div>
           </div>

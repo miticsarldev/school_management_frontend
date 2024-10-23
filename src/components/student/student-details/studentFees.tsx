@@ -1,19 +1,72 @@
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import StudentModals from "../studentModals/StudentModals";
 import StudentSidebar from "./studentSidebar";
 import StudentBreadcrumb from "./studentBreadcrumb";
-import ProfilNav from "./ProfilNav";
-
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 const StudentFees = () => {
-  const routes = [
-    { path: '/dashboard/studentDetails', label: 'Student Details', icon: 'ti-school' },
-    { path: '/dashboard/studentTimeTable', label: 'Time Table', icon: 'ti-table-options' },
-    { path: '/dashboard/studentLeaves', label: 'Leave & Attendance', icon: 'ti-calendar-due' },
-    { path: '/dashboard/studentFees', label: 'Fees', icon: 'ti-report-money' },
-    { path: '/dashboard/studentResult', label: 'Exam & Results', icon: 'ti-bookmark-edit' },
-  ];
-  
+
+  const [fees, setFees] = useState<any[]>([]);
+  const [selectUser, setSelectUser] = useState<Record<string, any>>({});
+  const [users, setUsers] = useState<any[]>([]);
+
+
+  const { studentId } = useParams(); // Récupère l'ID de l'étudiant à partir des paramètres
+
+  useEffect(() => {
+    const fetchFeesData = async () => {
+      try {
+        const response = await axios.get(`http://localhost:4444/api/tuition-fees/student/${studentId}`);
+        console.log(response.data);
+
+        setFees(response.data); // Enregistre les frais récupérés
+      } catch (error: any) {
+        console.log(error.message);
+      }
+    };
+
+    fetchFeesData();
+  }, [studentId]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get('http://localhost:4444/api/users');
+        console.log('Fetched users:', response.data); // Vérification des données récupérées
+        setUsers(response.data);
+      } catch (error: any) {
+        console.log(error.message);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    if (studentId) {
+      findUserById(studentId);
+      console.log("Users list:", users); // Après la récupération des utilisateurs
+      console.log("Selected user state:", selectUser); // Après la mise à jour de selectUser
+
+    }
+  }, [users, studentId]);
+
+  const findUserById = (userId: string) => {
+    const user = users.find((u) => u._id === userId);
+    if (user) {
+      setSelectUser(user);
+    } else {
+      console.error("User not found with ID:", userId); // Message d'erreur si l'utilisateur n'est pas trouvé
+    }
+  };
+
+  function formatDate(dateString: string): string {
+    const date = new Date(dateString);
+    const options: Intl.DateTimeFormatOptions = { day: 'numeric', month: 'long', year: 'numeric' };
+    return date.toLocaleDateString('fr-FR', options);
+  }
+
   return (
     <>
       {/* Page Wrapper */}
@@ -26,47 +79,61 @@ const StudentFees = () => {
           </div>
           <div className="row">
             {/* Student Information */}
-            <StudentSidebar />
+            <StudentSidebar
+              avatar={selectUser.image}
+              name={selectUser.firstname}
+              studentId={selectUser.studentId || "AD1256589"}
+              rollNo={selectUser.rollNo || "35013"}
+              gender={selectUser.gender}
+              dob={formatDate(selectUser.birthdate)}
+              bloodGroup={selectUser.country}
+              region={selectUser.city}
+              caste="Catholic"
+              category="OBC"
+              motherTongue="English"
+              languages={["English", "Spanish"]}
+              phoneNumber={selectUser.telephone}
+              email={selectUser.email}
+            />
             {/* /Student Information */}
             <div className="col-xxl-9 col-xl-8">
               <div className="row">
                 <div className="col-md-12">
                   {/* List */}
-                  <ProfilNav routes={routes} />
+                  {/* <ProfilNav routes={routes} /> */}
+                  <ul className="nav nav-tabs nav-tabs-bottom mb-4">
+                    <li>
+                      <Link to={`/dashboard/studentDetail/${studentId}`} className="nav-link">
+                        <i className="ti ti-school me-2" />
+                        deatils Etudiant
+                      </Link>
+                    </li>
+                    <li>
+                      <Link to={`/dashboard/studentTimeTable/${studentId}`} className="nav-link">
+                        <i className="ti ti-table-options me-2" />
+                        Emploie du temps
+                      </Link>
+                    </li>
+                    <li>
+                      <Link
+                        to={`/dashboard/studentLeave/${studentId}`}
+                        className="nav-link"
+                      >
+                        <i className="ti ti-calendar-due me-2" />
+                        Absence &amp; Presence
+                      </Link>
+                    </li>
+                    <li>
+                      <Link to={`/dashboard/studentFees/${studentId}`} className="nav-link active">
+                        <i className="ti ti-report-money me-2" />
+                        Payement frais
+                      </Link>
+                    </li>
+                  </ul>
                   {/* /List */}
                   <div className="card">
                     <div className="card-header d-flex align-items-center justify-content-between flex-wrap pb-0">
-                      <h4 className="mb-3">Fees</h4>
-                      <div className="d-flex align-items-center flex-wrap">
-                        <div className="dropdown mb-3 me-2">
-                          <Link
-                            to=""
-                            className="btn btn-outline-light bg-white dropdown-toggle"
-                            data-bs-toggle="dropdown"
-                            data-bs-auto-close="outside"
-                          >
-                            <i className="ti ti-calendar-due me-2" />
-                            Year : 2024 / 2025
-                          </Link>
-                          <ul className="dropdown-menu p-3">
-                            <li>
-                              <Link to="" className="dropdown-item rounded-1">
-                                Year : 2024 / 2025
-                              </Link>
-                            </li>
-                            <li>
-                              <Link to="" className="dropdown-item rounded-1">
-                                Year : 2023 / 2024
-                              </Link>
-                            </li>
-                            <li>
-                              <Link to="" className="dropdown-item rounded-1">
-                                Year : 2022 / 2023
-                              </Link>
-                            </li>
-                          </ul>
-                        </div>
-                      </div>
+                      <h4 className="mb-3">Payement des Frais</h4>
                     </div>
                     <div className="card-body p-0 py-3">
                       {/* Fees List */}
@@ -74,224 +141,34 @@ const StudentFees = () => {
                         <table className="table datatable">
                           <thead className="thead-light">
                             <tr>
-                              <th>Fees Group</th>
-                              <th>Fees Code</th>
-                              <th>Due Date</th>
-                              <th>Amount $ </th>
+                              <th>Montant (FCFA)</th>
+                              <th>Date echeance</th>
                               <th>Status</th>
-                              <th>Ref ID</th>
-                              <th>Mode</th>
-                              <th>Date Paid</th>
-                              <th>Discount ($)</th>
-                              <th>Fine ($)</th>
+                              <th>Mode Paiement</th>
+                              <th>Date Paiement</th>
+                              <th>rabais (FCFA)</th>
+                              <th>Amende ($)</th>
+                              <th>Reste (FCFA)</th>
                             </tr>
                           </thead>
                           <tbody>
-                            <tr>
-                              <td>
-                                <p className="text-primary fees-group">
-                                  Class 1 General
-                                  <span className="d-block">
-                                    (Admission Fees)
+                            {fees?.map((fee) => (
+                              <tr key={fee._id}>
+                                <td>{fee.amount}</td>
+                                <td>{formatDate(fee.due_date)}</td>
+                                <td>
+                                  <span className={`badge ${fee.status === 'paid' ? 'badge-soft-success' : fee.status === 'overdue' ? 'badge-soft-danger' : 'badge-soft-warning'} d-inline-flex align-items-center`}>
+                                    <i className="ti ti-circle-filled fs-5 me-1" />
+                                    {fee.status}
                                   </span>
-                                </p>
-                              </td>
-                              <td>admission-fees</td>
-                              <td>25 Mar 2024</td>
-                              <td>2000</td>
-                              <td>
-                                <span className="badge badge-soft-success d-inline-flex align-items-center">
-                                  <i className="ti ti-circle-filled fs-5 me-1" />
-                                  Paid
-                                </span>
-                              </td>
-                              <td>#435454</td>
-                              <td>Cash</td>
-                              <td>25 Jan 2024</td>
-                              <td>10%</td>
-                              <td>200</td>
-                            </tr>
-                            <tr>
-                              <td>
-                                <p className="text-primary">
-                                  Class 1 General{" "}
-                                  <span className="d-block">
-                                    {" "}
-                                    (Mar month fees)
-                                  </span>
-                                </p>
-                              </td>
-                              <td>mar-month-fees</td>
-                              <td>10 Apr 2024</td>
-                              <td>2500</td>
-                              <td>
-                                <span className="badge badge-soft-success d-inline-flex align-items-center">
-                                  <i className="ti ti-circle-filled fs-5 me-1" />
-                                  Paid
-                                </span>
-                              </td>
-                              <td>#435453</td>
-                              <td>Cash</td>
-                              <td>03 Apr 2024</td>
-                              <td>10%</td>
-                              <td>0</td>
-                            </tr>
-                            <tr>
-                              <td>
-                                <p className="text-primary">
-                                  Class 1 General{" "}
-                                  <span className="d-block">
-                                    (Apr month Fees)
-                                  </span>
-                                </p>
-                              </td>
-                              <td>apr-month-fees</td>
-                              <td>10 May 2024</td>
-                              <td>2500</td>
-                              <td>
-                                <span className="badge badge-soft-success d-inline-flex align-items-center">
-                                  <i className="ti ti-circle-filled fs-5 me-1" />
-                                  Paid
-                                </span>
-                              </td>
-                              <td>#435453</td>
-                              <td>Cash</td>
-                              <td>03 Apr 2024</td>
-                              <td>10%</td>
-                              <td>0</td>
-                            </tr>
-                            <tr>
-                              <td>
-                                <p className="text-primary">
-                                  Class 1 General{" "}
-                                  <span className="d-block">
-                                    (May month Fees)
-                                  </span>
-                                </p>
-                              </td>
-                              <td>may-month-fees</td>
-                              <td>10 Jun 2024</td>
-                              <td>2500</td>
-                              <td>
-                                <span className="badge badge-soft-success d-inline-flex align-items-center">
-                                  <i className="ti ti-circle-filled fs-5 me-1" />
-                                  Paid
-                                </span>
-                              </td>
-                              <td>#435451</td>
-                              <td>Cash</td>
-                              <td>02 Jun 2024</td>
-                              <td>10%</td>
-                              <td>200</td>
-                            </tr>
-                            <tr>
-                              <td>
-                                <p className="text-primary">
-                                  Class 1 General{" "}
-                                  <span className="d-block">
-                                    (Jun month Fees)
-                                  </span>
-                                </p>
-                              </td>
-                              <td>jun-month-fees</td>
-                              <td>10 Jul 2024</td>
-                              <td>2500</td>
-                              <td>
-                                <span className="badge badge-soft-success d-inline-flex align-items-center">
-                                  <i className="ti ti-circle-filled fs-5 me-1" />
-                                  Paid
-                                </span>
-                              </td>
-                              <td>#435450</td>
-                              <td>Cash</td>
-                              <td>05 Jul 2024</td>
-                              <td>10%</td>
-                              <td>200</td>
-                            </tr>
-                            <tr>
-                              <td>
-                                <p className="text-primary">
-                                  Class 1 General{" "}
-                                  <span className="d-block">
-                                    (Jul month Fees)
-                                  </span>
-                                </p>
-                              </td>
-                              <td>jul-month-fees</td>
-                              <td>10 Aug 2024</td>
-                              <td>2500</td>
-                              <td>
-                                <span className="badge badge-soft-success d-inline-flex align-items-center">
-                                  <i className="ti ti-circle-filled fs-5 me-1" />
-                                  Paid
-                                </span>
-                              </td>
-                              <td>#435449</td>
-                              <td>Cash</td>
-                              <td>01 Aug 2024</td>
-                              <td>10%</td>
-                              <td>200</td>
-                            </tr>
-                            <tr>
-                              <td>
-                                <p className="text-primary">
-                                  Class 1 General{" "}
-                                  <span className="d-block">
-                                    (Dec month Fees)
-                                  </span>
-                                </p>
-                              </td>
-                              <td>dec-month-fees</td>
-                              <td>10 Jan 2024</td>
-                              <td>2500</td>
-                              <td>
-                                <span className="badge badge-soft-success d-inline-flex align-items-center">
-                                  <i className="ti ti-circle-filled fs-5 me-1" />
-                                  Paid
-                                </span>
-                              </td>
-                              <td>#435443</td>
-                              <td>Cash</td>
-                              <td>05 Jan 2024</td>
-                              <td>10%</td>
-                              <td>0</td>
-                            </tr>
-                            <tr>
-                              <td>
-                                <p className="text-primary">
-                                  Class 1 General{" "}
-                                  <span className="d-block">
-                                    (Jan month Fees)
-                                  </span>
-                                </p>
-                              </td>
-                              <td>jan-month-fees</td>
-                              <td>10 Feb 2024</td>
-                              <td>2000</td>
-                              <td>
-                                <span className="badge badge-soft-success d-inline-flex align-items-center">
-                                  <i className="ti ti-circle-filled fs-5 me-1" />
-                                  Paid
-                                </span>
-                              </td>
-                              <td>#435443</td>
-                              <td>Cash</td>
-                              <td>01 Feb 2024</td>
-                              <td>10%</td>
-                              <td>200</td>
-                            </tr>
-                            <tr>
-                              <td className="bg-dark">-</td>
-                              <td className="bg-dark" />
-                              <td className="bg-dark" />
-                              <td className="bg-dark text-white">2000</td>
-                              <td className="bg-dark" />
-                              <td className="bg-dark" />
-                              <td className="bg-dark" />
-                              <td className="bg-dark" />
-                              <td className="bg-dark text-white">200</td>
-                              <td className="bg-dark text-white">200</td>
-                            </tr>
+                                </td>
+                                <td>{fee.payment_mode}</td>
+                                <td>{fee.paid_date ? formatDate(fee.paid_date) : 'Not Paid'}</td>
+                                <td>{fee.discount}</td>
+                                <td>{fee.fine}</td>
+                                <td>{fee.balance}</td>
+                              </tr>
+                            ))}
                           </tbody>
                         </table>
                       </div>

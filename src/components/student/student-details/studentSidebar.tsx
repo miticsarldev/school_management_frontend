@@ -1,7 +1,41 @@
+import { FC } from "react";
 import { Link } from "react-router-dom";
 import ImageWithBasePath from "@/components/ImageWithBasePath/ImageWithBasePath";
 
-const StudentSidebar = () => {
+// Définir une interface pour les props
+interface StudentProps {
+  avatar: string;
+  name: string;
+  studentId: string;
+  rollNo: string;
+  gender: string;
+  dob: string;
+  bloodGroup: string;
+  region: string;
+  caste: string;
+  category: string;
+  motherTongue: string;
+  languages: string[];
+  phoneNumber: string;
+  email: string;
+}
+
+const StudentSidebar: FC<StudentProps> = ({
+  avatar,
+  name,
+  studentId,
+  rollNo,
+  gender,
+  dob,
+  bloodGroup,
+  region,
+  caste,
+  category,
+  motherTongue,
+  languages,
+  phoneNumber,
+  email,
+}) => {
   return (
     <div className="col-xxl-3 col-xl-4 theiaStickySidebar">
       <div className="stickybar pb-4">
@@ -9,51 +43,33 @@ const StudentSidebar = () => {
           <div className="card-header">
             <div className="d-flex align-items-center flex-wrap row-gap-3">
               <div className="d-flex align-items-center justify-content-center avatar avatar-xxl border border-dashed me-2 flex-shrink-0 text-dark frames">
-                <ImageWithBasePath
-                  src="assets/img/students/student-01.jpg"
-                  className="img-fluid"
-                  alt="img"
-                />
+                <ImageWithBasePath src={avatar} className="img-fluid" alt="img" />
               </div>
               <div className="overflow-hidden">
                 <span className="badge badge-soft-success d-inline-flex align-items-center mb-1">
                   <i className="ti ti-circle-filled fs-5 me-1" />
                   Active
                 </span>
-                <h5 className="mb-1 text-truncate">Janet Daniel</h5>
-                <p className="text-primary">AD1256589</p>
+                <h5 className="mb-1 text-truncate">{name}</h5>
+                <p className="text-primary">{studentId}</p>
               </div>
             </div>
           </div>
+
           {/* Basic Information */}
           <div className="card-body">
             <h5 className="mb-3">Basic Information</h5>
             <dl className="row mb-0">
               <dt className="col-6 fw-medium text-dark mb-3">Roll No</dt>
-              <dd className="col-6 mb-3">35013</dd>
-              <dt className="col-6 fw-medium text-dark mb-3">Gender</dt>
-              <dd className="col-6 mb-3">Female</dd>
-              <dt className="col-6 fw-medium text-dark mb-3">Date Of Birth</dt>
-              <dd className="col-6 mb-3">25 Jan 2008</dd>
-              <dt className="col-6 fw-medium text-dark mb-3">Blood Group</dt>
-              <dd className="col-6 mb-3">O +ve</dd>
-              <dt className="col-6 fw-medium text-dark mb-3">Blood Group</dt>
-              <dd className="col-6 mb-3">Red</dd>
-              <dt className="col-6 fw-medium text-dark mb-3">Reigion</dt>
-              <dd className="col-6 mb-3">Christianity</dd>
-              <dt className="col-6 fw-medium text-dark mb-3">Caste</dt>
-              <dd className="col-6 mb-3">Catholic</dd>
-              <dt className="col-6 fw-medium text-dark mb-3">Category</dt>
-              <dd className="col-6 mb-3">OBC</dd>
-              <dt className="col-6 fw-medium text-dark mb-3">Mother tongue</dt>
-              <dd className="col-6 mb-3">English</dd>
-              <dt className="col-6 fw-medium text-dark mb-3">Language</dt>
-              <dd className="col-6 mb-3">
-                <span className="badge badge-light text-dark me-2">
-                  English
-                </span>
-                <span className="badge badge-light text-dark">Spanish</span>
-              </dd>
+              <dd className="col-6 mb-3">{rollNo}</dd>
+              <dt className="col-6 fw-medium text-dark mb-3">Genre</dt>
+              <dd className="col-6 mb-3">{gender}</dd>
+              <dt className="col-6 fw-medium text-dark mb-3">Date de naissance</dt>
+              <dd className="col-6 mb-3">{dob}</dd>
+              <dt className="col-6 fw-medium text-dark mb-3">Pays</dt>
+              <dd className="col-6 mb-3">{bloodGroup}</dd>
+              <dt className="col-6 fw-medium text-dark mb-3">Ville</dt>
+              <dd className="col-6 mb-3">{region}</dd>
             </dl>
             <Link
               to="#"
@@ -66,6 +82,7 @@ const StudentSidebar = () => {
           </div>
           {/* /Basic Information */}
         </div>
+
         {/* Primary Contact Info */}
         <div className="card border-white">
           <div className="card-body">
@@ -76,7 +93,7 @@ const StudentSidebar = () => {
               </span>
               <div>
                 <span className="text-dark fw-medium mb-1">Phone Number</span>
-                <p>+1 46548 84498</p>
+                <p>{phoneNumber}</p>
               </div>
             </div>
             <div className="d-flex align-items-center">
@@ -85,7 +102,7 @@ const StudentSidebar = () => {
               </span>
               <div>
                 <span className="text-dark fw-medium mb-1">Email Address</span>
-                <p>jan@example.com</p>
+                <p>{email}</p>
               </div>
             </div>
           </div>
