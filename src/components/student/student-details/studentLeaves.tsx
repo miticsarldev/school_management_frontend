@@ -3,15 +3,13 @@ import StudentModals from "../studentModals/StudentModals";
 import StudentSidebar from "./studentSidebar";
 import StudentBreadcrumb from "./studentBreadcrumb";
 import Table from "../Datatable/index";
-import { TableData } from "../data/interface/index";
-import ProfilNav from "./ProfilNav";
+import { TableData, status } from '../data/interface/index';
 import { useEffect, useState } from "react";
 import axios from "axios";
-import AttendanceZone from "./AttendanceZone";
+
+
 
 const StudentLeaves = () => {
-
-  
 
   const [users, setUsers] = useState<any[]>([]);
   const [selectUser, setSelectUser] = useState<Record<string, any>>({});
@@ -21,14 +19,13 @@ const StudentLeaves = () => {
     absence: 0,
     medical: 0,
   });
+  const [Attendance, setAttendance] = useState<any[]>([]);
+  // État pour stocker le total de présences et d'absences
+  const [totals, setTotals] = useState({
+    presence: 0,
+    absence: 0
+  });
 
-  const routes = [
-    { path: '/dashboard/studentDetail/:studentId', label: 'Student Details', icon: 'ti-school' },
-    { path: '/dashboard/studentTimeTable', label: 'Time Table', icon: 'ti-table-options' },
-    { path: '/dashboard/studentLeaves', label: 'Leave & Attendance', icon: 'ti-calendar-due' },
-    { path: '/dashboard/studentFees', label: 'Fees', icon: 'ti-report-money' },
-    { path: '/dashboard/studentResult', label: 'Exam & Results', icon: 'ti-bookmark-edit' },
-  ];
 
   const { studentId } = useParams(); // Récupère l'ID de l'étudiant à partir des paramètres
   console.log('Student ID:', studentId); // Vérification de l'ID
@@ -37,7 +34,6 @@ const StudentLeaves = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get('http://localhost:4444/api/users'); // Remplacez par votre URL API
-        console.log('Fetched users:', response.data); // Vérification des données récupérées
         setUsers(response.data);
       } catch (error: any) {
         console.log(error.message);
@@ -51,9 +47,7 @@ const StudentLeaves = () => {
     if (studentId) {
       findUserById(studentId);
       fetchLeaves(studentId);
-      console.log("Users list:", users); // Après la récupération des utilisateurs
-      console.log("Selected user state:", selectUser); // Après la mise à jour de selectUser
-
+      fetchAttendance(studentId);
     }
   }, [users, studentId]);
 
@@ -62,7 +56,6 @@ const StudentLeaves = () => {
   const fetchLeaves = async (studentId: string) => {
     try {
       const response = await axios.get(`http://localhost:4444/api/leaves-user/${studentId}`);
-      console.log(response.data);
       setLeaves(response.data)
       calculateAbsenceTotals();
     } catch (error: any) {
@@ -70,6 +63,89 @@ const StudentLeaves = () => {
     }
 
   }
+
+  //recuperer les atttendance d'un etudiant par son id
+  const fetchAttendance = async (studentId: string) => {
+    try {
+      const response = await axios.get(`http://localhost:4444/api/attendance/user/${studentId}`);
+      console.log(response.data);
+      setAttendance(groupByWeeks(response.data))
+      console.log(JSON.stringify(Attendance))
+      calculateTotals(response.data)
+    } catch (error: any) {
+      console.log("Error fetching leave:", error.message);
+    }
+
+  }
+  //fonction pour grouper les attendes par semaines
+  function groupByWeeks(data: any[]): any[] {
+    const weeks: any[] = [];
+
+    // Fonction pour obtenir la semaine du mois à partir d'une date
+    function getWeekNumber(date: string): number {
+      const d = new Date(date);
+      const startOfMonth = new Date(d.getFullYear(), d.getMonth(), 1);
+      const diff = (d.getTime() - startOfMonth.getTime()) / (1000 * 60 * 60 * 24); // Différence en jours
+      return Math.floor(diff / 7) + 1;
+    }
+
+    // Initialiser la structure d'une semaine
+    function initializeWeekStructure(): any {
+      return {
+        Monday: [],
+        Tuesday: [],
+        Wednesday: [],
+        Thursday: [],
+        Friday: [],
+        Saturday: [],
+        Sunday: []
+      };
+    }
+
+    // Mapper le jour (numérique) au nom de jour
+    const daysMap = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+
+    // Parcourir les données
+    data.forEach((entry: any) => {
+      const date = new Date(entry.timetable_id.day);
+      const dayOfWeek = daysMap[date.getDay()]; // Nom du jour (e.g. "Monday")
+      const weekNumber = getWeekNumber(entry.timetable_id.day); // Numéro de semaine
+
+      // Trouver ou créer la semaine correspondante
+      let week = weeks.find(w => w.week === weekNumber);
+      if (!week) {
+        week = { week: weekNumber, days: initializeWeekStructure() };
+        weeks.push(week);
+      }
+
+      // Ajouter la présence (true/false) au jour correspondant
+      if (dayOfWeek in week.days) {
+        week.days[dayOfWeek].push(entry.status);
+      }
+    });
+
+    return weeks;
+  }
+
+  // Méthode pour calculer les totaux
+  const calculateTotals = (data: any[]) => {
+    let presenceCount = 0;
+    let absenceCount = 0;
+
+    data.forEach(entry => {
+      if (entry.status) {
+        presenceCount += 1;
+      } else {
+        absenceCount += 1;
+      }
+    });
+
+    // Mettre à jour l'état avec les nouveaux totaux
+    setTotals({
+      presence: presenceCount,
+      absence: absenceCount
+    });
+  };
 
   // Fonction pour formater les heures en "hh h mm - hh h mm" (ex: 10h 00 - 15h 00)
   function formatHeure(startTimeStr: string, endTimeStr: string): string {
@@ -136,10 +212,10 @@ const StudentLeaves = () => {
     return date.toLocaleDateString('fr-FR', options);
   }
 
+
   const transformedData = transformLeaveData(leaves);
 
-
-
+  //columns pour leave
   const columns = [
     {
       title: "type",
@@ -192,8 +268,97 @@ const StudentLeaves = () => {
       sorter: (a: TableData, b: TableData) => a.status.length - b.status.length,
     },
   ];
-  // danger
-  
+
+  // columns pour Attendance
+  const columns2 = [
+    {
+      title: "Semaine",
+      dataIndex: "week",
+      render: (text: any) => <span>{`Semaine ${text}`}</span>,
+      sorter: (a: any, b: any) => a.week - b.week,
+    },
+    {
+      title: "Lundi",
+      dataIndex: "days",
+      render: (days: any) => (
+        <div style={{ display: 'flex', gap: '4px' }}>
+          {Array.isArray(days.Monday) && days.Monday.length > 0 ? (
+            days.Monday.map((status: boolean, index: number) => (
+              <span key={index} className={`attendance-range ${status ? 'bg-success' : 'bg-danger'}`}></span>
+            ))
+          ) : (
+            <span>N/A</span>
+          )}
+        </div>
+      ),
+      sorter: (a: any, b: any) => (a.days.Monday?.length || 0) - (b.days.Monday?.length || 0),
+    },
+    {
+      title: "Mardi",
+      dataIndex: "days",
+      render: (days: any) => (
+        <>
+          {Array.isArray(days.Tuesday) && days.Tuesday.length > 0 ? (
+            days.Tuesday.map((status: boolean, index: number) => (
+              <span key={index} className={`attendance-range ${status ? 'bg-success' : 'bg-danger'}`}></span>
+            ))
+          ) : (
+            <span>N/A</span>
+          )}
+        </>
+      ),
+      sorter: (a: any, b: any) => (a.days.Tuesday?.length || 0) - (b.days.Tuesday?.length || 0),
+    },
+    {
+      title: "Mercredi",
+      dataIndex: "days",
+      render: (days: any) => (
+        <div style={{ display: 'flex', gap: '4px' }}>
+          {Array.isArray(days.Wednesday) && days.Wednesday.length > 0 ? (
+            days.Wednesday.map((status: boolean, index: number) => (
+              <span key={index} className={`attendance-range ${status ? 'bg-success' : 'bg-danger'}`}></span>
+            ))
+          ) : (
+            <span>N/A</span>
+          )}
+        </div>
+      ),
+      sorter: (a: any, b: any) => (a.days.Wednesday?.length || 0) - (b.days.Wednesday?.length || 0),
+    },
+    {
+      title: "Jeudi",
+      dataIndex: "days",
+      render: (days: any) => (
+        <div style={{ display: 'flex', gap: '4px' }}>
+          {Array.isArray(days.Thursday) && days.Thursday.length > 0 ? (
+            days.Thursday.map((status: boolean, index: number) => (
+              <span key={index} className={`attendance-range ${status ? 'bg-success' : 'bg-danger'}`}></span>
+            ))
+          ) : (
+            <span>N/A</span>
+          )}
+        </div>
+      ),
+      sorter: (a: any, b: any) => (a.days.Thursday?.length || 0) - (b.days.Thursday?.length || 0),
+    },
+    {
+      title: "Vendredi",
+      dataIndex: "days",
+      render: (days: any) => (
+        <div style={{ display: 'flex', gap: '4px' }}>
+          {Array.isArray(days.Friday) && days.Friday.length > 0 ? (
+            days.Friday.map((status: boolean, index: number) => (
+              <span key={index} className={`attendance-range ${status ? 'bg-success' : 'bg-danger'}`}></span>
+            ))
+          ) : (
+            <span>N/A</span>
+          )}
+        </div>
+      ),
+      sorter: (a: any, b: any) => (a.days.Friday?.length || 0) - (b.days.Friday?.length || 0),
+    },
+  ];
+
   return (
     <>
       {/* Page Wrapper */}
@@ -294,7 +459,7 @@ const StudentLeaves = () => {
                             <div className="card-body">
                               <h5 className="mb-2">nombre de conge</h5>
                               <div className="d-flex align-items-center flex-wrap">
-                                
+
                                 <p className="mb-0">{absenceTotals.congé}</p>
                               </div>
                             </div>
@@ -315,7 +480,7 @@ const StudentLeaves = () => {
                             <div className="card-body">
                               <h5 className="mb-2">Absence</h5>
                               <div className="d-flex align-items-center flex-wrap">
-                               
+
                                 <p className="mb-0">{absenceTotals.absence}</p>
                               </div>
                             </div>
@@ -352,7 +517,76 @@ const StudentLeaves = () => {
                     </div>
                     {/* /Leave */}
                     {/* Attendance */}
-                    <AttendanceZone/>
+                    <div className="tab-pane fade" id="attendance">
+                      <div className="card">
+                        <div className="card-header d-flex align-items-center justify-content-between flex-wrap pb-1">
+                          <h4 className="mb-3">Attendance</h4>
+                        </div>
+                        <div className="card-body pb-1">
+                          <div className="row">
+                            {/* Total Present */}
+                            <div className="col-md-6 col-xxl-3 d-flex">
+                              <div className="d-flex align-items-center rounded border p-3 mb-3 flex-fill">
+                                <span className="avatar avatar-lg bg-primary-transparent rounded me-2 flex-shrink-0 text-primary">
+                                  <i className="ti ti-user-check fs-24" />
+                                </span>
+                                <div className="ms-2">
+                                  <p className="mb-1">Total de Presence</p>
+                                  <h5>{totals.presence}</h5>
+                                </div>
+                              </div>
+                            </div>
+                            {/* /Total Present */}
+                            {/* Total Absent */}
+                            <div className="col-md-6 col-xxl-3 d-flex">
+                              <div className="d-flex align-items-center rounded border p-3 mb-3 flex-fill">
+                                <span className="avatar avatar-lg bg-danger-transparent rounded me-2 flex-shrink-0 text-danger">
+                                  <i className="ti ti-user-check fs-24" />
+
+                                </span>
+                                <div className="ms-2">
+                                  <p className="mb-1">total Absence</p>
+                                  <h5>{totals.absence}</h5>
+                                </div>
+                              </div>
+                            </div>
+                            {/* /Total Absent */}
+                          </div>
+                        </div>
+                      </div>
+                      <div className="card">
+                        <div className="card-header d-flex align-items-center justify-content-between flex-wrap pb-1">
+                          <h4 className="mb-3">Absence et presence</h4>
+                        </div>
+                        <div className="card-body p-0 py-3">
+                          <div className="px-3">
+                            <div className="d-flex align-items-center flex-wrap">
+                              <div className="d-flex align-items-center bg-white border rounded p-2 me-3 mb-3">
+                                <span className="avatar avatar-sm bg-success rounded me-2 flex-shrink-0 ">
+                                  <i className="ti ti-checks" />
+                                </span>
+                                <p className="text-dark">Present</p>
+                              </div>
+                              <div className="d-flex align-items-center bg-white border rounded p-2 me-3 mb-3">
+                                <span className="avatar avatar-sm bg-danger rounded me-2 flex-shrink-0 ">
+                                  <i className="ti ti-x" />
+                                </span>
+                                <p className="text-dark">Absent</p>
+                              </div>
+                            </div>
+                          </div>
+
+                          {Attendance && Attendance.length > 0 ? (
+                            <Table
+                              dataSource={Attendance}
+                              columns={columns2}
+                            />
+                          ) : (
+                            <p>Aucune donnée à afficher</p>
+                          )}
+                        </div>
+                      </div>
+                    </div>
                     {/* /Attendance */}
                   </div>
                 </div>
@@ -362,7 +596,7 @@ const StudentLeaves = () => {
         </div>
       </div>
       {/* /Page Wrapper */}
-      <StudentModals />
+      {/* <StudentModals /> */}
     </>
   );
 };

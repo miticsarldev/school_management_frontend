@@ -13,14 +13,6 @@ const StudentTimeTable = () => {
     const [selectUser, setSelectUser] = useState<Record<string, any>>({});
     const [timeTable, setTimeTable] = useState<Record<string, any[]>>({});
 
-    // Routes de navigation
-    const routes = [
-        { path: '/dashboard/studentDetails', label: 'Student Details', icon: 'ti-school' },
-        { path: '/dashboard/studentTimeTable', label: 'Time Table', icon: 'ti-table-options' },
-        { path: '/dashboard/studentLeaves', label: 'Leave & Attendance', icon: 'ti-calendar-due' },
-        { path: '/dashboard/studentFees', label: 'Fees', icon: 'ti-report-money' },
-        { path: '/dashboard/studentResult', label: 'Exam & Results', icon: 'ti-bookmark-edit' },
-    ];
 
     // Récupère l'ID de l'étudiant depuis l'URL
     const { studentId } = useParams();
@@ -57,6 +49,8 @@ const StudentTimeTable = () => {
     const fetchTimeTable = async (studentId: string) => {
         try {
             const response = await axios.get(`http://localhost:4444/api/timetables/user/${studentId}`);
+            console.log(response.data);
+            
             const timeTableData = response.data;
 
             // Réorganiser les données en fonction des jours
@@ -66,7 +60,7 @@ const StudentTimeTable = () => {
                 const scheduleEntry = {
                     time: `${new Date(entry.start_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} - ${new Date(entry.end_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`,
                     subject: entry.cours_id.name,
-                    teacherName: entry.id_users.email, // Remplacer par le nom du professeur si disponible
+                    teacherName: getUserFullNameById(entry.cours_id.id_user), // Remplacer par le nom du professeur si disponible
                     teacherId: entry.id_users._id, // Remplacer par l'ID du professeur si disponible
                     teacherImage: '', // Ajoutez l'image du professeur si disponible
                 };
@@ -88,6 +82,19 @@ const StudentTimeTable = () => {
         const date = new Date(dateString);
         const options: Intl.DateTimeFormatOptions = { day: 'numeric', month: 'long', year: 'numeric' };
         return date.toLocaleDateString('fr-FR', options);
+    }
+
+    function getUserFullNameById(idUser: string): string | null {
+        // Parcourir le tableau des utilisateurs
+        for (const user of users) {
+            // Vérifier si l'ID correspond à celui passé en paramètre
+            if (user._id === idUser) {
+                // Retourner le nom et le prénom de l'utilisateur
+                return `${user.firstname} ${user.lastname}`;
+            }
+        }
+        // Retourner null si l'utilisateur n'est pas trouvé
+        return null;
     }
 
     // Liste des jours de la semaine
@@ -222,7 +229,7 @@ const StudentTimeTable = () => {
                 </div>
             </div>
             {/* /Page Wrapper */}
-            <StudentModals />
+            {/* <StudentModals /> */}
         </>
     )
 }

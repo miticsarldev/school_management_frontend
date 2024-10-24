@@ -16,113 +16,97 @@ function AttendanceZone() {
         },
       ]
   const data2 = Attendance;
-const columns2 = [
+  const columns2 = [
     {
-      title: "Date | Month",
-      dataIndex: "date",
-      sorter: (a: TableData, b: TableData) => a.date.length - b.date.length,
+      title: "Semaine | Mois",
+      dataIndex: "week",
+      render: (text: any) => (
+        <span>{`Semaine ${text.week} | ${text.month}`}</span>
+      ),
+      sorter: (a: any, b: any) => a.week - b.week,
     },
     {
-      title: "lundi",
-      dataIndex: "lundi",
-      render: (text: string) => (
+      title: "Lundi",
+      dataIndex: "days.Monday",
+      render: (text: any) => (
         <>
-          {text === "1" ? (
-            <span className="attendance-range bg-success"></span>
-          ) : text === "2" ? (
-            <span className="attendance-range bg-danger"></span>
-          ) : text === "3" ? (
-            <span className="attendance-range bg-dark"></span>
-          ) : text === "4" ? (
-            <span className="attendance-range bg-danger"></span>
+          {text.length > 0 ? (
+            text.map((status: boolean, index: number) => (
+              <span key={index} className={`attendance-range ${status ? 'bg-success' : 'bg-danger'}`}></span>
+            ))
           ) : (
-            <span className="attendance-range bg-info"></span>
+            <span>N/A</span>
           )}
         </>
       ),
-      sorter: (a: TableData, b: TableData) => a.jan.length - b.jan.length,
+      sorter: (a: any, b: any) => a.days.Monday.length - b.days.Monday.length,
     },
     {
       title: "Mardi",
-      dataIndex: "mardi",
-      render: (text: string) => (
+      dataIndex: "days.Tuesday",
+      render: (text: any) => (
         <>
-          {text === "1" ? (
-            <span className="attendance-range bg-success"></span>
-          ) : text === "2" ? (
-            <span className="attendance-range bg-danger"></span>
-          ) : text === "3" ? (
-            <span className="attendance-range bg-dark"></span>
-          ) : text === "4" ? (
-            <span className="attendance-range bg-danger"></span>
+          {text.length > 0 ? (
+            text.map((status: boolean, index: number) => (
+              <span key={index} className={`attendance-range ${status ? 'bg-success' : 'bg-danger'}`}></span>
+            ))
           ) : (
-            <span className="attendance-range bg-info"></span>
+            <span>N/A</span>
           )}
         </>
       ),
-      sorter: (a: TableData, b: TableData) => a.feb.length - b.feb.length,
+      sorter: (a: any, b: any) => a.days.Tuesday.length - b.days.Tuesday.length,
     },
     {
       title: "Mercredi",
-      dataIndex: "mercredi",
-      render: (text: string) => (
+      dataIndex: "days.Wednesday",
+      render: (text: any) => (
         <>
-          {text === "1" ? (
-            <span className="attendance-range bg-success"></span>
-          ) : text === "2" ? (
-            <span className="attendance-range bg-pending"></span>
-          ) : text === "3" ? (
-            <span className="attendance-range bg-dark"></span>
-          ) : text === "4" ? (
-            <span className="attendance-range bg-danger"></span>
+          {text.length > 0 ? (
+            text.map((status: boolean, index: number) => (
+              <span key={index} className={`attendance-range ${status ? 'bg-success' : 'bg-danger'}`}></span>
+            ))
           ) : (
-            <span className="attendance-range bg-info"></span>
+            <span>N/A</span>
           )}
         </>
       ),
-      sorter: (a: TableData, b: TableData) => a.mar.length - b.mar.length,
+      sorter: (a: any, b: any) => a.days.Wednesday.length - b.days.Wednesday.length,
     },
     {
       title: "Jeudi",
-      dataIndex: "jeudi",
-      render: (text: string) => (
+      dataIndex: "days.Thursday",
+      render: (text: any) => (
         <>
-          {text === "1" ? (
-            <span className="attendance-range bg-success"></span>
-          ) : text === "2" ? (
-            <span className="attendance-range bg-pending"></span>
-          ) : text === "3" ? (
-            <span className="attendance-range bg-dark"></span>
-          ) : text === "4" ? (
-            <span className="attendance-range bg-danger"></span>
+          {text.length > 0 ? (
+            text.map((status: boolean, index: number) => (
+              <span key={index} className={`attendance-range ${status ? 'bg-success' : 'bg-danger'}`}></span>
+            ))
           ) : (
-            <span className="attendance-range bg-info"></span>
+            <span>N/A</span>
           )}
         </>
       ),
-      sorter: (a: TableData, b: TableData) => a.apr.length - b.apr.length,
+      sorter: (a: any, b: any) => a.days.Thursday.length - b.days.Thursday.length,
     },
     {
-      title: "vendredi",
-      dataIndex: "vendredi",
-      render: (text: string) => (
+      title: "Vendredi",
+      dataIndex: "days.Friday",
+      render: (text: any) => (
         <>
-          {text === "1" ? (
-            <span className="attendance-range bg-success"></span>
-          ) : text === "2" ? (
-            <span className="attendance-range bg-danger"></span>
-          ) : text === "3" ? (
-            <span className="attendance-range bg-dark"></span>
-          ) : text === "4" ? (
-            <span className="attendance-range bg-danger"></span>
+          {text.length > 0 ? (
+            text.map((status: boolean, index: number) => (
+              <span key={index} className={`attendance-range ${status ? 'bg-success' : 'bg-danger'}`}></span>
+            ))
           ) : (
-            <span className="attendance-range bg-info"></span>
+            <span>N/A</span>
           )}
         </>
       ),
-      sorter: (a: TableData, b: TableData) => a.may.length - b.may.length,
+      sorter: (a: any, b: any) => a.days.Friday.length - b.days.Friday.length,
     },
   ];
+  
     return (
         <div className="tab-pane fade" id="attendance">
             <div className="card">
